@@ -1,0 +1,14 @@
+# Evita guerras de CRLF/LF entre Windows e Linux
+* text=auto
+
+# Scripts e unidades systemd TÊM de ter LF (senão falham no Linux)
+*.sh      text eol=lf
+*.service text eol=lf
+
+# Binários
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.war  binary
+*.zip  binary

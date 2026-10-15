@@ -1,0 +1,25 @@
+# Maven / Eclipse (cada um gera os seus; NÃO se partilham)
+target/
+.classpath
+.project
+.settings/
+.metadata/
+.recommenders/
+Servers/
+*.class
+
+# IntelliJ / VS Code (caso alguém use)
+.idea/
+*.iml
+.vscode/
+
+# Dados de execução (nunca no Git)
+*.ser
+*.ser.tmp
+*.ser.bak
+data/
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
