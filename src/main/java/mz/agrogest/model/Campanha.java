@@ -43,6 +43,6 @@ public class Campanha implements Serializable {
         if(fim == null) {
             return "";
         }
-        retutn fim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return fim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 }
