@@ -4,14 +4,14 @@
 
 <c:choose>
   <c:when test="${empty produtos}">
-    <p class="muted">Ainda n„o h· produtos.</p>
+    <p class="muted">Ainda n√£o h√° produtos.</p>
   </c:when>
   <c:otherwise>
     <div class="tabela-scroll">
     <table class="tabela">
       <tr>
-        <th>Nome</th><th>Categoria</th><th class="num">PreÁo</th>
-        <th class="num">Stock</th><th>Validade</th><th>AcÁıes</th>
+        <th>Nome</th><th>Categoria</th><th class="num">Pre√ßo</th>
+        <th class="num">Stock</th><th>Validade</th><th>Ac√ß√µes</th>
       </tr>
       <c:forEach var="p" items="${produtos}">
         <tr>
