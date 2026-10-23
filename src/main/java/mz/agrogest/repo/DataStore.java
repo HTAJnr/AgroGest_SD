@@ -66,4 +66,15 @@ public final class DataStore {
     public int novoIdCultivo() { return idCultivo.incrementAndGet(); }
     public int novoIdColheita() { return idColheita.incrementAndGet(); }
     public int novoIdVenda() { return idVenda.incrementAndGet(); }
+
+    public int[] getContadores() {
+        return new int[] { idUtilizador.get(), idFornecedor.get(), idProduto.get(),
+                       idCampanha.get(), idCultivo.get(), idColheita.get(), idVenda.get() };
+    }   
+
+    public void setContadores(int[] c) {
+        idUtilizador.set(c[0]); idFornecedor.set(c[1]); idProduto.set(c[2]);
+        idCampanha.set(c[3]);   idCultivo.set(c[4]);    idColheita.set(c[5]);
+        idVenda.set(c[6]);
+    }
 }
