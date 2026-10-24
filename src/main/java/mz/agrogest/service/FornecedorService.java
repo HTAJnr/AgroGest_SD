@@ -6,7 +6,7 @@ import java.util.List;
 import mz.agrogest.model.Fornecedor;
 import mz.agrogest.model.TipoFornecedor;
 import mz.agrogest.repo.DataStore;
-import mz.agrogest.stub.c.service.ProdutoService; // na integração passa a mz.agrogest.service.ProdutoService
+import mz.agrogest.service.ProdutoService; // na integração passa a mz.agrogest.service.ProdutoService
 import mz.agrogest.util.NegocioException;
 
 /**
