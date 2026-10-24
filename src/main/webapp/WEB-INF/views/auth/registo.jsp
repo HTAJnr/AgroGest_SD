@@ -13,12 +13,12 @@
   <label for="confirmar">Confirmar palavra-passe</label>
   <input type="password" id="confirmar" name="confirmar">
 
-  <label for="telefone">Telefone (opcional)</label>
-  <input type="text" id="telefone" name="telefone" value="<c:out value='${param.telefone}'/>" placeholder="ex.: 840000000">
+  <label for="telefone">Telefone</label>
+  <input type="text" id="telefone" name="telefone" value="<c:out value='${param.telefone}'/>" placeholder="ex.: 840000000" required>
 
-  <label for="endereco">Endere&ccedil;o (opcional)</label>
-  <input type="text" id="endereco" name="endereco" value="<c:out value='${param.endereco}'/>">
-
+  <label for="endereco">Endere&ccedil;o</label>
+  <input type="text" id="endereco" name="endereco" value="<c:out value='${param.endereco}'/>" required>
+  
   <button class="btn" type="submit">Criar conta</button>
 </form>
 
