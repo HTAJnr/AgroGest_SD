@@ -59,4 +59,9 @@ public class Produto implements Serializable {
         }
         return validade.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
+
+    /** Getter calculado: {@code true} se a validade já passou. Não altera campos. */
+    public boolean isExpirado() {
+        return validade != null && validade.isBefore(LocalDate.now());
+    }
 }

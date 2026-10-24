@@ -22,8 +22,7 @@ public class AdminProdutoServlet extends HttpServlet {
 	private static final String LISTA = "/WEB-INF/views/admin/produtos/lista.jsp";
 	private static final String FORM = "/WEB-INF/views/admin/produtos/form.jsp";
 
-	
-	private static final DateTimeFormatter DATA = DateTimeFormatter.ofPattern("dd/MM/uuuu")
+	private static final DateTimeFormatter DATA_BR = DateTimeFormatter.ofPattern("dd/MM/uuuu")
 			.withResolverStyle(ResolverStyle.STRICT);
 
 	@Override
@@ -66,21 +65,24 @@ public class AdminProdutoServlet extends HttpServlet {
 			int fornecedorId = Integer.parseInt(texto(req, "fornecedorId"));
 			BigDecimal preco = new BigDecimal(decimal(req, "preco"));
 			double quantidade = Double.parseDouble(decimal(req, "quantidade"));
-			String v = texto(req, "validade");
-			LocalDate validade = v.isEmpty() ? null : LocalDate.parse(v, DATA);
+			LocalDate validade = parseValidade(texto(req, "validade"));
 
 			ProdutoService.getInstance().criar(texto(req, "nome"), categoria, fornecedorId, preco, quantidade,
 					texto(req, "unidade"), texto(req, "descricao"), texto(req, "fotoUrl"), validade);
 
 			ok(req, resp, "Produto criado com sucesso.");
 		} catch (NegocioException e) {
-			erroForm(req, resp, e.getMessage());
+			SessaoUtil.erro(req, e);
+			mostrarForm(req, resp);
 		} catch (NumberFormatException e) {
-			erroForm(req, resp, "Preço, quantidade e fornecedor têm de ser números válidos.");
+			SessaoUtil.erro(req, "preco", "Preço, quantidade e fornecedor têm de ser números válidos.");
+			mostrarForm(req, resp);
 		} catch (DateTimeParseException e) {
-			erroForm(req, resp, "Data inválida. Use o formato dd/mm/aaaa (ex.: 31/03/2027).");
+			SessaoUtil.erro(req, "validade", "Data inválida. Use o formato dd/mm/aaaa (ex.: 31/03/2027).");
+			mostrarForm(req, resp);
 		} catch (IllegalArgumentException e) {
-			erroForm(req, resp, "Categoria inválida.");
+			SessaoUtil.erro(req, "categoria", "Categoria inválida.");
+			mostrarForm(req, resp);
 		}
 	}
 
@@ -120,13 +122,8 @@ public class AdminProdutoServlet extends HttpServlet {
 		req.setAttribute("titulo", "Novo produto");
 		req.setAttribute("categorias", Categoria.values());
 		req.setAttribute("fornecedores", FornecedorService.getInstance().listar());
+		req.setAttribute("hoje", LocalDate.now().toString());
 		req.getRequestDispatcher(FORM).forward(req, resp);
-	}
-
-	private void erroForm(HttpServletRequest req, HttpServletResponse resp, String msg)
-			throws ServletException, IOException {
-		req.setAttribute("erro", msg);
-		mostrarForm(req, resp);
 	}
 
 	private void erroLista(HttpServletRequest req, HttpServletResponse resp, String msg) throws IOException {
@@ -147,5 +144,16 @@ public class AdminProdutoServlet extends HttpServlet {
 	/** Aceita "3,5" ou "3.5". */
 	private String decimal(HttpServletRequest req, String nome) {
 		return texto(req, nome).replace(',', '.');
+	}
+
+	private static LocalDate parseValidade(String v) {
+		if (v == null || v.isBlank()) {
+			return null;
+		}
+		v = v.trim();
+		if (v.contains("/")) {
+			return LocalDate.parse(v, DATA_BR);
+		}
+		return LocalDate.parse(v);
 	}
 }

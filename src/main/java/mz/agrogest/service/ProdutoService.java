@@ -5,85 +5,93 @@ import java.util.*;
 
 import mz.agrogest.model.*;
 import mz.agrogest.repo.DataStore;
-import mz.agrogest.service.FornecedorService;
 import mz.agrogest.util.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-//Gerende dos produtos
-public class ProdutoService {
-	//Constant
+/** Serviço de produtos: criar, listar, repor stock, remover. */
+public final class ProdutoService {
 	private static final ProdutoService INSTANCIA = new ProdutoService();
-	
-	//Constructor
+
 	private ProdutoService() {
-		
 	}
-	
-	//Methods
-	public Produto criar(String nome, Categoria categoria, int fornecedorID, BigDecimal preco, 
+
+	public Produto criar(String nome, Categoria categoria, int fornecedorID, BigDecimal preco,
 			double quantidade, String unidade, String descricao, String fotoUrl, LocalDate validade) {
-		//Validacoes
-		if(nome == null || nome.isBlank())
-			throw new NegocioException("O nome do produto é obrigatório.");
-		if(categoria == null)
-			throw new NegocioException("Escolha uma categoria.");
-		if(preco == null || preco.compareTo(BigDecimal.ZERO) <= 0)
-			throw new NegocioException("O preço tem de ser  maior que zero");
-		if(quantidade < 0)
-			throw new NegocioException("A quantidade não pode ser negativa.");
-		if(unidade == null || unidade.isBlank())
-			throw new NegocioException("A unidade é obrigatória(ex:kg, saco, unidade");
-		if(FornecedorService.getInstance().porId(fornecedorID) == null)
-			throw new NegocioException("O fornecedor escolhido não existe.");
-		
-		//Criacao do do objeto
-		Produto p = new Produto();
-		p.setNome(nome.trim());
-		p.setCategoria(categoria);
-		p.setFornecedorId(fornecedorID);
-		p.setPreco(preco.setScale(2, RoundingMode.HALF_UP));
-		p.setQuantidade(quantidade);
-		p.setUnidade(unidade.trim());
-		p.setDescricao(descricao == null ? "" : descricao.trim());
-		p.setFotoUrl(fotoUrl == null ? "" : fotoUrl.trim());
-		p.setValidade(validade);
-		
-		//Guardar
-		DataStore ds = DataStore.getInstance();
-		synchronized(ds.getLock()) {
-			p.setId(ds.novoIdProduto());
-			ds.getProdutos().add(p);
+		// Validações com Validacao (D17)
+		String n = Validacao.nomeCoisa("nome", nome);
+		if (categoria == null) {
+			throw new CampoException("categoria", "Escolha uma categoria.");
 		}
-		
-		return p;
-		
+		BigDecimal p = Validacao.precoPositivo("preco", preco);
+		Validacao.quantidadeNaoNegativa("quantidade", quantidade);
+		String un = Validacao.unidade("unidade", unidade);
+		Validacao.validade("validade", validade);
+
+		// Fornecedor existe?
+		Fornecedor forn = FornecedorService.getInstance().porId(fornecedorID);
+		if (forn == null) {
+			throw new CampoException("fornecedorId", "O fornecedor escolhido não existe.");
+		}
+
+		// D13: compatibilidade categoria ↔ tipo de fornecedor
+		Validacao.compatibilidadeCategoria(categoria, forn.getTipo(), forn.getNome());
+
+		// Criação do objeto
+		Produto prod = new Produto();
+		prod.setNome(n);
+		prod.setCategoria(categoria);
+		prod.setFornecedorId(fornecedorID);
+		prod.setPreco(p.setScale(2, RoundingMode.HALF_UP));
+		prod.setQuantidade(quantidade);
+		prod.setUnidade(un);
+		prod.setDescricao(descricao == null ? "" : Validacao.normalizar(descricao));
+		prod.setFotoUrl(fotoUrl == null ? "" : fotoUrl.trim());
+		prod.setValidade(validade);
+
+		// Guardar (com unicidade D14 dentro do lock)
+		DataStore ds = DataStore.getInstance();
+		synchronized (ds.getLock()) {
+			// D14: unicidade nome + fornecedor
+			for (Produto existente : ds.getProdutos()) {
+				if (existente.getNome().equalsIgnoreCase(n)
+						&& existente.getFornecedorId() == fornecedorID) {
+					throw new CampoException("nome",
+							"Já existe um produto «" + existente.getNome()
+									+ "» deste fornecedor.");
+				}
+			}
+			prod.setId(ds.novoIdProduto());
+			ds.getProdutos().add(prod);
+		}
+
+		return prod;
 	}
-	
-	//Leituras
+
+	// Leituras
 	public List<Produto> listar() {
 		DataStore ds = DataStore.getInstance();
-		
-		synchronized(ds.getLock()) {
+
+		synchronized (ds.getLock()) {
 			return new ArrayList<>(ds.getProdutos());
 		}
 	}
-	
+
 	public List<Produto> listarEmStock() {
 		DataStore ds = DataStore.getInstance();
-		synchronized(ds.getLock()) {
+		synchronized (ds.getLock()) {
 			List<Produto> resultado = new ArrayList<>();
-			
-			for(Produto p: ds.getProdutos()) {
-				if(p.getQuantidade() > 0)
+
+			for (Produto p : ds.getProdutos()) {
+				if (p.getQuantidade() > 0)
 					resultado.add(p);
 			}
-			
+
 			return resultado;
 		}
 	}
-	
+
 	public List<Produto> listarPorCategoria(Categoria categoria) {
         DataStore ds = DataStore.getInstance();
         synchronized (ds.getLock()) {
@@ -95,14 +103,14 @@ public class ProdutoService {
             return resultado;
         }
     }
-	
+
 	public Produto porId(int id) {
         DataStore ds = DataStore.getInstance();
         synchronized (ds.getLock()) {
             return procurar(ds, id);
         }
     }
-	
+
 	public boolean existeComFornecedor(int fornecedorId) {
         DataStore ds = DataStore.getInstance();
         synchronized (ds.getLock()) {
@@ -113,28 +121,27 @@ public class ProdutoService {
             return false;
         }
     }
-	
+
 	public void reporStock(int id, double quantidade) {
-        if (quantidade <= 0)
-            throw new NegocioException("A quantidade a repor tem de ser maior que zero.");
-        
+        Validacao.quantidadePositiva("quantidade", quantidade);
+
         DataStore ds = DataStore.getInstance();
         synchronized (ds.getLock()) {
             Produto p = procurar(ds, id);
             if (p == null)
                 throw new NegocioException("O produto não existe.");
-            
+
             p.setQuantidade(p.getQuantidade() + quantidade);
         }
     }
-	
+
 	public void remover(int id) {
         DataStore ds = DataStore.getInstance();
         synchronized (ds.getLock()) {
             Produto p = procurar(ds, id);
-            if (p == null) 
+            if (p == null)
                 throw new NegocioException("O produto não existe.");
-            
+
             ds.getProdutos().remove(p);
         }
     }
@@ -142,9 +149,8 @@ public class ProdutoService {
 	public static ProdutoService getInstance() {
 		return INSTANCIA;
 	}
-	
-	
-	//Auxiliary methods
+
+	// Auxiliary methods
 	private Produto procurar(DataStore ds, int id) {
         for (Produto p : ds.getProdutos()) {
             if (p.getId() == id)

@@ -2,12 +2,14 @@ package mz.agrogest.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import mz.agrogest.model.Fornecedor;
 import mz.agrogest.model.TipoFornecedor;
 import mz.agrogest.repo.DataStore;
-import mz.agrogest.service.ProdutoService; // na integração passa a mz.agrogest.service.ProdutoService
+import mz.agrogest.util.CampoException;
 import mz.agrogest.util.NegocioException;
+import mz.agrogest.util.Validacao;
 
 /**
  * Regras de negócio dos fornecedores (criar, listar, procurar, remover).
@@ -25,31 +27,28 @@ public final class FornecedorService {
     }
 
     public Fornecedor criar(String nome, TipoFornecedor tipo, String contacto, String provincia) {
-        nome = limpar(nome);
-        contacto = limpar(contacto);
-        provincia = limpar(provincia);
-
-        if (nome.isEmpty()) {
-            throw new NegocioException("O nome do fornecedor é obrigatório.");
-        }
+        String n = Validacao.nomeCoisa("nome", nome);
         if (tipo == null) {
-            throw new NegocioException("Escolha o tipo de fornecedor.");
+            throw new CampoException("tipo", "Escolha o tipo de fornecedor.");
         }
-        if (contacto.isEmpty()) {
-            throw new NegocioException("O contacto do fornecedor é obrigatório.");
-        }
-        if (provincia.isEmpty()) {
-            throw new NegocioException("A província do fornecedor é obrigatória.");
-        }
+        String c = Validacao.contactoFornecedor("contacto", contacto);
+        String p = Validacao.provincia("provincia", provincia);
 
         DataStore ds = DataStore.getInstance();
         synchronized (ds.getLock()) {
+            // D14: unicidade por nome (sem distinguir maiúsculas)
+            for (Fornecedor f : ds.getFornecedores()) {
+                if (n.equalsIgnoreCase(f.getNome())) {
+                    throw new CampoException("nome",
+                            "Já existe um fornecedor com o nome «" + f.getNome() + "».");
+                }
+            }
             Fornecedor f = new Fornecedor();
             f.setId(ds.novoIdFornecedor());
-            f.setNome(nome);
+            f.setNome(n);
             f.setTipo(tipo);
-            f.setContacto(contacto);
-            f.setProvincia(provincia);
+            f.setContacto(c);
+            f.setProvincia(p);
             ds.getFornecedores().add(f);
             return f;
         }
@@ -90,9 +89,5 @@ public final class FornecedorService {
             }
             ds.getFornecedores().removeIf(f -> f.getId() == id);
         }
-    }
-
-    private static String limpar(String s) {
-        return s == null ? "" : s.trim();
     }
 }

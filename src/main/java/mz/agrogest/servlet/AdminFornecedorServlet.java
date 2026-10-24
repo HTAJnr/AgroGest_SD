@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import mz.agrogest.model.TipoFornecedor;
 import mz.agrogest.service.FornecedorService;
 import mz.agrogest.util.NegocioException;
+import mz.agrogest.util.Validacao;
 
 /**
  * Controlador de /admin/fornecedores/*
@@ -62,7 +63,7 @@ public class AdminFornecedorServlet extends HttpServlet {
             req.getSession().setAttribute("flashOk", "Fornecedor criado com sucesso.");
             resp.sendRedirect(req.getContextPath() + BASE);
         } catch (NegocioException e) {
-            req.setAttribute("erro", e.getMessage());
+            SessaoUtil.erro(req, e);
             mostrarLista(req, resp); // o formulário mantém o que foi escrito (${param.x})
         }
     }
@@ -75,10 +76,10 @@ public class AdminFornecedorServlet extends HttpServlet {
             req.getSession().setAttribute("flashOk", "Fornecedor removido.");
             resp.sendRedirect(req.getContextPath() + BASE);
         } catch (NumberFormatException e) {
-            req.setAttribute("erro", "Identificador de fornecedor inválido.");
+            SessaoUtil.erro(req, "id", "Identificador de fornecedor inválido.");
             mostrarLista(req, resp);
         } catch (NegocioException e) {
-            req.setAttribute("erro", e.getMessage());
+            SessaoUtil.erro(req, e);
             mostrarLista(req, resp);
         }
     }
@@ -91,7 +92,7 @@ public class AdminFornecedorServlet extends HttpServlet {
         try {
             return TipoFornecedor.valueOf(texto.trim());
         } catch (IllegalArgumentException e) {
-            throw new NegocioException("Tipo de fornecedor inválido.");
+            throw new mz.agrogest.util.CampoException("tipo", "Tipo de fornecedor inválido.");
         }
     }
 
@@ -100,6 +101,7 @@ public class AdminFornecedorServlet extends HttpServlet {
         req.setAttribute("titulo", "Fornecedores");
         req.setAttribute("fornecedores", servico.listar());
         req.setAttribute("tipos", TipoFornecedor.values());
+        req.setAttribute("provincias", Validacao.PROVINCIAS);
         req.getRequestDispatcher(VISTA).forward(req, resp);
     }
 }

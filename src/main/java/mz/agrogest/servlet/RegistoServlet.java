@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import mz.agrogest.service.UtilizadorService;
+import mz.agrogest.util.CampoException;
 import mz.agrogest.util.NegocioException;
 
 @WebServlet("/registo")
@@ -32,16 +33,16 @@ public class RegistoServlet extends HttpServlet {
 
 		try {
 			if (!password.equals(confirmar)) {
-				throw new NegocioException("As palavras-passe n\u00e3o coincidem.");
+				throw new CampoException("confirmar", "As palavras-passe não coincidem.");
 			}
 
 			UtilizadorService.getInstance().registarCliente(valor(req, "nome"), valor(req, "email"), password,
 					valor(req, "telefone"), valor(req, "endereco"));
 
-			req.getSession().setAttribute("flashOk", "Conta criada com sucesso. J\u00e1 pode entrar.");
+			req.getSession().setAttribute("flashOk", "Conta criada com sucesso. Já pode entrar.");
 			resp.sendRedirect(req.getContextPath() + "/login");
 		} catch (NegocioException e) {
-			req.setAttribute("erro", e.getMessage());
+			SessaoUtil.erro(req, e);
 			mostrarForm(req, resp);
 		}
 	}

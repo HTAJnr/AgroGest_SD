@@ -3,13 +3,14 @@ package mz.agrogest.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 import mz.agrogest.model.Perfil;
 import mz.agrogest.model.Utilizador;
 import mz.agrogest.repo.DataStore;
+import mz.agrogest.util.CampoException;
 import mz.agrogest.util.NegocioException;
 import mz.agrogest.util.SenhaUtil;
+import mz.agrogest.util.Validacao;
 
 /**
  * Contas de utilizador: registo de clientes, autenticação e conta de admin.
@@ -19,8 +20,6 @@ public final class UtilizadorService {
 
     public static final String ADMIN_EMAIL = "admin@agro.mz";   // D11
     private static final String ADMIN_PASSWORD = "admin234";    // D11 (só o hash é guardado)
-    private static final int PASSWORD_MIN = 4;                  // o enunciado usa "1234" no exemplo
-    private static final Pattern EMAIL = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
 
     private static final UtilizadorService INSTANCE = new UtilizadorService();
 
@@ -36,26 +35,11 @@ public final class UtilizadorService {
     /** Regista um cliente. Lança NegocioException se os dados forem inválidos ou o email já existir. */
     public Utilizador registarCliente(String nome, String email, String password,
                                       String telefone, String endereco) {
-        String n = limpar(nome);
-        String e = normalizar(email);
-        String t = limpar(telefone);
-        String d = limpar(endereco);
-
-        if (n.isEmpty()) {
-            throw new NegocioException("O nome é obrigatório.");
-        }
-        if (!EMAIL.matcher(e).matches()) {
-            throw new NegocioException("Email inválido.");
-        }
-        if (password == null || password.length() < PASSWORD_MIN) {
-            throw new NegocioException("A palavra-passe deve ter pelo menos " + PASSWORD_MIN + " caracteres.");
-        }
-        if (t.isEmpty()) {
-            throw new NegocioException("O telefone é obrigatório.");
-        }
-        if (d.isEmpty()) {
-            throw new NegocioException("O endereço é obrigatório.");
-        }
+        String n = Validacao.nomePessoa("nome", nome);
+        String e = Validacao.email("email", email);
+        Validacao.password("password", password);
+        String t = Validacao.telefoneMz("telefone", telefone);
+        String d = Validacao.endereco("endereco", endereco);
 
         // BCrypt é lento de propósito (~100 ms). Não mexe em estado partilhado,
         // por isso fica FORA do lock para não bloquear vendas e outros registos.
@@ -65,7 +49,7 @@ public final class UtilizadorService {
             // verificar e inserir têm de ser uma só operação atómica, senão dois
             // pedidos simultâneos com o mesmo email passam ambos na verificação.
             if (procurarPorEmail(e) != null) {
-                throw new NegocioException("Já existe uma conta com o email " + e + ".");
+                throw new CampoException("email", "Já existe uma conta com o email " + e + ".");
             }
             Utilizador u = criar(n, e, hash, Perfil.CLIENTE, t, d);
             store.getUtilizadores().add(u);
@@ -153,9 +137,5 @@ public final class UtilizadorService {
 
     private static String normalizar(String email) {
         return email == null ? "" : email.trim().toLowerCase(Locale.ROOT);
-    }
-
-    private static String limpar(String s) {
-        return s == null ? "" : s.trim();
     }
 }
