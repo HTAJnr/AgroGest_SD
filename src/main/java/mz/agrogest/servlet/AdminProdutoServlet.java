@@ -12,7 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import mz.agrogest.model.Categoria;
 import mz.agrogest.service.ProdutoService;
-import mz.agrogest.stub.b.service.FornecedorService;
+import mz.agrogest.service.FornecedorService;
 import mz.agrogest.util.NegocioException;
 
 @WebServlet("/admin/produtos/*")

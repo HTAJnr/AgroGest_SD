@@ -5,7 +5,7 @@ import java.util.*;
 
 import mz.agrogest.model.*;
 import mz.agrogest.repo.DataStore;
-import mz.agrogest.stub.b.service.FornecedorService;
+import mz.agrogest.service.FornecedorService;
 import mz.agrogest.util.*;
 
 import java.math.BigDecimal;
