@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Sem fotografia">
+<rect width="800" height="600" fill="#e3f2e6"/>
+<g transform="translate(400 300) scale(6.5) translate(-32 -33)" opacity="0.55">
+  <path d="M44 4.5 C52 14 51.5 27 43.5 33 C38.5 36.5 30 36.5 25 34.5 C20.5 27.5 24.5 12 44 4.5 Z" fill="#1f6f3a"/>
+  <path d="M26.5 35 C25 38 23.5 40.5 21 43" fill="none" stroke="#1f6f3a" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M26.5 35 C33 27.5 38 18 43 9.5" fill="none" stroke="#e3f2e6" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+</svg>

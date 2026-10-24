@@ -19,10 +19,15 @@
   - Geração de token de substituição no request após consumo em POST para suportar formulários reenviados após forward em erros de validação.
   - Adição de `<input type="hidden" name="_t" value="${tokenForm}">` em todos os formulários POST das JSPs.
   - Suite de testes unitários `TokenFormFilterTest` com testes de concorrência multithread, FIFO, isolamento de abas e ciclo de vida HTTP do filtro.
+- **F0 · Fornecedores no padrão lista + "Novo":**
+  - Separação da criação e listagem de fornecedores seguindo o padrão de produtos (base para F1–F3).
+  - `AdminFornecedorServlet`: suporte a rotas `GET /admin/fornecedores` (lista), `GET /admin/fornecedores/novo` (formulário), `POST /admin/fornecedores` (criação via POST-redirect-GET com `flashOk`, ou forward com `erroCampo` e preservação de campos em erro de validação) e `POST /admin/fornecedores/remover` (remoção com `flashOk` ou `flashErro` em caso de fornecedor com produtos associados).
+  - `views/admin/fornecedores/lista.jsp`: remoção do formulário embutido; adição de cabeçalho `.pagina-topo` com botão "+ Novo fornecedor" e botão de remoção por ícone SVG (`.btn-icone`).
+  - `views/admin/fornecedores/form.jsp`: criação de página com cartão centrado (`.form-centrado`), grelha a 2 colunas (`.form-grelha`), selects para tipo e província (11 províncias de Moçambique), `inputmode="tel"` no contacto, token anti duplo envio `_t` e botões Cancelar/Guardar.
+  - `css/estilo.css`: introdução das classes de suporte `.pagina-topo`, `.form-centrado`, `.form-grelha`, `.campo-cheio`, `.form-acoes`, `.btn-icone` e estilos base padronizados para `.btn`, `.btn-sec` e `.btn-perigo`.
 
 # Por fazer
 
-- **F0:** Fornecedores no padrão lista + "Novo".
 - **F1:** Campanhas (`/admin/campanhas/*`).
 - **F2:** Cultivos (`/admin/cultivos/*`).
 - **F3:** Colheitas (`/admin/colheitas/*`).

@@ -23,7 +23,7 @@ Sim, podes usá-lo: edita os ficheiros directamente e acaba o vaivém. Mas **o a
 
 1. Antes de cada tarefa: `git status` limpo e commit do estado anterior. Rede de segurança: `git diff` para ver, `git restore .` para desfazer.
 2. Prompt-padrão (substitui `{X}`):
-   > 	Lê `docs/PLANO_SESSOES.md` (secções 0, 1, 2 e a tarefa {X}) e `docs/PROGRESS.md`. Faz **só** a tarefa {X}. Não toques em nenhum ficheiro que  a tarefa nao exige. Não faças commit, apenas de-me a mensagem de commit. No fim corre `mvn clean package`, mostra `git diff --stat` e explica cada ficheiro alterado em linguagem simples. Atualiza o ficheiro `docs/PROGRESS.md`.
+   > Lê `docs/PLANO_SESSOES.md` (secções 0, 1, 2 e a tarefa {X}) e `docs/PROGRESS.md`. Faz **só** a tarefa {X}. Não toques em nenhum ficheiro que  a tarefa nao exige. Não faças commit, apenas de-me a mensagem de commit. No fim corre `mvn clean package`, mostra `git diff --stat` e explica cada ficheiro alterado em linguagem simples. Atualiza o ficheiro `docs/PROGRESS.md`.
 3. Permitir: `mvn`, `grep`, `find`, `git status/diff`. **Não** permitir em modo automático: `sudo`, `rm -rf` fora de `src/` e `target/`, `git push`, `git reset --hard`, `systemctl`. As tarefas **D3 e D5 fazem-se à mão**; o agente só explica.
 4. Revê o `git diff` antes do commit (é a tua defesa). Linha que não sabes explicar → pede ao agente para a simplificar.
 5. Uma tarefa por conversa; conversa nova para a seguinte (contexto limpo).
@@ -164,7 +164,7 @@ Sem barra. Layout próprio, centrado, com a marca e o subtítulo "Sistema de Ges
 
 ### 2.7 Logo e ícones
 - **Logo:** a **marca** (folha dentro de anel de engrenagem) em **SVG** (cor e branca). O nome "AgroGest" é **texto HTML/CSS** ("Agro" verde, "Gest" cinzento), nunca imagem. O PNG fornecido (fundo cinzento) **não** entra na UI; serve para README/manual. Barra escura → marca branca.
-- **Ícones:** SVG inline num sprite `WEB-INF/jspf/icons.jspf` (herdam `currentColor`). Nomes: `utilizador`, `carrinho`, `seta-baixo`, `seta-direita`, `sair`, `recibo`, `fechar`, `check`, `alerta`, `info`, `menu`, `mais`, `lixo`, `editar`, `imagem`, `dashboard`, `caixa` (produtos), `camiao` (fornecedores), `pessoas` (clientes), `folha` (campanhas), `cofre` (persistência).
+- **Ícones:** SVG do Lucide, montados em sprite inline `WEB-INF/jspf/icons.jspf` (herdam `currentColor`; ficheiros-fonte em `assets/icons/`). Nomes: `utilizador`, `carrinho`, `seta-baixo`, `seta-direita`, `sair`, `recibo`, `fechar`, `check`, `alerta`, `info`, `menu`, `mais`, `lixo`, `editar`, `imagem`, `dashboard`, `caixa` (produtos), `camiao` (fornecedores), `pessoas` (clientes), `folha` (campanhas), `cofre` (persistência).
 - **Rodapé:** texto actual + linha "Ayko Sambo · Naira Ornilo · Helder Vuca".
 
 ### 2.8 Fotos de produtos
@@ -181,6 +181,7 @@ Formato único em todo o lado: **4:3**, `object-fit:cover`, mesmo raio, `loading
 | 1 | **V1** Validações de servidor + erros por campo | RN e validações valem 15%; hoje aceita `12345678` como contacto e nomes de 1 letra |
 | 2 | **V2** Anti duplo envio | evita **duas vendas** com um duplo clique em "Confirmar compra" |
 | 3 | **F0** Fornecedores em lista + "Novo" | base do padrão para F1–F3 |
+| 3b | **T0** Ícones (sprite + `.icone`) | 20 min; as páginas F1–F3 já nascem com ícones |
 | 4 | **F1, F2, F3** Campanhas, cultivos, colheitas | requisito do módulo admin (35%) |
 | 5 | **T1** Fundação visual (corrige o hover) | 45 min, defeito visível |
 | 6 | **D1** README · **D3** Deploy systemd | 10% + 5% |
@@ -203,6 +204,7 @@ Não sei que versões exactas o Antigravity te oferece; escolhe pelo **nível**.
 | F0 Fornecedores (padrão lista + novo) | Médio | copia o padrão de produtos |
 | F1–F3 Campanhas, cultivos, colheitas | Médio, **revisão Forte do diff** | CRUD repetitivo, mas com D5, locks e regras de remoção |
 | A10 Dados de demonstração | Médio | tem de passar por `VendaService` |
+| T0 Ícones (sprite) | Médio | mecânico, mas um `id` errado parte todos os botões |
 | T1 Fundação CSS | Médio | |
 | T2 Login/registo | Médio | |
 | T3 Navbar + JS de dropdown | Médio; **Forte se falhar à 2.ª** | muitas partes móveis (JSP condicional, JS, responsivo, acessibilidade) |
@@ -218,13 +220,47 @@ Não sei que versões exactas o Antigravity te oferece; escolhe pelo **nível**.
 Regra: qualquer diff que toque em `service/`, `filter/` ou `servlet/` passa por uma revisão com modelo Forte antes do commit (0.1, ponto 8).
 
 ### 3.1 O que tens de obter (o resto é gerado)
-| O quê | Onde fica | Notas |
-|---|---|---|
-| `Inter-Variable.woff2` (licença OFL), subconjunto latin | `webapp/assets/fonts/` | descarregar da página oficial do Inter (rsms.me/inter) |
-| **15 fotos de produtos** (lista em T5) | `webapp/assets/img/produtos/` | Unsplash, Pexels ou Pixabay (licença livre) |
-| `logo-agrogest.png` (o que já tens) | `webapp/assets/img/` | só para README/manual |
+| O quê                                                   | Onde fica                     | Notas                                                  |
+| ------------------------------------------------------- | ----------------------------- | ------------------------------------------------------ |
+| `Inter-Variable.woff2` (licença OFL), subconjunto latin | `webapp/assets/fonts/`        | descarregar da página oficial do Inter (rsms.me/inter) |
+| **15 fotos de produtos** (lista em T5)                  | `webapp/assets/img/produtos/` | Unsplash, Pexels ou Pixabay (licença livre)            |
+| `logo-agrogest.jpg` (o que já tens)                     | `webapp/assets/img/`          | só para README/manual                                  |
 
-SVG da marca, favicon, placeholder de produto e ícones são gerados pelo agente (T1, T3, T5). PNGs do favicon exportam-se com `rsvg-convert` (`sudo apt install librsvg2-bin`).
+**Já feitos (entregues no chat):** `logo-marca.svg`, `logo-marca-branca.svg`, `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `produto-placeholder.svg` → `webapp/assets/img/`.
+
+**Ícones: descarregar do Lucide** (lucide.dev, licença ISC; botão *Download SVG* de cada um) para `webapp/assets/icons/`. Mapeamento (confirma o nome no site, alguns foram renomeados):
+
+Atualmente estao em assets/, mover para pasta correcta na execusao de alguma tarefa relacionada com isso.
+
+| Ficheiro                     | Categoria    | Produto de demo       | Unidade | Preço (MT) | Stock |
+| ---------------------------- | ------------ | --------------------- | ------- | ---------- | ----- |
+| `milho.jpg`                  | SEMENTE      | Semente de milho      | kg      | 95         | 500   |
+| `feijao.jpg`                 | SEMENTE      | Semente Feijão nhemba | kg      | 320        | 400   |
+| `adubo-saco.jpg`             | FERTILIZANTE | Adubo NPK 50 kg       | saco    | 1 450      | 50    |
+| `fertilizante-granulado.jpg` | FERTILIZANTE | Ureia granulada       | saco    | 1 800      | 40    |
+| `trator.jpg`                 | MAQUINARIA   | Trator 60 CV          | unidade | 1 250 000  | 2     |
+| `pulverizador.jpg`           | MAQUINARIA   | Pulverizador costal   | unidade | 4 500      | 10    |
+| `enxada.jpg`                 | FERRAMENTA   | Enxada                | unidade | 450        | 80    |
+| `regador.jpg`                | FERRAMENTA   | Regador 10 L          | unidade | 350        | 40    |
+**Fornecedores de demo (3, como no enunciado).** A D13 obriga a que o tipo do fornecedor seja compatível com a categoria:
+
+- **Sementes do Sul, Lda**, tipo SEMENTES: milho e feijão.
+- **AgroNutri, Lda**, tipo FERTILIZANTES: adubo e ureia.
+- **MaqAgro, Lda**, tipo MAQUINARIA: trator, pulverizador, enxada e regador, porque FERRAMENTA usa fornecedor MAQUINARIA.
+
+| Nosso nome     | Lucide           | Nosso nome  | Lucide             |
+| -------------- | ---------------- | ----------- | ------------------ |
+| `utilizador`   | `user`           | `lixo`      | `trash-2`          |
+| `carrinho`     | `shopping-cart`  | `editar`    | `pencil`           |
+| `seta-baixo`   | `chevron-down`   | `imagem`    | `image`            |
+| `seta-direita` | `arrow-right`    | `dashboard` | `layout-dashboard` |
+| `sair`         | `log-out`        | `caixa`     | `package`          |
+| `recibo`       | `receipt`        | `camiao`    | `truck`            |
+| `fechar`       | `x`              | `pessoas`   | `users`            |
+| `check`        | `check`          | `folha`     | `leaf`             |
+| `alerta`       | `triangle-alert` | `cofre`     | `hard-drive`       |
+| `info`         | `info`           | `mais`      | `plus`             |
+| `menu`         | `menu`           |             |                    |
 
 ---
 
@@ -289,8 +325,20 @@ SVG da marca, favicon, placeholder de produto e ícones são gerados pelo agente
 ### F0 · Fornecedores no padrão lista + "Novo" (código da Naira)
 **Modelo:** Médio.
 **Enviar:** `AdminProdutoServlet.java`, `views/admin/produtos/lista.jsp` e `form.jsp`, `AdminFornecedorServlet.java`, `views/admin/fornecedores/*.jsp`, `estilo.css`.
-**Fazer:** copiar o padrão de produtos. `GET /admin/fornecedores` → `lista.jsp` (cabeçalho de página com "+ Novo fornecedor" à direita, tabela, remover por ícone); `GET /admin/fornecedores/novo` → `form.jsp` (cartão centrado, 2 colunas, `tipo` em `<select>`, `provincia` em `<select>` das 11 províncias, contacto com `inputmode="tel"`, botões Cancelar/Guardar); `POST /admin/fornecedores` cria → redirect + `flashOk`; erro → forward ao form com os valores mantidos e `erroCampo`. Este é o padrão de F1–F3.
+**Fazer:** copiar o padrão de produtos. `GET /admin/fornecedores` → `lista.jsp` (cabeçalho de página com "+ Novo fornecedor" à direita, tabela, «Remover» em texto por agora: passa a ícone na T0); `GET /admin/fornecedores/novo` → `form.jsp` (cartão centrado, 2 colunas, `tipo` em `<select>`, `provincia` em `<select>` das 11 províncias, contacto com `inputmode="tel"`, botões Cancelar/Guardar); `POST /admin/fornecedores` cria → redirect + `flashOk`; erro → forward ao form com os valores mantidos e `erroCampo`. Este é o padrão de F1–F3.
 **Pronto quando:** não há formulário dentro da lista; "+ Novo fornecedor" abre o formulário; Cancelar volta à lista; remover fornecedor com produtos continua recusado.
+
+### T0 · Ícones (sprite) — logo a seguir à F0, antes de F1–F3
+**Modelo:** Médio.
+**Pré-requisito:** os SVG do Lucide descarregados para `src/main/webapp/assets/icons/` (tabela da secção 3.1), com o nome original do Lucide (`trash-2.svg`, `plus.svg`, …).
+**Enviar:** `topo.jspf`, `estilo.css`, a lista de ficheiros de `assets/icons/` e um deles como exemplo (`user.svg`).
+**Fazer:**
+1. Com um script descartável (fora do repositório), gerar `WEB-INF/jspf/icons.jspf`: um `<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">` com um `<symbol id="i-{nome nosso}" viewBox="0 0 24 24">` por ícone (conteúdo interior do ficheiro Lucide, sem o `<svg>` exterior), pelo mapeamento da 3.1 (`trash-2.svg` → `i-lixo`, `plus.svg` → `i-mais`, …). Ícone em falta → avisar, não inventar.
+2. No `topo.jspf`, logo a seguir a `<body>`: `<%@ include file="/WEB-INF/jspf/icons.jspf" %>` (directiva; não é scriptlet).
+3. CSS: `.icone { width:1.25em; height:1.25em; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-.2em; }` e `.btn-icone { min-width:44px; padding:8px; }`.
+4. Uso nos JSP: `<svg class="icone" aria-hidden="true"><use href="#i-lixo"/></svg>`. Botão só-ícone: `<button class="btn-perigo btn-icone" aria-label="Remover" title="Remover">…</button>`. Botão com texto: ícone antes do texto (o `.btn` já tem `gap`).
+5. Aplicar já nas páginas da F0: "+ Novo fornecedor" com `mais`, "Remover" com `lixo`.
+**Pronto quando:** o ícone aparece com a cor do texto e **acompanha o hover** do botão; não há pedidos de rede extra; nenhuma página dá erro de JSP; botões só-ícone têm `aria-label`.
 
 ### F1 · Campanhas — `/admin/campanhas/*`
 **Modelo:** Médio, com revisão Forte do diff. **Pré-requisitos:** V1, V2, F0.
@@ -321,7 +369,7 @@ SVG da marca, favicon, placeholder de produto e ícones são gerados pelo agente
 2. `AuthFilter`: tornar `/assets/*` público (mesmo mecanismo que `/css/*`).
 3. `topo.jspf` (`<head>`): `<link rel="icon" type="image/svg+xml" href="<c:url value='/assets/img/favicon.svg'/>">`, `favicon-32.png`, `apple-touch-icon.png`, `<meta name="theme-color" content="#14301d">`, confirmar `viewport`.
 4. `rodape.jspf`: acrescentar "Ayko Sambo · Naira Ornilo · Helder Vuca" por baixo do texto actual.
-5. Criar em `src/main/webapp/assets/img/` (SVG desenhados à mão, `viewBox="0 0 64 64"`, a partir do logo anexado): `logo-marca.svg` (anel de engrenagem cinzento ~`#7b7f84`, anel interior verde ~`#3f8f46`, folha verde ~`#5aae4f`), `logo-marca-branca.svg` (tudo `#ffffff`), `favicon.svg` (marca branca sobre quadrado arredondado `#14301d`), e exportar `favicon-32.png` e `apple-touch-icon.png` (180×180), p. ex. `rsvg-convert -w 32 favicon.svg > favicon-32.png` (pacote `librsvg2-bin`).
+5. **Os SVG e PNG da marca já estão feitos** (não desenhar): copiar para `src/main/webapp/assets/img/` os ficheiros `logo-marca.svg`, `logo-marca-branca.svg`, `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png` e `produto-placeholder.svg` que o utilizador fornece. Só ligá-los (`<link rel="icon">`, marca no topo, etc.).
 6. Copiar o PNG original para `assets/img/logo-agrogest.png`.
 7. Inter self-hosted: `@font-face` para `assets/fonts/Inter-Variable.woff2` (`font-display:swap`) com o fallback do `DESIGN.md`.
 8. **Componentes de CSS novos** (secção 2): `.pagina-topo`, `.abas`, `.badge.ok/.off/.aviso`, `.campo-erro` e `.invalido`, `.chips` (radio como chip), `.toast`/`.avisos`, `dialog`, `.produto-foto`/`.produto-mini`, `.cartao-link` (cartão clicável com elevação), filete em gradiente na barra, `.conteudo` único centrado (sem margens por página). Corrigir: `a.btn*` sem sublinhado, `button` sempre com classe, `.btn-perigo` com texto branco.
@@ -340,7 +388,7 @@ SVG da marca, favicon, placeholder de produto e ícones são gerados pelo agente
 **Modelo:** Médio (sobe para Forte se falhar à 2.ª tentativa).
 **Enviar:** `estilo.css`, `topo.jspf`, `rodape.jspf`, `SessaoUtil.java`, `Carrinho.java`, `LogoutServlet.java`, `DESIGN.md`.
 **Fazer:**
-1. Criar `WEB-INF/jspf/icons.jspf` (sprite `<svg style="display:none"><symbol id="i-…">`) com os ícones da secção 2.7, traço 2 px, `currentColor`. Incluir no `topo.jspf` com `<%@ include file="/WEB-INF/jspf/icons.jspf" %>` (directiva, não é scriptlet).
+1. **(Já feito na T0: confirmar que o sprite existe e só usar os ícones.)** Referência: `WEB-INF/jspf/icons.jspf` (sprite `<svg style="display:none"><symbol id="i-…">`) a partir dos SVG do **Lucide** que o utilizador pôs em `assets/icons/` (ver 3.1): para cada ficheiro, `<symbol id="i-{nome}" viewBox="0 0 24 24">` com o conteúdo interior, `stroke="currentColor"`, `fill="none"`, traço 2 px. **Não desenhar ícones à mão.** O `id` usa o nome da secção 2.7 (ex.: `i-lixo` ← `trash-2.svg`). Incluir no `topo.jspf` com `<%@ include file="/WEB-INF/jspf/icons.jspf" %>` (directiva, não é scriptlet).
 2. Criar `src/main/webapp/assets/js/app.js`: dropdowns (clique/toque, Esc, clique fora, um aberto de cada vez, `aria-expanded`) e hambúrguer. Carregar com `<script defer src="<c:url value='/assets/js/app.js'/>">`.
 3. **Cliente** (secção 2.3): grelha `1fr auto 1fr`. Esquerda: menu do utilizador. Centro: marca (SVG branco + "AgroGest" em texto) a ligar a `/`. Direita: ícone carrinho → `/carrinho` com badge `${empty sessionScope.carrinho ? 0 : sessionScope.carrinho.totalItens}` e `aria-label="Carrinho, n itens"`. **Remover** o link "Catálogo".
 4. **Admin** (`sessionScope.utilizador.admin`): 2 linhas. Linha 1: menu do utilizador à esquerda + marca centrada. Linha 2: navegação centrada com Dashboard e os três dropdowns da secção 2.3; link activo sublinhado `accent` (usar `requestScope['jakarta.servlet.forward.servlet_path']`). Abaixo de 640 px a linha 2 colapsa num hambúrguer.
@@ -372,7 +420,7 @@ SVG da marca, favicon, placeholder de produto e ícones são gerados pelo agente
 4. **Fotos — formato único:**
    - `.produto-foto { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:12px 12px 0 0; background:var(--primary-tint); }`; miniatura de admin `.produto-mini { width:48px; height:48px; object-fit:cover; border-radius:8px; }`. Atributos `width`/`height` e `loading="lazy"`.
    - `fotoUrl` pode ser caminho local (`/assets/img/produtos/milho.jpg`, que se escreve com `<c:url>`) ou URL `https://…`. No JSP: `<c:choose>` com `fn:startsWith(p.fotoUrl,'/')`.
-   - Foto vazia ou que falha (`error`, tratado no `app.js`) → `assets/img/produto-placeholder.svg` (folha sobre fundo `primary-tint`, desenhada pelo agente).
+   - Foto vazia ou que falha (`error`, tratado no `app.js`) → `assets/img/produto-placeholder.svg` (já feito).
 5. **Imagens a descarregar** (**offline, recomendado**; a rede da defesa pode falhar). Fontes de licença livre: Unsplash, Pexels, Pixabay. Guardar o autor em `assets/img/produtos/CREDITOS.txt`. Nomes em minúsculas, sem acentos:
 
    | Ficheiro | Pesquisar (inglês) |
