@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="<c:url value='/css/estilo.css'/>">
 </head>
 <body>
+<%@ include file="/WEB-INF/jspf/icons.jspf" %>
 <c:set var="u" value="${sessionScope.utilizador}"/>
 <header class="barra nao-imprimir">
   <a class="marca" href="<c:url value='/'/>">AgroGest</a>

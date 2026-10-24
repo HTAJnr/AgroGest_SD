@@ -25,6 +25,12 @@
   - `views/admin/fornecedores/lista.jsp`: remoção do formulário embutido; adição de cabeçalho `.pagina-topo` com botão "+ Novo fornecedor" e botão de remoção por ícone SVG (`.btn-icone`).
   - `views/admin/fornecedores/form.jsp`: criação de página com cartão centrado (`.form-centrado`), grelha a 2 colunas (`.form-grelha`), selects para tipo e província (11 províncias de Moçambique), `inputmode="tel"` no contacto, token anti duplo envio `_t` e botões Cancelar/Guardar.
   - `css/estilo.css`: introdução das classes de suporte `.pagina-topo`, `.form-centrado`, `.form-grelha`, `.campo-cheio`, `.form-acoes`, `.btn-icone` e estilos base padronizados para `.btn`, `.btn-sec` e `.btn-perigo`.
+- **T0 · Ícones (sprite SVG inline e organização de assets):**
+  - Migração de todos os recursos da pasta raiz `assets/` para a estrutura padronizada da webapp (`src/main/webapp/assets/icons/`, `src/main/webapp/assets/img/` e `src/main/webapp/assets/img/produtos/`).
+  - Geração de `src/main/webapp/WEB-INF/jspf/icons.jspf` com sprite SVG (`<symbol id="i-{nome}" viewBox="0 0 24 24">`) cobrindo todos os ícones da secção 3.1 do plano (incluindo `i-sair`, `i-cofre` e ações de persistência).
+  - Inclusão estática do sprite em `src/main/webapp/WEB-INF/jspf/topo.jspf` logo após o `<body>` via `<%@ include file="/WEB-INF/jspf/icons.jspf" %>`.
+  - Estilização em `src/main/webapp/css/estilo.css` para a classe `.icone` (`1.25em`, `stroke: currentColor`, `fill: none`), `.btn-icone` com dimensões mínimas de 44x44px e padding de 8px, e botões base (`.btn`, `.btn-sec`, `.btn-perigo`) com `inline-flex` e `gap: 8px` entre ícone e texto.
+  - Atualização de `views/admin/fornecedores/lista.jsp` aplicando o ícone `i-mais` no link "+ Novo fornecedor" e o ícone `i-lixo` no botão de remoção `.btn-icone`.
 
 # Por fazer
 
