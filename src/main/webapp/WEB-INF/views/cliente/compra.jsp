@@ -42,6 +42,7 @@
 
 <div class="acoes">
   <form method="post" action="<c:url value='/compra'/>">
+    <input type="hidden" name="_t" value="${tokenForm}">
     <button class="btn" type="submit">Confirmar compra</button>
   </form>
   <a class="btn btn-sec" href="<c:url value='/carrinho'/>">Voltar ao carrinho</a>

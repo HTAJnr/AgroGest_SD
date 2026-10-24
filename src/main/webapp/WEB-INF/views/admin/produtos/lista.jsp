@@ -22,11 +22,13 @@
           <td>${p.validadeFmt}</td>
           <td class="acoes">
             <form method="post" action="<c:url value='/admin/produtos/repor'/>">
+              <input type="hidden" name="_t" value="${tokenForm}">
               <input type="hidden" name="id" value="${p.id}">
               <input type="text" name="quantidade" size="4" placeholder="qtd">
               <button class="btn-sec">Repor</button>
             </form>
             <form method="post" action="<c:url value='/admin/produtos/remover'/>">
+              <input type="hidden" name="_t" value="${tokenForm}">
               <input type="hidden" name="id" value="${p.id}">
               <button class="btn-perigo">Remover</button>
             </form>

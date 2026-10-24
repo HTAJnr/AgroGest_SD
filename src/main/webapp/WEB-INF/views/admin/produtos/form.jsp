@@ -1,6 +1,7 @@
 <h1>Novo produto</h1>
 
 <form class="form" method="post" action="<c:url value='/admin/produtos/criar'/>">
+  <input type="hidden" name="_t" value="${tokenForm}">
 
   <label for="nome">Nome</label>
   <input type="text" id="nome" name="nome" value="<c:out value='${param.nome}'/>">

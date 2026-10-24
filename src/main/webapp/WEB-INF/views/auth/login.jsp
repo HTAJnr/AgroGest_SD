@@ -1,6 +1,7 @@
 <h1>Entrar</h1>
 
 <form class="form" method="post" action="<c:url value='/login'/>">
+  <input type="hidden" name="_t" value="${tokenForm}">
   <label for="email">Email</label>
   <input type="email" id="email" name="email" value="<c:out value='${param.email}'/>" autofocus>
 

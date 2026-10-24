@@ -1,6 +1,7 @@
 <h1>Criar conta</h1>
 
 <form class="form" method="post" action="<c:url value='/registo'/>">
+  <input type="hidden" name="_t" value="${tokenForm}">
   <label for="nome">Nome</label>
   <input type="text" id="nome" name="nome" value="<c:out value='${param.nome}'/>" autofocus>
 

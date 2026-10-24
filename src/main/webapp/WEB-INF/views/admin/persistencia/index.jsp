@@ -15,11 +15,13 @@
 
     <div class="acoes">
       <form method="post" action="<c:url value='/admin/persistencia/gravar'/>">
+        <input type="hidden" name="_t" value="${tokenForm}">
         <button type="submit" class="btn">Gravar agora</button>
       </form>
 
       <form method="post" action="<c:url value='/admin/persistencia/eliminar'/>"
             onsubmit="return confirm('Eliminar o ficheiro de dados? Os dados em memória não são apagados.');">
+        <input type="hidden" name="_t" value="${tokenForm}">
         <button type="submit" class="btn btn-perigo">Eliminar ficheiro</button>
       </form>
     </div>

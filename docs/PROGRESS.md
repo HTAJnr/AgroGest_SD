@@ -9,10 +9,19 @@
   - Regra D15: Validade futura na criação e método auxiliar `Produto.isExpirado()`.
   - Integração nos serviços (`UtilizadorService`, `FornecedorService`, `ProdutoService`) e nos servlets (`RegistoServlet`, `AdminFornecedorServlet`, `AdminProdutoServlet`) via `SessaoUtil.erro(...)`.
   - Testes unitários JUnit para `Validacao`, `ProdutoService` e `FornecedorService` adicionados e aprovados.
+- **V2 · Anti duplo envio (servidor):**
+  - Criação de `mz.agrogest.filter.TokenFormFilter` (`/*`, executado após o `AuthFilter`).
+  - Geração de UUID em requisições GET, armazenamento em conjunto de sessão com limite FIFO de 50 tokens e disponibilização via request attribute `tokenForm`.
+  - Consumo atómico do parâmetro `_t` em requisições POST com sincronização na coleção da sessão (`synchronized boolean consumir(String token)`).
+  - Bloqueio de duplo envio: pedidos POST concorrentes ou repetidos com o mesmo token deixam passar apenas um, redirecionando os restantes com `flashErro` sem executar o servlet.
+  - Exceção explícita de validação para `/logout` e passagem direta de recursos estáticos (`/css/*`, `/assets/*`).
+  - Garantia de UTF-8 no filtro antes da leitura de parâmetros para proteger acentuação ("João Açúcar").
+  - Geração de token de substituição no request após consumo em POST para suportar formulários reenviados após forward em erros de validação.
+  - Adição de `<input type="hidden" name="_t" value="${tokenForm}">` em todos os formulários POST das JSPs.
+  - Suite de testes unitários `TokenFormFilterTest` com testes de concorrência multithread, FIFO, isolamento de abas e ciclo de vida HTTP do filtro.
 
 # Por fazer
 
-- **V2:** Anti duplo envio (`TokenFormFilter`, token `_t`).
 - **F0:** Fornecedores no padrão lista + "Novo".
 - **F1:** Campanhas (`/admin/campanhas/*`).
 - **F2:** Cultivos (`/admin/cultivos/*`).
@@ -29,3 +38,4 @@
 - **D16:** Lista fechada de unidades (`Validacao.UNIDADES`).
 - **D17:** Validações de telefone MZ (prefixos 82-88 e fixo 2) com formatação normalizada `+258 XX XXX XXXX`.
 - **D18:** Atributo `erroCampo` colocado na requisição pelos servlets em caso de erro para suporte a feedback por campo.
+- **D19:** Mecanismo anti duplo envio com token de formulário `_t` gerado por GET, armazenado na sessão (máx. 50, FIFO) e consumido atomicamente no POST via `TokenFormFilter`.

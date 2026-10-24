@@ -43,6 +43,7 @@
                 <c:out value="${p.unidade}"/>
               </p>
               <form method="post" action="<c:url value='/carrinho/adicionar'/>">
+                <input type="hidden" name="_t" value="${tokenForm}">
                 <input type="hidden" name="produtoId" value="${p.id}">
                 <input type="hidden" name="voltar" value="catalogo">
                 <input type="hidden" name="categoria" value="<c:out value='${param.categoria}'/>">

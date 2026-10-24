@@ -4,6 +4,7 @@
 <div class="cartao">
     <h2>Novo fornecedor</h2>
     <form class="form" method="post" action="<c:url value='/admin/fornecedores/criar'/>">
+        <input type="hidden" name="_t" value="${tokenForm}">
         <label for="nome">Nome</label>
         <input type="text" id="nome" name="nome" value="<c:out value='${param.nome}'/>">
 
@@ -53,6 +54,7 @@
                                 <td class="acoes nao-imprimir">
                                     <form method="post" action="<c:url value='/admin/fornecedores/remover'/>"
                                           onsubmit="return confirm('Remover este fornecedor?');">
+                                        <input type="hidden" name="_t" value="${tokenForm}">
                                         <input type="hidden" name="id" value="${f.id}">
                                         <button type="submit" class="btn btn-perigo">Remover</button>
                                     </form>

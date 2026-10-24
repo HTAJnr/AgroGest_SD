@@ -31,6 +31,7 @@
               </td>
               <td>
                 <form method="post" action="<c:url value='/carrinho/atualizar'/>">
+                  <input type="hidden" name="_t" value="${tokenForm}">
                   <input type="hidden" name="produtoId" value="${l.produto.id}">
                   <input type="text" name="quantidade" size="5" inputmode="decimal" aria-label="Quantidade"
                          value="<fmt:formatNumber value='${l.quantidade}' maxFractionDigits='2' groupingUsed='false'/>">
@@ -41,6 +42,7 @@
               <td class="num"><fmt:formatNumber value="${l.subtotal}" type="number" minFractionDigits="2" maxFractionDigits="2"/> MT</td>
               <td>
                 <form method="post" action="<c:url value='/carrinho/remover'/>">
+                  <input type="hidden" name="_t" value="${tokenForm}">
                   <input type="hidden" name="produtoId" value="${l.produto.id}">
                   <button class="btn btn-perigo" type="submit">Remover</button>
                 </form>
@@ -63,6 +65,7 @@
       <a class="btn" href="<c:url value='/compra'/>">Finalizar compra</a>
       <a class="btn btn-sec" href="<c:url value='/catalogo'/>">Continuar a comprar</a>
       <form method="post" action="<c:url value='/carrinho/esvaziar'/>" onsubmit="return confirm('Esvaziar o carrinho?');">
+        <input type="hidden" name="_t" value="${tokenForm}">
         <button class="btn btn-perigo" type="submit">Esvaziar carrinho</button>
       </form>
     </div>
