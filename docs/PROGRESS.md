@@ -27,5 +27,5 @@
 - **D14:** Validações de unicidade executadas dentro do lock global `DataStore.getLock()`.
 - **D15:** Validade no modelo não altera campos nem serialização (`isExpirado()` é getter calculado).
 - **D16:** Lista fechada de unidades (`Validacao.UNIDADES`).
-- **D17:** Validações de telefone MZ (prefixos 82-87 e fixo 2) com formatação normalizada `+258 XX XXX XXXX`.
+- **D17:** Validações de telefone MZ (prefixos 82-88 e fixo 2) com formatação normalizada `+258 XX XXX XXXX`.
 - **D18:** Atributo `erroCampo` colocado na requisição pelos servlets em caso de erro para suporte a feedback por campo.

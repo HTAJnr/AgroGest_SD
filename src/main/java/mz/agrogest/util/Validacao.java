@@ -46,8 +46,8 @@ public final class Validacao {
     private static final Pattern EMAIL_PAT =
             Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$");
 
-    // Telemóvel MZ: 8[2-7] seguido de 7 dígitos (9 dígitos no total)
-    private static final Pattern TELEMOVEL_MZ = Pattern.compile("^8[2-7]\\d{7}$");
+    // Telemóvel MZ: 8[2-8] seguido de 7 dígitos (9 dígitos no total)
+    private static final Pattern TELEMOVEL_MZ = Pattern.compile("^8[2-8]\\d{7}$");
 
     // Fixo MZ: 2 seguido de 7 dígitos (8 dígitos no total)
     private static final Pattern FIXO_MZ = Pattern.compile("^2\\d{7}$");
