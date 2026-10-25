@@ -71,19 +71,27 @@
   var hamburguer = document.getElementById('hamburguer');
   var navAdmin   = document.getElementById('nav-admin');
 
+  function atualizarHamburguer(aberta) {
+    if (!hamburguer || !navAdmin) return;
+    navAdmin.setAttribute('aria-expanded', aberta ? 'true' : 'false');
+    hamburguer.setAttribute('aria-expanded', aberta ? 'true' : 'false');
+    hamburguer.setAttribute('aria-label', aberta ? 'Fechar navegação' : 'Abrir navegação');
+    navAdmin.classList.toggle('nav-aberta', aberta);
+    var use = hamburguer.querySelector('use');
+    if (use) {
+      use.setAttribute('href', aberta ? '#i-fechar' : '#i-menu');
+    }
+  }
+
   if (hamburguer && navAdmin) {
     hamburguer.addEventListener('click', function () {
       var aberta = navAdmin.getAttribute('aria-expanded') === 'true';
-      navAdmin.setAttribute('aria-expanded', aberta ? 'false' : 'true');
-      hamburguer.setAttribute('aria-expanded', aberta ? 'false' : 'true');
-      navAdmin.classList.toggle('nav-aberta', !aberta);
+      atualizarHamburguer(!aberta);
     });
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && navAdmin.getAttribute('aria-expanded') === 'true') {
-        navAdmin.setAttribute('aria-expanded', 'false');
-        hamburguer.setAttribute('aria-expanded', 'false');
-        navAdmin.classList.remove('nav-aberta');
+        atualizarHamburguer(false);
         hamburguer.focus();
       }
     });

@@ -138,6 +138,17 @@
   - `cliente/compra.jsp`: `data-validar novalidate` no formulário de confirmação (garante desactivação do botão no submit).
   - `auth/login.jsp` e `auth/registo.jsp`: `data-validar novalidate` (validação HTML5 no cliente sem round-trip).
   - `servlet/AdminProdutoServlet.java`: envia `unidades` (`Validacao.UNIDADES`) ao request para preencher os chips no formulário.
+- **Polimento visual da Navbar, Feedback de Selecção e Contraste (T3/T4+):**
+  - **Posicionamento do Perfil:** Mudança do menu do utilizador para o lado direito da barra (`.barra-dir`), com a marca à esquerda (`.barra-cliente` e `.barra-admin-linha1` em layout flex `space-between`). Painel dropdown ancorado à direita (`left: auto; right: 0`) para alinhamento natural com o botão e sem overflow da janela.
+  - **Indicador Dourado Activo (`.nav-ativo`):** Borda inferior dourada (`var(--accent)`) estendida a todos os grupos da navegação do administrador:
+    - **Dashboard:** activo em `/admin/dashboard`.
+    - **Gestão ▾:** activo em qualquer rota de gestão (`/admin/produtos`, `/admin/fornecedores`, `/admin/campanhas`, `/admin/cultivos`, `/admin/colheitas`).
+    - **Listagens ▾:** activo em `/admin/listagens/*`.
+    - **Relatórios ▾:** activo em `/admin/relatorios/*`.
+  - **Contraste nos Dropdowns:** Corrigido o conflito CSS onde `.barra a` forçava cor branca sobre fundo branco. Itens de dropdown agora com `color: var(--ink)` e hover `background: var(--primary-tint)` com deslocamento suave para a direita.
+  - **Hambúrguer Responsivo:** Botão `#hamburguer` oculto em desktop e visível apenas em mobile (≤ 640 px), com transição dinâmica entre ícone de menu (`#i-menu`) e ícone de fechar (`#i-fechar`).
+  - **Efeitos de Hover:** Feedback visual claro em botões (`translateY(-1px)` e sombra suave), cartões de grelha e campos de formulário.
+  - **Sprite de Ícones:** Inclusão dos símbolos `i-x`, `i-moon` e `i-sun` no `icons.jspf`.
 
 # Por fazer
 

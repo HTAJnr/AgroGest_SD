@@ -41,55 +41,56 @@
   <c:otherwise>
     <%-- ===================== NAVBAR AUTENTICADA ===================== --%>
     <c:set var="sp" value="${requestScope['jakarta.servlet.forward.servlet_path']}"/>
+    <c:set var="isGestao" value="${fn:startsWith(sp,'/admin/produtos') or fn:startsWith(sp,'/admin/fornecedores') or fn:startsWith(sp,'/admin/campanhas') or fn:startsWith(sp,'/admin/cultivos') or fn:startsWith(sp,'/admin/colheitas')}"/>
+    <c:set var="isListagens" value="${fn:startsWith(sp,'/admin/listagens')}"/>
+    <c:set var="isRelatorios" value="${fn:startsWith(sp,'/admin/relatorios')}"/>
     <header class="barra nao-imprimir">
       <c:choose>
 
         <%-- ===================== NAVBAR CLIENTE ===================== --%>
         <c:when test="${not u.admin}">
-          <%-- Grelha 1fr auto 1fr: utilizador | marca | carrinho --%>
           <div class="barra-cliente">
 
-            <%-- Coluna esquerda: menu do utilizador --%>
-            <div class="barra-esq">
-              <button class="btn-user" data-painel="painel-user-cliente" aria-expanded="false" aria-haspopup="true" aria-controls="painel-user-cliente">
-                <svg class="icone" aria-hidden="true"><use href="#i-utilizador"/></svg>
-                <span class="btn-user-nome"><c:out value="${fn:split(u.nome, ' ')[0]}"/></span>
-                <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
-              </button>
-              <div id="painel-user-cliente" class="dropdown-painel" hidden>
-                <div class="dropdown-cab">
-                  <div class="user-avatar"><c:out value="${fn:toUpperCase(fn:substring(u.nome,0,1))}"/></div>
-                  <div class="user-info">
-                    <strong><c:out value="${u.nome}"/></strong>
-                    <span class="muted" style="font-size:0.85rem"><c:out value="${u.email}"/></span>
-                    <span class="badge">Cliente</span>
-                  </div>
-                </div>
-                <hr class="dropdown-sep">
-                <a href="<c:url value='/minhas-compras'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
-                  Minhas compras
-                </a>
-                <hr class="dropdown-sep">
-                <a href="<c:url value='/logout'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-sair"/></svg>
-                  Sair
-                </a>
-              </div>
-            </div>
-
-            <%-- Coluna central: marca --%>
-            <a class="marca marca-central" href="<c:url value='/'/>">
+            <%-- Marca à esquerda --%>
+            <a class="marca" href="<c:url value='/'/>">
               <img class="marca-icone" src="<c:url value='/assets/img/logo-marca-branca.svg'/>" alt="" width="28" height="28">
               <span>AgroGest</span>
             </a>
 
-            <%-- Coluna direita: carrinho --%>
+            <%-- Coluna direita: carrinho + menu do utilizador --%>
             <div class="barra-dir">
               <a href="<c:url value='/carrinho'/>" class="btn-carrinho" aria-label="Carrinho, ${empty sessionScope.carrinho ? 0 : sessionScope.carrinho.totalItens} itens">
                 <svg class="icone" aria-hidden="true"><use href="#i-carrinho"/></svg>
                 <span class="carrinho-badge">${empty sessionScope.carrinho ? 0 : sessionScope.carrinho.totalItens}</span>
               </a>
+
+              <div class="user-menu-wrapper">
+                <button class="btn-user" data-painel="painel-user-cliente" aria-expanded="false" aria-haspopup="true" aria-controls="painel-user-cliente">
+                  <svg class="icone" aria-hidden="true"><use href="#i-utilizador"/></svg>
+                  <span class="btn-user-nome"><c:out value="${fn:split(u.nome, ' ')[0]}"/></span>
+                  <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
+                </button>
+                <div id="painel-user-cliente" class="dropdown-painel" hidden>
+                  <div class="dropdown-cab">
+                    <div class="user-avatar"><c:out value="${fn:toUpperCase(fn:substring(u.nome,0,1))}"/></div>
+                    <div class="user-info">
+                      <strong><c:out value="${u.nome}"/></strong>
+                      <span class="muted" style="font-size:0.85rem"><c:out value="${u.email}"/></span>
+                      <span class="badge">Cliente</span>
+                    </div>
+                  </div>
+                  <hr class="dropdown-sep">
+                  <a href="<c:url value='/minhas-compras'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
+                    Minhas compras
+                  </a>
+                  <hr class="dropdown-sep">
+                  <a href="<c:url value='/logout'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-sair"/></svg>
+                    Sair
+                  </a>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -97,46 +98,46 @@
 
         <%-- ===================== NAVBAR ADMIN ===================== --%>
         <c:otherwise>
-          <%-- Linha 1: utilizador à esquerda + marca centrada + hambúrguer à direita --%>
+          <%-- Linha 1: marca à esquerda + utilizador (+ hambúrguer) à direita --%>
           <div class="barra-admin-linha1">
 
-            <%-- Utilizador --%>
-            <div class="barra-esq">
-              <button class="btn-user" data-painel="painel-user-admin" aria-expanded="false" aria-haspopup="true" aria-controls="painel-user-admin">
-                <svg class="icone" aria-hidden="true"><use href="#i-utilizador"/></svg>
-                <span class="btn-user-nome"><c:out value="${fn:split(u.nome, ' ')[0]}"/></span>
-                <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
-              </button>
-              <div id="painel-user-admin" class="dropdown-painel" hidden>
-                <div class="dropdown-cab">
-                  <div class="user-avatar"><c:out value="${fn:toUpperCase(fn:substring(u.nome,0,1))}"/></div>
-                  <div class="user-info">
-                    <strong><c:out value="${u.nome}"/></strong>
-                    <span class="muted" style="font-size:0.85rem"><c:out value="${u.email}"/></span>
-                    <span class="badge">Administrador</span>
-                  </div>
-                </div>
-                <hr class="dropdown-sep">
-                <a href="<c:url value='/admin/persistencia'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-cofre"/></svg>
-                  Persistência
-                </a>
-                <hr class="dropdown-sep">
-                <a href="<c:url value='/logout'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-sair"/></svg>
-                  Sair
-                </a>
-              </div>
-            </div>
-
-            <%-- Marca centrada --%>
-            <a class="marca marca-central" href="<c:url value='/'/>">
+            <%-- Marca à esquerda --%>
+            <a class="marca" href="<c:url value='/'/>">
               <img class="marca-icone" src="<c:url value='/assets/img/logo-marca-branca.svg'/>" alt="" width="28" height="28">
               <span>AgroGest</span>
             </a>
 
-            <%-- Hambúrguer (só mobile) --%>
+            <%-- Coluna direita: utilizador + hambúrguer (mobile) --%>
             <div class="barra-dir">
+              <div class="user-menu-wrapper">
+                <button class="btn-user" data-painel="painel-user-admin" aria-expanded="false" aria-haspopup="true" aria-controls="painel-user-admin">
+                  <svg class="icone" aria-hidden="true"><use href="#i-utilizador"/></svg>
+                  <span class="btn-user-nome"><c:out value="${fn:split(u.nome, ' ')[0]}"/></span>
+                  <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
+                </button>
+                <div id="painel-user-admin" class="dropdown-painel" hidden>
+                  <div class="dropdown-cab">
+                    <div class="user-avatar"><c:out value="${fn:toUpperCase(fn:substring(u.nome,0,1))}"/></div>
+                    <div class="user-info">
+                      <strong><c:out value="${u.nome}"/></strong>
+                      <span class="muted" style="font-size:0.85rem"><c:out value="${u.email}"/></span>
+                      <span class="badge">Administrador</span>
+                    </div>
+                  </div>
+                  <hr class="dropdown-sep">
+                  <a href="<c:url value='/admin/persistencia'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-cofre"/></svg>
+                    Persistência
+                  </a>
+                  <hr class="dropdown-sep">
+                  <a href="<c:url value='/logout'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-sair"/></svg>
+                    Sair
+                  </a>
+                </div>
+              </div>
+
+              <%-- Hambúrguer (só mobile) --%>
               <button id="hamburguer" class="btn-user" aria-label="Abrir navegação" aria-expanded="false" aria-controls="nav-admin">
                 <svg class="icone" aria-hidden="true"><use href="#i-menu"/></svg>
               </button>
@@ -154,7 +155,7 @@
 
             <%-- Gestão ▾ --%>
             <div class="nav-grupo">
-              <button class="nav-link nav-dropdown-btn" data-painel="painel-gestao" aria-expanded="false" aria-haspopup="true">
+              <button class="nav-link nav-dropdown-btn${isGestao ? ' nav-ativo' : ''}" data-painel="painel-gestao" aria-expanded="false" aria-haspopup="true">
                 Gestão
                 <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
               </button>
@@ -184,7 +185,7 @@
 
             <%-- Listagens ▾ --%>
             <div class="nav-grupo">
-              <button class="nav-link nav-dropdown-btn" data-painel="painel-listagens" aria-expanded="false" aria-haspopup="true">
+              <button class="nav-link nav-dropdown-btn${isListagens ? ' nav-ativo' : ''}" data-painel="painel-listagens" aria-expanded="false" aria-haspopup="true">
                 Listagens
                 <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
               </button>
@@ -214,7 +215,7 @@
 
             <%-- Relatórios ▾ --%>
             <div class="nav-grupo">
-              <button class="nav-link nav-dropdown-btn" data-painel="painel-relatorios" aria-expanded="false" aria-haspopup="true">
+              <button class="nav-link nav-dropdown-btn${isRelatorios ? ' nav-ativo' : ''}" data-painel="painel-relatorios" aria-expanded="false" aria-haspopup="true">
                 Relatórios
                 <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
               </button>
