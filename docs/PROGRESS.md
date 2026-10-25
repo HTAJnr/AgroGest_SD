@@ -90,6 +90,22 @@
   - `WEB-INF/jspf/rodape.jspf`: inclusão da linha com os nomes dos autores ("Ayko Sambo · Naira Ornilo · Helder Vuca");
   - Disponibilização dos ficheiros de imagem e fonte em `assets/`: `Inter-Variable.woff2`, `logo-agrogest.png`, `favicon-32.png` e `apple-touch-icon.png`.
 
+- **T3 · Navbar (cliente e admin), menu do utilizador e dropdowns:**
+  - Criação de `src/main/webapp/assets/js/app.js`: gestão de dropdowns (clique/toque, Esc, clique fora, um painel aberto de cada vez, `aria-expanded`) e hambúrguer mobile (toggle `nav-aberta`, Esc, foco devolvido ao botão).
+  - `WEB-INF/jspf/topo.jspf` — barra autenticada completamente reescrita em dois ramos (`u.admin`):
+    - **Navbar cliente:** grelha `1fr auto 1fr` (`.barra-cliente`); coluna esquerda = menu do utilizador (botão ícone + primeiro nome + seta); coluna central = marca branca ligada a `/`; coluna direita = ícone carrinho com badge numérico `${carrinho.totalItens}` e `aria-label`; link \"Catálogo\" removido; link \"Minhas compras\" movido para o painel do utilizador.
+    - **Navbar admin:** linha 1 em grelha `1fr auto 1fr` (utilizador | marca | hambúrguer); linha 2 (`#nav-admin`) com Dashboard e três grupos de dropdown: **Gestão ▾** (Produtos, Fornecedores, Campanhas, Cultivos, Colheitas), **Listagens ▾** (Produtos, Fornecedores, Clientes, Armazém, Compras detalhadas), **Relatórios ▾** (Clientes, Que compraram, Mais assíduos, Sem compras); link activo com classe `.nav-ativo` calculada por `requestScope['jakarta.servlet.forward.servlet_path']`.
+    - **Menu do utilizador (ambos):** painel com cabeçalho (avatar circular com inicial via `fn:toUpperCase(fn:substring(...))`, nome, email `.muted`, badge perfil), itens específicos por perfil (cliente → Minhas compras; admin → Persistência), separador e **Sair** (neutro com ícone `i-sair`).
+    - `<script defer>` para `app.js` carregado logo antes do `<main>`.
+  - `css/estilo.css` — novas classes de navbar:
+    - `.barra-cliente`, `.barra-admin-linha1` (grelha `1fr auto 1fr`), `.barra-esq`, `.barra-dir`, `.marca-central`.
+    - `.btn-user` (botão utilizador, 44 px, hover transparente), `.btn-user-nome` (overflow ellipsis).
+    - `.btn-carrinho` (ícone 44 px com badge `.carrinho-badge` absoluto em accent).
+    - `.nav-admin`, `.nav-grupo`, `.nav-link`, `.nav-dropdown-btn`, `.nav-ativo` (sublinhado accent).
+    - `.dropdown-painel` (posição absoluta, sombra overlay, animação `dropdown-in` 150 ms).
+    - `.dropdown-cab`, `.user-avatar`, `.user-info`, `.dropdown-sep`, `.dropdown-item` (hover `primary-tint`).
+    - Regras mobile `@media (max-width: 640px)`: `.nav-admin` escondida até `.nav-aberta`; painéis dropdown em static dentro da barra; painel do utilizador em largura total.
+
 - **T2 · Login e registo sem barra de navegação:**
   - `WEB-INF/jspf/topo.jspf`: reestruturado com `<c:choose>` — quando `sessionScope.utilizador` está vazio (`empty u`), o `<body>` recebe a classe `pagina-auth`, não renderiza a `.barra`, abre um `<main class="auth">` com a marca (logo SVG colorido + texto "Agro"/"Gest" + subtítulo "Sistema de Gestão Agrícola") e os alertas flash; quando autenticado, mantém o comportamento anterior (`.barra` + `<main class="conteudo">`).
   - `WEB-INF/views/auth/login.jsp`: refatorado em cartão `.auth-cartao`; formulário `.form-auth`; erro inline com ícone `#i-alerta` e `role="alert"` dentro do cartão; email mantido após erro via `${not empty email ? email : param.email}`; `autocomplete="email"` / `"current-password"`; `autofocus`; botão 100 % de largura.
@@ -99,7 +115,6 @@
 
 # Por fazer
 
-- **T3:** Navbar (cliente e admin), menu do utilizador e ícones.
 - **T4–T8:** Toasts, feedback no campo, catálogo, fotos, administração e auditoria de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
