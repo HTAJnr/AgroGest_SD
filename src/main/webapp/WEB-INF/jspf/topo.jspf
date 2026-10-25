@@ -8,14 +8,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14301d">
   <title><c:out value="${empty titulo ? 'AgroGest' : titulo}"/> | AgroGest</title>
+  <link rel="icon" type="image/svg+xml" href="<c:url value='/assets/img/favicon.svg'/>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<c:url value='/assets/img/favicon-32.png'/>">
+  <link rel="apple-touch-icon" sizes="180x180" href="<c:url value='/assets/img/apple-touch-icon.png'/>">
   <link rel="stylesheet" href="<c:url value='/css/estilo.css'/>">
 </head>
 <body>
 <%@ include file="/WEB-INF/jspf/icons.jspf" %>
 <c:set var="u" value="${sessionScope.utilizador}"/>
 <header class="barra nao-imprimir">
-  <a class="marca" href="<c:url value='/'/>">AgroGest</a>
+  <a class="marca" href="<c:url value='/'/>"><img class="marca-icone" src="<c:url value='/assets/img/logo-marca-branca.svg'/>" alt="" width="28" height="28"><span>AgroGest</span></a>
   <nav class="menu">
     <c:choose>
       <c:when test="${empty u}">

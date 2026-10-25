@@ -78,11 +78,23 @@
     - `views/admin/colheitas/escolher-cultivo.jsp`: listagem de cultivos com dados de cultura, variedade, campanha associada com badge Aberta/Fechada, hectares, plantio e botão "Ver colheitas".
     - `views/admin/colheitas/index.jsp`: cabeçalho `.pagina-topo` com detalhes do cultivo e da campanha, tabela responsiva com valor total calculado pelo modelo (`${c.valorTotal}` formatado em MT com `<fmt:formatNumber>` sem cálculo no JSP), e formulário em cartão centrado (`.form-centrado`, `.form-grelha`) desativado quando a campanha estiver fechada.
   - Suite de testes unitários `ColheitaServiceTest` com 9 testes cobrindo registo válido (cálculo de 3200 kg × 22 MT/kg = 70 400,00 MT), validação de campos (data nula, kg inválido, precoKg inválido), bloqueio por cultivo inexistente, bloqueio por campanha fechada (D5), cópia defensiva em `listar`, filtragem por cultivo e consulta por ID.
+- **T1 · Fundação visual:**
+  - `css/estilo.css`: definição de bloco `:root` com os tokens de cor, raio, sombras e animações do `DESIGN.md` (§6), preservando variáveis legadas para compatibilidade;
+  - Configuração de tipografia self-hosted via `@font-face` para `assets/fonts/Inter-Variable.woff2` e `assets/fonts/Inter-Regular.woff2` (`font-display: swap`) com fallback do sistema;
+  - Correção e padronização dos botões `.btn`, `.btn-sec` e `.btn-perigo` (com texto branco, alvos >= 44px, estados hover, active a 98%, disabled e foco visível com anel `accent`), eliminando a sobreposição de cores em hover;
+  - Remoção de sublinhado em links com classe `.btn` (`a.btn*`) e definição de estilo padrão para botões sem classe;
+  - Adição de novos componentes de layout e UI: `.pagina-topo`, `.abas`, badges semânticos (`.badge.ok`, `.badge.off`, `.badge.aviso`), feedback de formulário (`.campo-erro`, `.invalido`), seleção por chips (`.chips`), contentor de toasts/avisos (`.toast`, `.avisos`), diálogo nativo (`dialog`), fotos e miniaturas padronizadas 4:3 (`.produto-foto`, `.produto-mini`), cartões clicáveis com elevação (`.cartao-link`), cabeçalho `.barra` com `--bar` e filete inferior em gradiente `primary → accent`, e `.conteudo` único centrado com `max-width: 1100px; margin-inline: auto`;
+  - Regras responsivas `@media (max-width: 640px)`, regras de impressão `@media print` e suporte a `@media (prefers-reduced-motion: reduce)`;
+  - `mz.agrogest.filter.AuthFilter`: liberação da rota `/assets/*` como pública (sem sessão), permitindo carregamento anónimo de fontes, imagens e ícones;
+  - `WEB-INF/jspf/topo.jspf`: adição no `<head>` do favicon SVG, `favicon-32.png`, `apple-touch-icon.png`, `<meta name="theme-color" content="#14301d">` e ícone SVG da marca branca no cabeçalho;
+  - `WEB-INF/jspf/rodape.jspf`: inclusão da linha com os nomes dos autores ("Ayko Sambo · Naira Ornilo · Helder Vuca");
+  - Disponibilização dos ficheiros de imagem e fonte em `assets/`: `Inter-Variable.woff2`, `logo-agrogest.png`, `favicon-32.png` e `apple-touch-icon.png`.
 
 # Por fazer
 
-- **T1:** Fundação visual (CSS, variáveis, hover, botões, libertação de `/assets/*` no `AuthFilter` e `@font-face` para a fonte Inter em `assets/fonts/`).
-- **T2–T8:** Interface, navegação, toasts, catálogo, fotos e páginas administrativas.
+- **T2:** Login e registo sem navbar.
+- **T3:** Navbar (cliente e admin), menu do utilizador e ícones.
+- **T4–T8:** Toasts, feedback no campo, catálogo, fotos, administração e auditoria de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
 # Decisões tomadas

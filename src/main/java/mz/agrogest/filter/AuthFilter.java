@@ -71,7 +71,8 @@ public class AuthFilter implements Filter {
                 || p.equals("/login")
                 || p.equals("/registo")
                 || p.equals("/logout")
-                || p.startsWith("/css/");
+                || p.startsWith("/css/")
+                || p.startsWith("/assets/");
     }
 
     private static boolean eAdmin(String p) {

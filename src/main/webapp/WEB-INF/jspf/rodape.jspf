@@ -1,4 +1,7 @@
 </main>
-<footer class="rodape nao-imprimir">AgroGest · ISCTEM · Engenharia Informática · Sistemas Distribuídos 2026</footer>
+<footer class="rodape nao-imprimir">
+  <div>AgroGest · ISCTEM · Engenharia Informática · Sistemas Distribuídos 2026</div>
+  <div class="autores">Ayko Sambo · Naira Ornilo · Hélder Vuca Júnior</div>
+</footer>
 </body>
 </html>
