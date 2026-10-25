@@ -707,12 +707,13 @@ body.pagina-auth {
               box-shadow var(--motion-fast) var(--motion-ease),
               border-color var(--motion-fast) var(--motion-ease);
 }
-.grelha .cartao:hover {
+.grelha .cartao.cartao-link:hover,
+.cartao.clicavel:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(20, 48, 29, 0.12);
   border-color: #bcd0bb;
 }
-.cartao img {
+.cartao img:not(.produto-foto):not(.produto-mini) {
   max-width: 100%;
   height: 160px;
   object-fit: cover;
@@ -743,6 +744,7 @@ body.pagina-auth {
 /* Fotos de produtos */
 .produto-foto {
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 12px 12px 0 0;
@@ -757,6 +759,218 @@ body.pagina-auth {
   background: var(--primary-tint);
   display: inline-block;
   vertical-align: middle;
+}
+
+/* Faixa de abertura (Hero) no Catálogo */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 100%);
+  color: #ffffff;
+  border-radius: var(--radius-card);
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(20, 48, 29, 0.15);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 220px;
+  height: 220px;
+  background-image: url('../assets/img/logo-marca-branca.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.08;
+  pointer-events: none;
+}
+.hero-conteudo {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+}
+.hero h1 {
+  color: #ffffff;
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.hero p {
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Chips de Categoria no Catálogo */
+.categoria-chips {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 4px 2px 8px 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.categoria-chips .btn,
+.categoria-chips .btn-sec {
+  flex-shrink: 0;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 14px;
+  min-height: 40px;
+}
+
+/* Cartão de Produto no Catálogo */
+.cartao-produto {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.cartao-produto:hover {
+  transform: none;
+  box-shadow: var(--shadow-card);
+  border-color: var(--border);
+}
+.produto-corpo {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+.produto-titulo {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+  color: var(--ink);
+}
+.produto-desc {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.produto-meta {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.produto-meta span {
+  color: var(--ink);
+  font-weight: 500;
+}
+.produto-preco-stock {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.produto-preco {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.produto-unidade {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.produto-stock {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+.produto-form-add {
+  margin: 0;
+  padding-top: 4px;
+}
+.produto-add-acoes {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.produto-qtd-input {
+  width: 60px;
+  min-height: 44px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: 600 15px/1.25 inherit;
+  font-variant-numeric: tabular-nums;
+  padding: 6px;
+  box-sizing: border-box;
+}
+.produto-qtd-input:focus {
+  border-color: var(--primary);
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.produto-qtd-input:disabled {
+  background: var(--bg);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+.produto-btn-add {
+  flex: 1;
+  min-height: 44px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+/* Estado Vazio */
+.estado-vazio {
+  text-align: center;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+.estado-vazio-icone {
+  width: 48px;
+  height: 48px;
+  color: var(--muted);
+  stroke-width: 1.5;
+  margin-bottom: 4px;
+}
+.estado-vazio h2 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--ink);
+}
+.estado-vazio p {
+  margin: 0 0 12px 0;
+  max-width: 420px;
+  color: var(--muted);
 }
 
 /* Diálogos nativos */
@@ -1345,6 +1559,24 @@ dialog::backdrop {
   .marca-auth-icone {
     width: 44px;
     height: 44px;
+  }
+  .hero {
+    padding: 20px 16px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 22px;
+  }
+  .hero p {
+    font-size: 14px;
+  }
+  .hero::after {
+    width: 150px;
+    height: 150px;
+    right: -20px;
+  }
+  .cartao.cartao-produto {
+    padding: 0;
   }
 }
 

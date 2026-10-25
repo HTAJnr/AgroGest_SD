@@ -151,10 +151,29 @@
   - **Hambúrguer Responsivo:** Botão `#hamburguer` oculto em desktop e visível apenas em mobile (≤ 640 px), com transição dinâmica entre ícone de menu (`#i-menu`) e ícone de fechar (`#i-fechar`).
   - **Efeitos de Hover:** Feedback visual claro em botões (`translateY(-1px)` e sombra suave), cartões de grelha e campos de formulário.
   - **Sprite de Ícones:** Inclusão dos símbolos `i-x`, `i-moon` e `i-sun` no `icons.jspf`.
+- **T5 · Catálogo (home do cliente) e fotos de produtos:**
+  - `views/cliente/catalogo.jsp`:
+    - Adição da faixa de abertura (*hero*) com saudação personalizada "Olá, {primeiro nome}" e subtítulo, estilizada com gradiente floresta (`primary-hover → primary`) e marca de água da folha do logótipo a ~8% de opacidade.
+    - Filtro de categorias em chips (`.categoria-chips`) com botões semânticos (`.btn`/`.btn-sec`), marcação acessível `aria-current="page"` no filtro ativo e rolagem horizontal suave em ecrãs móveis sem quebra de linha.
+    - Cartões de produtos (`.cartao.cartao-produto`) estruturados em grelha responsiva (`.grelha`) de 1 coluna em mobile (360 px) e colunas automáticas em desktop.
+    - Formato padronizado de fotografia 4:3 (`.produto-foto`) com cantos superiores arredondados (12 px), suporte a URLs relativos locais (`<c:url>`) e externos (`https://`), carregamento preguiçoso (`loading="lazy"`), dimensões explícitas `width="400" height="300"` e fallback para `produto-placeholder.svg`.
+    - Apresentação completa dos dados do produto: nome, badge de categoria, descrição condensada, fornecedor associado em `<c:out>`, data de validade com badge `Expirado` (`.badge.aviso`) quando aplicável, preço por unidade formatado com `fmt:formatNumber` e stock disponível formatado ou badge `Indisponível` (`.badge.off`).
+    - Formulário de adição ao carrinho (`/carrinho/adicionar`) com token anti duplo envio `_t`, preservação do filtro de categoria atual, quantidade editável e botão com ícone SVG `#i-carrinho` (desativado quando stock for zero).
+    - Remoção de efeito hover/elevação nos cartões de produtos (em cumprimento estrito de D2.1 e T5: sem hover nos cartões não clicáveis).
+    - Estado vazio estilizado (`.estado-vazio`) com ícone `#i-caixa`, mensagem contextual e botão de ação "Limpar filtro".
+  - `css/estilo.css`:
+    - Adição de regras para `.hero`, `.hero-conteudo`, marca de água com `logo-marca-branca.svg` a 8% de opacidade e adaptação responsiva para telas estreitas (≤ 640 px).
+    - Criação de `.categoria-chips` com scroll horizontal sem quebra de linha (`overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;`).
+    - Criação de `.cartao-produto`, `.produto-corpo`, `.produto-titulo`, `.produto-desc`, `.produto-meta`, `.produto-preco-stock`, `.produto-preco`, `.produto-unidade`, `.produto-stock`, `.produto-form-add`, `.produto-add-acoes`, `.produto-qtd-input` e `.produto-btn-add`.
+    - Ajuste de especificidade para imagens em cartões (`.cartao img:not(.produto-foto):not(.produto-mini)`) garantindo proporção 4:3 estrita para fotos de catálogo sem distorção.
+    - Restrição de hover com elevação apenas a cartões clicáveis (`.cartao-link` / `.cartao.clicavel`), mantendo os cartões de produto estáticos.
+    - Criação de componente `.estado-vazio` e `.estado-vazio-icone`.
+  - `assets/js/app.js`:
+    - Aprimoramento do listener de erro em imagens (`img.produto-foto, img.produto-mini`): suporte robusto a atributo `data-placeholder`, preservação do caminho do contexto da aplicação e verificação preventiva de falha prematura de carregamento (`img.complete && img.naturalWidth === 0`).
 
 # Por fazer
 
-- **T5–T8:** Catálogo e fotos, carrinho/compra/factura, admin (dashboard, listagens, relatórios, produtos, persistência) e auditoria de UI.
+- **T6–T8:** Carrinho/compra/factura, admin (dashboard, listagens, relatórios, produtos, persistência) e auditoria de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
 # Decisões tomadas

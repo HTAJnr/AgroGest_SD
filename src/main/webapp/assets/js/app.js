@@ -519,12 +519,28 @@
   /* ------------------------------------------------------------------ */
 
   document.querySelectorAll('img.produto-foto, img.produto-mini').forEach(function (img) {
-    img.addEventListener('error', function () {
+    function aplicarPlaceholder() {
       /* Evitar loop infinito se o placeholder também falhar */
       if (img.src.indexOf('produto-placeholder') === -1) {
-        img.src = img.src.replace(/\/assets\/img\/produtos\/[^/]+$/, '/assets/img/produto-placeholder.svg');
+        var placeholder = img.getAttribute('data-placeholder');
+        if (!placeholder) {
+          var idx = img.src.indexOf('/assets/img/');
+          if (idx !== -1) {
+            placeholder = img.src.substring(0, idx) + '/assets/img/produto-placeholder.svg';
+          } else {
+            placeholder = '/assets/img/produto-placeholder.svg';
+          }
+        }
+        img.src = placeholder;
       }
-    });
+    }
+
+    img.addEventListener('error', aplicarPlaceholder);
+
+    /* Se a imagem já falhou antes de registar o listener */
+    if (img.complete && img.naturalWidth === 0 && img.src) {
+      aplicarPlaceholder();
+    }
   });
 
   /* ------------------------------------------------------------------ */
