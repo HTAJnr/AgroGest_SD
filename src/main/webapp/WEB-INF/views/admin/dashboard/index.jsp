@@ -1,4 +1,3 @@
-<div class="conteudo">
   <div class="pagina-topo">
     <h1>Dashboard</h1>
   </div>
@@ -51,4 +50,3 @@
     </a>
 
   </div>
-</div>

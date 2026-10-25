@@ -1,4 +1,3 @@
-<div class="conteudo">
   <div class="pagina-topo">
     <h1>Persistência</h1>
   </div>
@@ -9,14 +8,14 @@
 
       <c:choose>
         <c:when test="${existe}">
-          <p class="badge ok" style="display:inline-flex">
+          <p class="badge ok">
             <svg class="icone" aria-hidden="true"><use href="#i-check"/></svg>
             Ficheiro existe
           </p>
           <p class="muted">Tamanho: <c:out value="${tamanhoKb}"/> KB &nbsp;·&nbsp; Última gravação: <c:out value="${modificado}"/>.</p>
         </c:when>
         <c:otherwise>
-          <p class="badge aviso" style="display:inline-flex">
+          <p class="badge aviso">
             <svg class="icone" aria-hidden="true"><use href="#i-alerta"/></svg>
             Ainda não existe ficheiro de dados
           </p>
@@ -25,7 +24,7 @@
       </c:choose>
     </div>
 
-    <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+    <hr class="divisor">
 
     <div class="campo">
       <h3>Gravar dados</h3>
@@ -39,7 +38,7 @@
       </form>
     </div>
 
-    <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+    <hr class="divisor">
 
     <div class="campo">
       <h3>Eliminar ficheiro</h3>
@@ -58,4 +57,3 @@
       </form>
     </div>
   </div>
-</div>

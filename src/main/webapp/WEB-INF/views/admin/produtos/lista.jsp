@@ -1,4 +1,3 @@
-<div class="conteudo">
   <div class="pagina-topo">
     <h1>Produtos</h1>
     <a class="btn" href="<c:url value='/admin/produtos/novo'/>">
@@ -85,7 +84,7 @@
                     <svg class="icone" aria-hidden="true"><use href="#i-mais"/></svg>
                   </button>
                   <%-- Botão Remover com confirmação --%>
-                  <form method="post" action="<c:url value='/admin/produtos/remover'/>" style="display:inline">
+                  <form method="post" action="<c:url value='/admin/produtos/remover'/>" class="form-inline">
                     <input type="hidden" name="_t" value="${tokenForm}">
                     <input type="hidden" name="id" value="${p.id}">
                     <button type="submit" class="btn-perigo btn-icone"
@@ -102,7 +101,6 @@
       </div>
     </c:otherwise>
   </c:choose>
-</div>
 
 <%-- Dialog de reposição de stock --%>
 <dialog id="dlg-repor" aria-labelledby="dlg-repor-titulo">

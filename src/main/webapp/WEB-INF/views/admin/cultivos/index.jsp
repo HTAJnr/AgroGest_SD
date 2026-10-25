@@ -14,9 +14,9 @@
       </c:choose>
     </p>
   </div>
-  <div>
-    <a class="btn-sec" href="<c:url value='/admin/cultivos'/>">
-      <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg> Outra campanha
+  <div class="pagina-acoes">
+    <a class="btn-sec" href="<c:url value='/admin/campanhas'/>">
+      <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg> Voltar às campanhas
     </a>
   </div>
 </div>
@@ -62,7 +62,7 @@
                 </a>
               </td>
               <td class="acoes nao-imprimir">
-                <form method="post" action="<c:url value='/admin/cultivos/remover'/>" style="display:inline;">
+                <form method="post" action="<c:url value='/admin/cultivos/remover'/>" class="form-inline">
                   <input type="hidden" name="_t" value="${tokenForm}">
                   <input type="hidden" name="id" value="${cult.id}">
                   <input type="hidden" name="campanhaId" value="${campanha.id}">
@@ -82,7 +82,7 @@
 
 <c:choose>
   <c:when test="${campanha.aberta}">
-    <div class="cartao form-centrado" style="margin-top: 32px;">
+    <div class="cartao form-centrado espaco-topo">
       <h2>Novo cultivo</h2>
       <form class="form" method="post" action="<c:url value='/admin/cultivos'/>"
             data-validar novalidate>
@@ -129,9 +129,9 @@
     </div>
   </c:when>
   <c:otherwise>
-    <div class="cartao form-centrado" style="margin-top: 32px;">
+    <div class="cartao form-centrado espaco-topo">
       <h2>Novo cultivo</h2>
-      <div class="alerta erro" style="margin-bottom: 16px;">
+      <div class="alerta erro espaco-baixo-sm">
         Esta campanha está <strong>fechada</strong>. Não é possível registar novos cultivos.
       </div>
       <form class="form" onsubmit="return false;">

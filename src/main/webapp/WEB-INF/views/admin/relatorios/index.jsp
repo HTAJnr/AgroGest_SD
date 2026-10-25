@@ -1,4 +1,3 @@
-<div class="conteudo">
   <div class="pagina-topo">
     <h1>Relatórios</h1>
   </div>
@@ -109,5 +108,3 @@
     </c:otherwise>
 
   </c:choose>
-
-</div>

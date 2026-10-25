@@ -1,4 +1,3 @@
-<div class="conteudo">
   <div class="pagina-topo">
     <h1>Listagens</h1>
   </div>
@@ -261,5 +260,3 @@
 
     </c:choose>
   </c:if>
-
-</div>

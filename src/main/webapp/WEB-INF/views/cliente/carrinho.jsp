@@ -47,7 +47,7 @@
               </td>
               <td class="num" data-label="Pre&ccedil;o">
                 <fmt:formatNumber value="${l.produto.preco}" type="number" minFractionDigits="2" maxFractionDigits="2"/> MT
-                <span class="muted" style="font-size:0.875rem">/ <c:out value="${l.produto.unidade}"/></span>
+                <span class="unidade-texto">/ <c:out value="${l.produto.unidade}"/></span>
               </td>
               <td data-label="Quantidade">
                 <form method="post" action="<c:url value='/carrinho/atualizar'/>" class="form-linha-qtd">

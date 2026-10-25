@@ -9,25 +9,25 @@
   </div>
 </c:forEach>
 
-<div class="cartao" style="margin-bottom: 24px;">
-  <h2 style="font-size: 1.1rem; margin-bottom: 12px;">Dados de factura&ccedil;&atilde;o e entrega</h2>
+<div class="cartao espaco-baixo">
+  <h2 class="subtitulo-cartao">Dados de fatura&ccedil;&atilde;o e entrega</h2>
   <div class="grelha-dados">
     <div>
-      <span class="muted" style="font-size: 0.875rem;">Cliente</span>
+      <span class="rotulo-dado">Cliente</span>
       <div><strong><c:out value="${u.nome}"/></strong></div>
     </div>
     <div>
-      <span class="muted" style="font-size: 0.875rem;">Email</span>
+      <span class="rotulo-dado">Email</span>
       <div><c:out value="${u.email}"/></div>
     </div>
     <c:if test="${not empty u.telefone}">
       <div>
-        <span class="muted" style="font-size: 0.875rem;">Contacto</span>
+        <span class="rotulo-dado">Contacto</span>
         <div><c:out value="${u.telefone}"/></div>
       </div>
     </c:if>
     <div>
-      <span class="muted" style="font-size: 0.875rem;">Endere&ccedil;o de entrega</span>
+      <span class="rotulo-dado">Endere&ccedil;o de entrega</span>
       <div><c:out value="${u.endereco}"/></div>
     </div>
   </div>
@@ -51,7 +51,7 @@
           </td>
           <td class="num" data-label="Pre&ccedil;o">
             <fmt:formatNumber value="${l.produto.preco}" type="number" minFractionDigits="2" maxFractionDigits="2"/> MT
-            <span class="muted" style="font-size: 0.85em;">/ <c:out value="${l.produto.unidade}"/></span>
+            <span class="unidade-texto">/ <c:out value="${l.produto.unidade}"/></span>
           </td>
           <td class="num" data-label="Quantidade">
             <fmt:formatNumber value="${l.quantidade}" type="number" maxFractionDigits="2"/>
@@ -80,12 +80,12 @@
   </table>
 </div>
 
-<p class="muted" style="margin-top: 16px;">
+<p class="muted espaco-topo-sm">
   <svg class="icone" aria-hidden="true"><use href="#i-info"/></svg>
   O valor final &eacute; calculado ao confirmar, com o stock e os pre&ccedil;os desse momento.
 </p>
 
-<div class="acoes form-acoes" style="margin-top: 24px;">
+<div class="acoes form-acoes espaco-baixo">
   <form method="post" action="<c:url value='/compra'/>" data-validar novalidate>
     <input type="hidden" name="_t" value="${tokenForm}">
     <button class="btn" type="submit" id="btn-confirmar-compra" data-submetendo="A confirmar compra…">

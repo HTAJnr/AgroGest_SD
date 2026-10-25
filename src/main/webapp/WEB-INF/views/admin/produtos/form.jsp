@@ -1,4 +1,3 @@
-<div class="conteudo">
   <div class="pagina-topo">
     <h1>Novo produto</h1>
     <a class="btn-sec" href="<c:url value='/admin/produtos'/>">← Voltar</a>
@@ -104,13 +103,13 @@
             </label>
           </c:forEach>
         </div>
-        <p class="muted" style="margin-top:6px;font-size:14px">Ou introduza um URL directamente:</p>
+        <p class="muted galeria-legenda">Ou introduza um URL directamente:</p>
       </c:if>
       <input type="text" id="fotoUrl" name="fotoUrl"
              value="<c:out value='${param.fotoUrl}'/>"
              placeholder="https://… ou /assets/img/produtos/milho.jpg"
              class="${erroCampo == 'fotoUrl' ? 'invalido' : ''}"
-             ${not empty fotosLocais ? 'style="display:none"' : ''}>
+             ${not empty fotosLocais ? 'hidden' : ''}>
     </div>
 
     <div class="campo">
@@ -131,4 +130,3 @@
 
   </div>
 </form>
-</div>

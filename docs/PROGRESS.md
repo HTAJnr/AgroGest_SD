@@ -237,9 +237,23 @@
   - `WEB-INF/jspf/topo.jspf`: adição de `<link rel="preload">` para `Inter-Variable.woff2` no `<head>`, acelerando o primeiro desenho do texto sem bloqueio ou flash de fontes;
   - `filter/AuthFilter.java`: adição de cabeçalho HTTP `Cache-Control: public, max-age=86400` para recursos estáticos públicos (`/assets/*` e `/css/*`), evitando reenvios contínuos e agilizando a navegação entre ecrãs.
 
+- **T8 · Auditoria final de UI:**
+  - **Eliminação de estilos inline (`style=`):** Remoção de todos os estilos inline em JSPs e fragmentos (`icons.jspf`, `topo.jspf`, `persistencia/index.jsp`, `produtos/form.jsp`, `produtos/lista.jsp`, `campanhas/lista.jsp`, `cultivos/index.jsp`, `colheitas/index.jsp`, `carrinho.jsp`, `compra.jsp`), substituídos por classes reutilizáveis no CSS (`.sprite-icons`, `.user-email`, `.form-inline`, `.espaco-topo`, `.espaco-topo-sm`, `.espaco-baixo`, `.espaco-baixo-sm`, `.divisor`, `.galeria-legenda`, `.subtitulo-cartao`, `.rotulo-dado`);
+  - **Padronização de cores via variáveis CSS (`var(--...)`):** Eliminação de todas as cores hexadecimais manuais fora do bloco `:root` em `css/estilo.css`, com introdução dos tokens de variáveis `--border-hover`, `--card-border-hover`, `--aviso-bg`, `--aviso-text`, `--aviso-border`, `--print-th` e `--print-tfoot`, e uso de `var(--on-primary)` e `var(--bg)` para manter conformidade WCAG AA;
+  - **Estrutura uniforme de layout ("Um único `.conteudo`"):** Remoção de contentores aninhados redundantes `<div class="conteudo">` em 6 páginas (`dashboard`, `listagens`, `relatorios`, `produtos/lista`, `produtos/form`, `persistencia`), garantindo que apenas o `<main class="conteudo">` centraliza e aplica os espaçamentos consistentes;
+  - **Fluxo com botão "Voltar" (Campanha → Cultivo → Colheita):** Inclusão de botões de navegação clara de retorno em `cultivos/index.jsp` ("← Voltar às campanhas") e `colheitas/index.jsp` ("← Voltar aos cultivos");
+  - **Conformidade do checklist global:**
+    - 100% das tabelas envolvidas em `<div class="tabela-scroll">`;
+    - Alinhamento e formatação tabular com classe `.num` em todos os valores numéricos, preços e quantidades;
+    - Confirmação de remoções/exclusões com atributo acessível `data-confirm` em todas as ações destrutivas (fornecedores, produtos, campanhas, cultivos, carrinho e persistência);
+    - Badges semânticos padronizados: `.badge.ok` para "Aberta", `.badge.off` para "Fechada" e "Esgotado", `.badge.aviso` para "Expirado";
+    - Mesmo formato de datas com `<input type="date">` nativo nos formulários;
+    - Foco visível acessível em todos os elementos interactivos via `:focus-visible`;
+    - Ecrãs responsivos adaptados para 360 px sem overflow horizontal;
+  - **Auditoria de segurança e padrões por `grep`:** Validação limpa sem referências a `javax`, sem scriptlets Java (`<%`), sem caminhos absolutos `/agrogest/`, sem taglibs obsoletas `java.sun.com` e sem `style=` inline.
+
 # Por fazer
 
-- **T8:** Auditoria final de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
 # Decisões tomadas

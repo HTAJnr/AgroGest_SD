@@ -18,9 +18,9 @@
       Plantio: <c:out value="${cultivo.plantioFmt}"/>
     </p>
   </div>
-  <div>
-    <a class="btn-sec" href="<c:url value='/admin/colheitas'/>">
-      <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg> Outro cultivo
+  <div class="pagina-acoes">
+    <a class="btn-sec" href="<c:url value='/admin/cultivos'><c:param name='campanhaId' value='${cultivo.campanhaId}'/></c:url>">
+      <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg> Voltar aos cultivos
     </a>
   </div>
 </div>
@@ -63,7 +63,7 @@
 
 <c:choose>
   <c:when test="${campanha != null and campanha.aberta}">
-    <div class="cartao form-centrado" style="margin-top: 32px;">
+    <div class="cartao form-centrado espaco-topo">
       <h2>Registar colheita</h2>
       <form class="form" method="post" action="<c:url value='/admin/colheitas'/>"
             data-validar novalidate>
@@ -104,9 +104,9 @@
     </div>
   </c:when>
   <c:otherwise>
-    <div class="cartao form-centrado" style="margin-top: 32px;">
+    <div class="cartao form-centrado espaco-topo">
       <h2>Registar colheita</h2>
-      <div class="alerta erro" style="margin-bottom: 16px;">
+      <div class="alerta erro espaco-baixo-sm">
         A campanha deste cultivo está <strong>fechada</strong>. Não é possível registar novas colheitas.
       </div>
       <form class="form" onsubmit="return false;">

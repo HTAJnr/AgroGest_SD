@@ -42,21 +42,21 @@
               <td class="acoes nao-imprimir">
                 <c:choose>
                   <c:when test="${c.aberta}">
-                    <form method="post" action="<c:url value='/admin/campanhas/fechar'/>" style="display:inline;">
+                    <form method="post" action="<c:url value='/admin/campanhas/fechar'/>" class="form-inline">
                       <input type="hidden" name="_t" value="${tokenForm}">
                       <input type="hidden" name="id" value="${c.id}">
                       <button type="submit" class="btn-sec" title="Fechar campanha">Fechar</button>
                     </form>
                   </c:when>
                   <c:otherwise>
-                    <form method="post" action="<c:url value='/admin/campanhas/reabrir'/>" style="display:inline;">
+                    <form method="post" action="<c:url value='/admin/campanhas/reabrir'/>" class="form-inline">
                       <input type="hidden" name="_t" value="${tokenForm}">
                       <input type="hidden" name="id" value="${c.id}">
                       <button type="submit" class="btn-sec" title="Reabrir campanha">Reabrir</button>
                     </form>
                   </c:otherwise>
                 </c:choose>
-                <form method="post" action="<c:url value='/admin/campanhas/remover'/>" style="display:inline;">
+                <form method="post" action="<c:url value='/admin/campanhas/remover'/>" class="form-inline">
                   <input type="hidden" name="_t" value="${tokenForm}">
                   <input type="hidden" name="id" value="${c.id}">
                   <button type="submit" class="btn-perigo btn-icone"
