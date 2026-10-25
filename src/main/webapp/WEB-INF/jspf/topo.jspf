@@ -98,8 +98,7 @@
 
         <%-- ===================== NAVBAR ADMIN ===================== --%>
         <c:otherwise>
-          <%-- Linha 1: marca à esquerda + utilizador (+ hambúrguer) à direita --%>
-          <div class="barra-admin-linha1">
+          <div class="barra-admin">
 
             <%-- Marca à esquerda --%>
             <a class="marca" href="<c:url value='/'/>">
@@ -107,7 +106,103 @@
               <span>AgroGest</span>
             </a>
 
-            <%-- Coluna direita: utilizador + hambúrguer (mobile) --%>
+            <%-- Navegação central (mesma linha no desktop) --%>
+            <nav id="nav-admin" class="nav-admin" aria-expanded="false">
+              <%-- Dashboard --%>
+              <a href="<c:url value='/admin/dashboard'/>"
+                 class="nav-link${fn:startsWith(sp,'/admin/dashboard') ? ' nav-ativo' : ''}">
+                <svg class="icone" aria-hidden="true"><use href="#i-dashboard"/></svg>
+                Dashboard
+              </a>
+
+              <%-- Gestão ▾ --%>
+              <div class="nav-grupo">
+                <button class="nav-link nav-dropdown-btn${isGestao ? ' nav-ativo' : ''}" data-painel="painel-gestao" aria-expanded="false" aria-haspopup="true">
+                  Gestão
+                  <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
+                </button>
+                <div id="painel-gestao" class="dropdown-painel" hidden>
+                  <a href="<c:url value='/admin/produtos'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-caixa"/></svg>
+                    Produtos
+                  </a>
+                  <a href="<c:url value='/admin/fornecedores'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-camiao"/></svg>
+                    Fornecedores
+                  </a>
+                  <a href="<c:url value='/admin/campanhas'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg>
+                    Campanhas
+                  </a>
+                  <a href="<c:url value='/admin/cultivos'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg>
+                    Cultivos
+                  </a>
+                  <a href="<c:url value='/admin/colheitas'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
+                    Colheitas
+                  </a>
+                </div>
+              </div>
+
+              <%-- Listagens ▾ --%>
+              <div class="nav-grupo">
+                <button class="nav-link nav-dropdown-btn${isListagens ? ' nav-ativo' : ''}" data-painel="painel-listagens" aria-expanded="false" aria-haspopup="true">
+                  Listagens
+                  <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
+                </button>
+                <div id="painel-listagens" class="dropdown-painel" hidden>
+                  <a href="<c:url value='/admin/listagens/produtos'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-caixa"/></svg>
+                    Produtos
+                  </a>
+                  <a href="<c:url value='/admin/listagens/fornecedores'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-camiao"/></svg>
+                    Fornecedores
+                  </a>
+                  <a href="<c:url value='/admin/listagens/clientes'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-pessoas"/></svg>
+                    Clientes
+                  </a>
+                  <a href="<c:url value='/admin/listagens/armazem'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-caixa"/></svg>
+                    Armazém
+                  </a>
+                  <a href="<c:url value='/admin/listagens/compras'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
+                    Compras detalhadas
+                  </a>
+                </div>
+              </div>
+
+              <%-- Relatórios ▾ --%>
+              <div class="nav-grupo">
+                <button class="nav-link nav-dropdown-btn${isRelatorios ? ' nav-ativo' : ''}" data-painel="painel-relatorios" aria-expanded="false" aria-haspopup="true">
+                  Relatórios
+                  <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
+                </button>
+                <div id="painel-relatorios" class="dropdown-painel" hidden>
+                  <a href="<c:url value='/admin/relatorios/clientes'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-pessoas"/></svg>
+                    Clientes
+                  </a>
+                  <a href="<c:url value='/admin/relatorios/compraram'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
+                    Que compraram
+                  </a>
+                  <a href="<c:url value='/admin/relatorios/assiduos'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-seta-direita"/></svg>
+                    Mais assíduos
+                  </a>
+                  <a href="<c:url value='/admin/relatorios/sem-compras'/>" class="dropdown-item">
+                    <svg class="icone" aria-hidden="true"><use href="#i-alerta"/></svg>
+                    Sem compras
+                  </a>
+                </div>
+              </div>
+            </nav>
+
+            <%-- Direita: utilizador + hambúrguer (mobile) --%>
             <div class="barra-dir">
               <div class="user-menu-wrapper">
                 <button class="btn-user" data-painel="painel-user-admin" aria-expanded="false" aria-haspopup="true" aria-controls="painel-user-admin">
@@ -142,103 +237,8 @@
                 <svg class="icone" aria-hidden="true"><use href="#i-menu"/></svg>
               </button>
             </div>
+
           </div>
-
-          <%-- Linha 2: navegação centrada --%>
-          <nav id="nav-admin" class="nav-admin" aria-expanded="false">
-            <%-- Dashboard --%>
-            <a href="<c:url value='/admin/dashboard'/>"
-               class="nav-link${fn:startsWith(sp,'/admin/dashboard') ? ' nav-ativo' : ''}">
-              <svg class="icone" aria-hidden="true"><use href="#i-dashboard"/></svg>
-              Dashboard
-            </a>
-
-            <%-- Gestão ▾ --%>
-            <div class="nav-grupo">
-              <button class="nav-link nav-dropdown-btn${isGestao ? ' nav-ativo' : ''}" data-painel="painel-gestao" aria-expanded="false" aria-haspopup="true">
-                Gestão
-                <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
-              </button>
-              <div id="painel-gestao" class="dropdown-painel" hidden>
-                <a href="<c:url value='/admin/produtos'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-caixa"/></svg>
-                  Produtos
-                </a>
-                <a href="<c:url value='/admin/fornecedores'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-camiao"/></svg>
-                  Fornecedores
-                </a>
-                <a href="<c:url value='/admin/campanhas'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg>
-                  Campanhas
-                </a>
-                <a href="<c:url value='/admin/cultivos'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-folha"/></svg>
-                  Cultivos
-                </a>
-                <a href="<c:url value='/admin/colheitas'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
-                  Colheitas
-                </a>
-              </div>
-            </div>
-
-            <%-- Listagens ▾ --%>
-            <div class="nav-grupo">
-              <button class="nav-link nav-dropdown-btn${isListagens ? ' nav-ativo' : ''}" data-painel="painel-listagens" aria-expanded="false" aria-haspopup="true">
-                Listagens
-                <svg class="icone" aria-hidden="true"><use href="#i-seta-baixo"/></svg>
-              </button>
-              <div id="painel-listagens" class="dropdown-painel" hidden>
-                <a href="<c:url value='/admin/listagens/produtos'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-caixa"/></svg>
-                  Produtos
-                </a>
-                <a href="<c:url value='/admin/listagens/fornecedores'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-camiao"/></svg>
-                  Fornecedores
-                </a>
-                <a href="<c:url value='/admin/listagens/clientes'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-pessoas"/></svg>
-                  Clientes
-                </a>
-                <a href="<c:url value='/admin/listagens/armazem'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-caixa"/></svg>
-                  Armazém
-                </a>
-                <a href="<c:url value='/admin/listagens/compras'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
-                  Compras detalhadas
-                </a>
-              </div>
-            </div>
-
-            <%-- Relatórios ▾ --%>
-            <div class="nav-grupo">
-              <button class="nav-link nav-dropdown-btn${isRelatorios ? ' nav-ativo' : ''}" data-painel="painel-relatorios" aria-expanded="false" aria-haspopup="true">
-                Relatórios
-                <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
-              </button>
-              <div id="painel-relatorios" class="dropdown-painel" hidden>
-                <a href="<c:url value='/admin/relatorios/clientes'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-pessoas"/></svg>
-                  Clientes
-                </a>
-                <a href="<c:url value='/admin/relatorios/compraram'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-recibo"/></svg>
-                  Que compraram
-                </a>
-                <a href="<c:url value='/admin/relatorios/assiduos'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-seta-direita"/></svg>
-                  Mais assíduos
-                </a>
-                <a href="<c:url value='/admin/relatorios/sem-compras'/>" class="dropdown-item">
-                  <svg class="icone" aria-hidden="true"><use href="#i-alerta"/></svg>
-                  Sem compras
-                </a>
-              </div>
-            </div>
-          </nav>
         </c:otherwise>
 
       </c:choose>

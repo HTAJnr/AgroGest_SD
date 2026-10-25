@@ -1,7 +1,11 @@
 </main>
 <footer class="rodape nao-imprimir">
   <div>AgroGest · ISCTEM · Engenharia Informática · Sistemas Distribuídos 2026</div>
-  <div class="autores">Ayko Sambo · Naira Ornilo · Hélder Vuca Júnior</div>
+  <div class="autores">
+    <a href="https://github.com/CS15A" target="_blank" rel="noopener noreferrer">Ayko Sambo</a> ·
+    <a href="https://github.com/nairaornilo" target="_blank" rel="noopener noreferrer">Naira Ornilo</a> ·
+    <a href="https://github.com/HTAJnr/" target="_blank" rel="noopener noreferrer">Hélder Vuca Júnior</a>
+  </div>
 </footer>
 </body>
 </html>

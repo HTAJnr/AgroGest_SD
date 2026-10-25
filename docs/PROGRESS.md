@@ -139,12 +139,14 @@
   - `auth/login.jsp` e `auth/registo.jsp`: `data-validar novalidate` (validação HTML5 no cliente sem round-trip).
   - `servlet/AdminProdutoServlet.java`: envia `unidades` (`Validacao.UNIDADES`) ao request para preencher os chips no formulário.
 - **Polimento visual da Navbar, Feedback de Selecção e Contraste (T3/T4+):**
-  - **Posicionamento do Perfil:** Mudança do menu do utilizador para o lado direito da barra (`.barra-dir`), com a marca à esquerda (`.barra-cliente` e `.barra-admin-linha1` em layout flex `space-between`). Painel dropdown ancorado à direita (`left: auto; right: 0`) para alinhamento natural com o botão e sem overflow da janela.
-  - **Indicador Dourado Activo (`.nav-ativo`):** Borda inferior dourada (`var(--accent)`) estendida a todos os grupos da navegação do administrador:
+  - **Posicionamento do Perfil:** Mudança do menu do utilizador para o lado direito da barra (`.barra-dir`), com a marca à esquerda (`.barra-cliente` e `.barra-admin` em layout flex `space-between`). Painel dropdown ancorado à direita (`left: auto; right: 0`) para alinhamento natural com o botão e sem overflow da janela.
+  - **Barra de Navegação em Linha Única no Desktop:** No admin, o logo à esquerda, os botões centrais e o utilizador à direita ficam na mesma linha e altura (`min-height: 40px`, texto padronizado a `14px` em todos os botões e itens de topo).
+  - **Indicador Dourado Activo (`.nav-ativo`):** Borda inferior dourada (`var(--accent)`) com contorno arredondado nos cantos (`border-radius: var(--radius)`) estendida a todos os grupos da navegação do administrador:
     - **Dashboard:** activo em `/admin/dashboard`.
     - **Gestão ▾:** activo em qualquer rota de gestão (`/admin/produtos`, `/admin/fornecedores`, `/admin/campanhas`, `/admin/cultivos`, `/admin/colheitas`).
     - **Listagens ▾:** activo em `/admin/listagens/*`.
     - **Relatórios ▾:** activo em `/admin/relatorios/*`.
+  - **Links do Rodapé para GitHubs:** Nomes dos três autores em `rodape.jspf` transformados em links externos (`target="_blank" rel="noopener noreferrer"`) para os respetivos perfis do GitHub (Ayko, Naira, Hélder), sem sublinhado por omissão e com sublinhado/cor primária ativos apenas no hover.
   - **Contraste nos Dropdowns:** Corrigido o conflito CSS onde `.barra a` forçava cor branca sobre fundo branco. Itens de dropdown agora com `color: var(--ink)` e hover `background: var(--primary-tint)` com deslocamento suave para a direita.
   - **Hambúrguer Responsivo:** Botão `#hamburguer` oculto em desktop e visível apenas em mobile (≤ 640 px), com transição dinâmica entre ícone de menu (`#i-menu`) e ícone de fechar (`#i-fechar`).
   - **Efeitos de Hover:** Feedback visual claro em botões (`translateY(-1px)` e sombra suave), cartões de grelha e campos de formulário.
