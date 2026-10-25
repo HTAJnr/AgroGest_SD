@@ -47,10 +47,24 @@
     - `views/admin/campanhas/lista.jsp`: tabela com rolagem responsiva (`.tabela-scroll`), badges de estado (`.badge.ok` para Aberta, `.badge.off` para Fechada), link para cultivos associados (`/admin/cultivos?campanhaId=...`), botões Fechar/Reabrir e botão de remoção `.btn-perigo.btn-icone` com confirmação e token anti duplo envio `_t`.
     - `views/admin/campanhas/form.jsp`: formulário centrado em grelha responsiva (`.form-centrado`, `.form-grelha`), inputs de data nativos, preservação de valores via `${param.x}`, destaque de campo em erro (`.invalido`), token `_t` e botões Cancelar/Guardar.
   - Suite de testes unitários `CampanhaServiceTest` cobrindo criação, unicidade D14, validação de datas (fim anterior a início, datas nulas), fechamento, reabertura, remoção autorizada e bloqueio por existência de cultivos.
+- **F2 · Cultivos no módulo de administração (`/admin/cultivos/*`):**
+  - Criação de `mz.agrogest.service.CultivoService`:
+    - `criar(campanhaId, cultura, variedade, hectares, plantio)` com validações centralizadas via `Validacao` (cultura 3–80 caracteres com pelo menos uma letra, variedade opcional normalizada e validada se preenchida, hectares > 0, data de plantio obrigatória).
+    - Verificação atómica dentro do monitor do `DataStore`: existência da campanha e estado aberta (regra D5: campanhas fechadas não aceitam novos cultivos).
+    - `listar()` e `listarPorCampanha(campanhaId)` devolvendo cópias protegidas (`new ArrayList<>(...)`).
+    - `porId(id)` para consulta segura dentro do monitor.
+    - `remover(id)` com verificação atómica dentro do monitor: recusa a remoção caso existam colheitas com `cultivoId == id`, exibindo mensagem clara.
+  - Criação de `mz.agrogest.servlet.AdminCultivoServlet` mapeado em `@WebServlet(urlPatterns = {"/admin/cultivos", "/admin/cultivos/*"})`:
+    - `GET /admin/cultivos` sem `?campanhaId=`: lista as campanhas com seus estados e períodos para seleção (`escolher-campanha.jsp`).
+    - `GET /admin/cultivos?campanhaId=...`: exibe os cultivos da campanha e o formulário de cadastro (`index.jsp`). Se a campanha estiver fechada, o formulário é desativado com aviso explicativo. Tratamento seguro de IDs inválidos ou inexistentes com redirecionamento e `flashErro` (sem erros 500).
+    - `POST /admin/cultivos` (ou `/criar`) e `POST /admin/cultivos/remover` com padrão POST-redirect-GET, mensagens flash (`flashOk`/`flashErro`), token anti duplo envio `_t` e preservação dos dados preenchidos no formulário (`erroCampo` e `${param.x}`).
+  - Criação das views JSP:
+    - `views/admin/cultivos/escolher-campanha.jsp`: listagem de campanhas com badges de estado Aberta/Fechada e botão "Ver cultivos".
+    - `views/admin/cultivos/index.jsp`: cabeçalho `.pagina-topo` com detalhes da campanha, tabela responsiva de cultivos com link para `/admin/colheitas?cultivoId=...` e botão de remoção por ícone SVG (`.btn-perigo.btn-icone`), e formulário em cartão centrado (`.form-centrado`, `.form-grelha`) desativado quando a campanha estiver fechada.
+  - Suite de testes unitários `CultivoServiceTest` com 14 testes cobrindo criação válida, variedade opcional, validação de campos (cultura, variedade, hectares, plantio), bloqueio por campanha fechada (D5), bloqueio por campanha inexistente, cópia defensiva, filtragem por campanha e bloqueio de remoção com colheitas associadas.
 
 # Por fazer
 
-- **F2:** Cultivos (`/admin/cultivos/*`).
 - **F3:** Colheitas (`/admin/colheitas/*`).
 - **T1:** Fundação visual (CSS, variáveis, hover, botões).
 - **T2–T8:** Interface, navegação, toasts, catálogo, fotos e páginas administrativas.
