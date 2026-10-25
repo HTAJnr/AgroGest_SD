@@ -65,7 +65,8 @@
   <c:when test="${campanha != null and campanha.aberta}">
     <div class="cartao form-centrado" style="margin-top: 32px;">
       <h2>Registar colheita</h2>
-      <form class="form" method="post" action="<c:url value='/admin/colheitas'/>">
+      <form class="form" method="post" action="<c:url value='/admin/colheitas'/>"
+            data-validar novalidate>
         <input type="hidden" name="_t" value="${tokenForm}">
         <input type="hidden" name="cultivoId" value="${cultivo.id}">
 

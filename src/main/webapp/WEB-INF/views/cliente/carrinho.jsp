@@ -64,9 +64,10 @@
     <div class="acoes">
       <a class="btn" href="<c:url value='/compra'/>">Finalizar compra</a>
       <a class="btn btn-sec" href="<c:url value='/catalogo'/>">Continuar a comprar</a>
-      <form method="post" action="<c:url value='/carrinho/esvaziar'/>" onsubmit="return confirm('Esvaziar o carrinho?');">
+      <form method="post" action="<c:url value='/carrinho/esvaziar'/>">
         <input type="hidden" name="_t" value="${tokenForm}">
-        <button class="btn btn-perigo" type="submit">Esvaziar carrinho</button>
+        <button class="btn btn-perigo" type="submit"
+                data-confirm="Esvaziar o carrinho? Todos os produtos serão removidos.">Esvaziar carrinho</button>
       </form>
     </div>
   </c:otherwise>

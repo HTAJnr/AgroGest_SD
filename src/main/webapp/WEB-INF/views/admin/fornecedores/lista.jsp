@@ -27,11 +27,11 @@
               <td><c:out value="${f.contacto}"/></td>
               <td><c:out value="${f.provincia}"/></td>
               <td class="acoes nao-imprimir">
-                <form method="post" action="<c:url value='/admin/fornecedores/remover'/>"
-                      onsubmit="return confirm('Remover este fornecedor?');">
+                <form method="post" action="<c:url value='/admin/fornecedores/remover'/>">
                   <input type="hidden" name="_t" value="${tokenForm}">
                   <input type="hidden" name="id" value="${f.id}">
-                  <button type="submit" class="btn-perigo btn-icone" title="Remover" aria-label="Remover">
+                  <button type="submit" class="btn-perigo btn-icone" title="Remover" aria-label="Remover"
+                          data-confirm="Remover o fornecedor «${f.nome}»? Esta acção não pode ser desfeita.">
                     <svg class="icone" aria-hidden="true"><use href="#i-lixo"/></svg>
                   </button>
                 </form>

@@ -41,7 +41,7 @@
 <p class="muted">O valor final &eacute; calculado ao confirmar, com o stock e os pre&ccedil;os desse momento.</p>
 
 <div class="acoes">
-  <form method="post" action="<c:url value='/compra'/>">
+  <form method="post" action="<c:url value='/compra'/>" data-validar novalidate>
     <input type="hidden" name="_t" value="${tokenForm}">
     <button class="btn" type="submit">Confirmar compra</button>
   </form>

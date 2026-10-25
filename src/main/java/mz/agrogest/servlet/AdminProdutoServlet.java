@@ -14,6 +14,7 @@ import mz.agrogest.model.Categoria;
 import mz.agrogest.service.ProdutoService;
 import mz.agrogest.service.FornecedorService;
 import mz.agrogest.util.NegocioException;
+import mz.agrogest.util.Validacao;
 
 @WebServlet("/admin/produtos/*")
 public class AdminProdutoServlet extends HttpServlet {
@@ -123,6 +124,7 @@ public class AdminProdutoServlet extends HttpServlet {
 		req.setAttribute("categorias", Categoria.values());
 		req.setAttribute("fornecedores", FornecedorService.getInstance().listar());
 		req.setAttribute("hoje", LocalDate.now().toString());
+		req.setAttribute("unidades", Validacao.UNIDADES);
 		req.getRequestDispatcher(FORM).forward(req, resp);
 	}
 

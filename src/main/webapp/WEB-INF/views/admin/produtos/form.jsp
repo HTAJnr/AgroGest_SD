@@ -1,47 +1,107 @@
 <h1>Novo produto</h1>
 
-<form class="form" method="post" action="<c:url value='/admin/produtos/criar'/>">
+<form class="form form-centrado" method="post" action="<c:url value='/admin/produtos/criar'/>"
+      data-validar novalidate>
   <input type="hidden" name="_t" value="${tokenForm}">
 
-  <label for="nome">Nome</label>
-  <input type="text" id="nome" name="nome" value="<c:out value='${param.nome}'/>">
+  <div class="form-grelha">
 
-  <label for="categoria">Categoria</label>
-  <select id="categoria" name="categoria">
-    <option value="">-- Escolha --</option>
-    <c:forEach var="c" items="${categorias}">
-      <option value="${c}" ${param.categoria == c ? 'selected' : ''}>${c}</option>
-    </c:forEach>
-  </select>
+    <div class="campo campo-cheio">
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" name="nome"
+             value="<c:out value='${param.nome}'/>"
+             minlength="3" maxlength="80" required
+             class="${erroCampo == 'nome' ? 'invalido' : ''}">
+    </div>
 
-  <label for="fornecedorId">Fornecedor</label>
-  <select id="fornecedorId" name="fornecedorId">
-    <option value="">-- Escolha --</option>
-    <c:forEach var="f" items="${fornecedores}">
-      <option value="${f.id}" ${param.fornecedorId == f.id ? 'selected' : ''}><c:out value="${f.nome}"/></option>
-    </c:forEach>
-  </select>
+    <div class="campo">
+      <label for="categoria">Categoria</label>
+      <select id="categoria" name="categoria"
+              class="${erroCampo == 'categoria' ? 'invalido' : ''}" required>
+        <option value="">-- Escolha --</option>
+        <c:forEach var="c" items="${categorias}">
+          <option value="${c}" ${param.categoria == c ? 'selected' : ''}>${c}</option>
+        </c:forEach>
+      </select>
+    </div>
 
-  <label for="preco">Preço (MT)</label>
-  <input type="text" id="preco" name="preco" value="<c:out value='${param.preco}'/>" placeholder="ex.: 250,50">
+    <div class="campo">
+      <label for="fornecedorId">Fornecedor</label>
+      <select id="fornecedorId" name="fornecedorId"
+              class="${erroCampo == 'fornecedorId' ? 'invalido' : ''}" required>
+        <option value="">-- Escolha --</option>
+        <c:forEach var="f" items="${fornecedores}">
+          <option value="${f.id}"
+                  data-tipo="${f.tipo}"
+                  ${param.fornecedorId == f.id ? 'selected' : ''}><c:out value="${f.nome}"/></option>
+        </c:forEach>
+      </select>
+    </div>
 
-  <label for="quantidade">Quantidade</label>
-  <input type="text" id="quantidade" name="quantidade" value="<c:out value='${param.quantidade}'/>" placeholder="ex.: 3,5">
+    <div class="campo">
+      <label for="preco">Preço (MT)</label>
+      <input type="text" id="preco" name="preco" inputmode="decimal"
+             value="<c:out value='${param.preco}'/>"
+             placeholder="ex.: 250,50"
+             pattern="[0-9]+([.,][0-9]{1,2})?"
+             required
+             class="${erroCampo == 'preco' ? 'invalido' : ''}">
+    </div>
 
-  <label for="unidade">Unidade</label>
-  <input type="text" id="unidade" name="unidade" value="<c:out value='${param.unidade}'/>" placeholder="kg, saco, unidade">
+    <div class="campo">
+      <label for="quantidade">Quantidade inicial</label>
+      <input type="text" id="quantidade" name="quantidade" inputmode="decimal"
+             value="<c:out value='${param.quantidade}'/>"
+             placeholder="ex.: 100"
+             pattern="[0-9]+([.,][0-9]{1,2})?"
+             required
+             class="${erroCampo == 'quantidade' ? 'invalido' : ''}">
+    </div>
 
-  <label for="descricao">Descrição</label>
-  <textarea id="descricao" name="descricao" rows="3"><c:out value="${param.descricao}"/></textarea>
+    <div class="campo">
+      <label>Unidade</label>
+      <div class="chips ${erroCampo == 'unidade' ? 'invalido' : ''}">
+        <c:forEach var="u" items="${unidades}">
+          <label>
+            <input type="radio" name="unidade" value="${u}"
+                   ${param.unidade == u ? 'checked' : ''}
+                   required>
+            <span>${u}</span>
+          </label>
+        </c:forEach>
+      </div>
+    </div>
 
-  <label for="fotoUrl">URL da foto (opcional)</label>
-  <input type="text" id="fotoUrl" name="fotoUrl" value="<c:out value='${param.fotoUrl}'/>">
+    <div class="campo campo-cheio">
+      <label for="descricao">Descrição <span class="muted">(opcional, máx. 300 car.)</span></label>
+      <textarea id="descricao" name="descricao" rows="3"
+                maxlength="300"
+                class="${erroCampo == 'descricao' ? 'invalido' : ''}"><c:out value="${param.descricao}"/></textarea>
+    </div>
 
-  <label for="validade">Validade (opcional)</label>
-  <input type="text" id="validade" name="validade" value="<c:out value='${param.validade}'/>" placeholder="dd/mm/aaaa, ex.: 31/03/2027" pattern="\d{2}/\d{2}/\d{4}" maxlength="10">
+    <div class="campo">
+      <label for="fotoUrl">URL da foto <span class="muted">(opcional)</span></label>
+      <input type="text" id="fotoUrl" name="fotoUrl"
+             value="<c:out value='${param.fotoUrl}'/>"
+             placeholder="https://… ou /assets/img/produtos/milho.jpg"
+             class="${erroCampo == 'fotoUrl' ? 'invalido' : ''}">
+    </div>
 
-  <p>
-    <button class="btn" type="submit">Guardar</button>
-    <a class="btn-sec" href="<c:url value='/admin/produtos'/>">Cancelar</a>
-  </p>
+    <div class="campo">
+      <label for="validade">Validade <span class="muted">(opcional)</span></label>
+      <input type="date" id="validade" name="validade"
+             value="<c:out value='${param.validade}'/>"
+             min="${hoje}"
+             class="${erroCampo == 'validade' ? 'invalido' : ''}">
+    </div>
+
+    <div class="form-acoes campo-cheio">
+      <a class="btn-sec" href="<c:url value='/admin/produtos'/>">Cancelar</a>
+      <button class="btn" type="submit">
+        <svg class="icone" aria-hidden="true"><use href="#i-mais"/></svg>
+        Guardar
+      </button>
+    </div>
+
+  </div>
 </form>

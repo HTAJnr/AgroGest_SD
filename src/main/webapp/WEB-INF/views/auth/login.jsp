@@ -8,7 +8,8 @@
     </div>
   </c:if>
 
-  <form class="form-auth" method="post" action="<c:url value='/login'/>">
+  <form class="form-auth" method="post" action="<c:url value='/login'/>"
+        data-validar novalidate>
     <input type="hidden" name="_t" value="${tokenForm}">
 
     <label for="email">Email</label>

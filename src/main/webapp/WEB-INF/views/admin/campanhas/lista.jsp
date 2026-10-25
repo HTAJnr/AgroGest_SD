@@ -56,11 +56,12 @@
                     </form>
                   </c:otherwise>
                 </c:choose>
-                <form method="post" action="<c:url value='/admin/campanhas/remover'/>" style="display:inline;"
-                      onsubmit="return confirm('Remover esta campanha?');">
+                <form method="post" action="<c:url value='/admin/campanhas/remover'/>" style="display:inline;">
                   <input type="hidden" name="_t" value="${tokenForm}">
                   <input type="hidden" name="id" value="${c.id}">
-                  <button type="submit" class="btn-perigo btn-icone" title="Remover" aria-label="Remover">
+                  <button type="submit" class="btn-perigo btn-icone"
+                          title="Remover" aria-label="Remover"
+                          data-confirm="Remover a campanha «${c.nome}»? Esta acção não pode ser desfeita.">
                     <svg class="icone" aria-hidden="true"><use href="#i-lixo"/></svg>
                   </button>
                 </form>

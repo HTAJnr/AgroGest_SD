@@ -19,10 +19,10 @@
         <button type="submit" class="btn">Gravar agora</button>
       </form>
 
-      <form method="post" action="<c:url value='/admin/persistencia/eliminar'/>"
-            onsubmit="return confirm('Eliminar o ficheiro de dados? Os dados em memória não são apagados.');">
+      <form method="post" action="<c:url value='/admin/persistencia/eliminar'/>">
         <input type="hidden" name="_t" value="${tokenForm}">
-        <button type="submit" class="btn btn-perigo">Eliminar ficheiro</button>
+        <button type="submit" class="btn btn-perigo"
+                data-confirm="Eliminar o ficheiro de dados? Os dados em memória não são apagados e voltam a ser gravados quando o servidor parar.">Eliminar ficheiro</button>
       </form>
     </div>
 

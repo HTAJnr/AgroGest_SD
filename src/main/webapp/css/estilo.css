@@ -792,6 +792,23 @@ dialog::backdrop {
 }
 
 /* Alertas, Toasts e Badges */
+/* Contentor de toasts: posição fixa no canto superior direito */
+#toasts-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(360px, calc(100vw - 32px));
+  pointer-events: none;
+}
+#toasts-container .toast {
+  pointer-events: auto;
+}
+
+/* .avisos: fallback sem JS; quando o JS está activo fica vazio e hidden */
 .avisos {
   display: flex;
   flex-direction: column;
@@ -805,12 +822,61 @@ dialog::backdrop {
   gap: 12px;
   padding: 12px 16px;
   border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-overlay);
   animation: toast-in 0.18s ease-out;
+  transition: opacity 0.18s, transform 0.18s;
 }
+.toast-ok {
+  background: var(--ok-tint);
+  color: var(--ok-text);
+  border-left: 4px solid var(--primary);
+}
+.toast-erro {
+  background: var(--danger-tint);
+  color: var(--danger-hover);
+  border-left: 4px solid var(--danger);
+}
+.toast-msg {
+  flex: 1;
+  font-size: 0.9rem;
+}
+.toast-fechar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  min-width: 0;
+  color: inherit;
+  opacity: 0.6;
+}
+.toast-fechar:hover { opacity: 1; }
 @keyframes toast-in {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Dialog de confirmação */
+.dlg-msg {
+  margin: 0 0 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.dlg-acoes {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Mobile: toasts em largura total, topo da tela */
+@media (max-width: 640px) {
+  #toasts-container {
+    top: 68px;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
 }
 .alerta {
   padding: 12px 16px;

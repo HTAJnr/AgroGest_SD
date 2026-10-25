@@ -243,16 +243,29 @@
       </c:choose>
     </header>
     <script defer src="<c:url value='/assets/js/app.js'/>"></script>
+    <%-- Contentor de toasts: o JS move aqui as mensagens de servidor --%>
+    <div id="toasts-container" aria-live="polite" aria-atomic="false"></div>
     <main class="conteudo">
-      <c:if test="${not empty sessionScope.flashOk}">
-        <div class="alerta ok"><c:out value="${sessionScope.flashOk}"/></div>
-        <c:remove var="flashOk" scope="session"/>
-      </c:if>
-      <c:if test="${not empty sessionScope.flashErro}">
-        <div class="alerta erro"><c:out value="${sessionScope.flashErro}"/></div>
-        <c:remove var="flashErro" scope="session"/>
-      </c:if>
-      <c:if test="${not empty mensagem}"><div class="alerta ok"><c:out value="${mensagem}"/></div></c:if>
-      <c:if test="${not empty erro}"><div class="alerta erro"><c:out value="${erro}"/></div></c:if>
+      <%-- Os .alerta ficam como fallback sem JS; o JS converte-os em toasts --%>
+      <div class="avisos" data-campo="${fn:escapeXml(erroCampo)}">
+        <c:if test="${not empty sessionScope.flashOk}">
+          <div class="alerta ok" role="status"><c:out value="${sessionScope.flashOk}"/></div>
+          <c:remove var="flashOk" scope="session"/>
+        </c:if>
+        <c:if test="${not empty sessionScope.flashErro}">
+          <div class="alerta erro" role="alert"><c:out value="${sessionScope.flashErro}"/></div>
+          <c:remove var="flashErro" scope="session"/>
+        </c:if>
+        <c:if test="${not empty mensagem}"><div class="alerta ok" role="status"><c:out value="${mensagem}"/></div></c:if>
+        <c:if test="${not empty erro}"><div class="alerta erro" role="alert"><c:out value="${erro}"/></div></c:if>
+      </div>
+      <%-- Dialog nativo de confirmação (reutilizado por todos os data-confirm) --%>
+      <dialog id="dlg-confirm" aria-labelledby="dlg-confirm-msg">
+        <p id="dlg-confirm-msg" class="dlg-msg"></p>
+        <div class="dlg-acoes">
+          <button type="button" class="btn-sec" id="dlg-cancel">Cancelar</button>
+          <button type="button" class="btn btn-perigo" id="dlg-ok">Confirmar</button>
+        </div>
+      </dialog>
   </c:otherwise>
 </c:choose>

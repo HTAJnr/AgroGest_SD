@@ -1,13 +1,15 @@
 <h1>Novo fornecedor</h1>
 
-<form class="form form-centrado" method="post" action="<c:url value='/admin/fornecedores'/>">
+<form class="form form-centrado" method="post" action="<c:url value='/admin/fornecedores'/>"
+      data-validar novalidate>
   <input type="hidden" name="_t" value="${tokenForm}">
 
   <div class="form-grelha">
     <div class="campo">
       <label for="nome">Nome</label>
       <input type="text" id="nome" name="nome" value="<c:out value='${param.nome}'/>"
-             class="${erroCampo == 'nome' ? 'invalido' : ''}" required>
+             minlength="3" maxlength="80" required
+             class="${erroCampo == 'nome' ? 'invalido' : ''}">
     </div>
 
     <div class="campo">
@@ -25,7 +27,8 @@
       <input type="text" id="contacto" name="contacto" inputmode="tel"
              value="<c:out value='${param.contacto}'/>"
              placeholder="ex.: 84 123 4567 ou email@exemplo.mz"
-             class="${erroCampo == 'contacto' ? 'invalido' : ''}" required>
+             required
+             class="${erroCampo == 'contacto' ? 'invalido' : ''}">
     </div>
 
     <div class="campo">
@@ -40,7 +43,10 @@
 
     <div class="form-acoes campo-cheio">
       <a class="btn-sec" href="<c:url value='/admin/fornecedores'/>">Cancelar</a>
-      <button class="btn" type="submit">Guardar</button>
+      <button class="btn" type="submit">
+        <svg class="icone" aria-hidden="true"><use href="#i-mais"/></svg>
+        Guardar
+      </button>
     </div>
   </div>
 </form>

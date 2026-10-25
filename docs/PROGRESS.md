@@ -113,9 +113,35 @@
   - `servlet/LoginServlet.java`: `erroForm` passa agora o `email` ao request (`req.setAttribute("email", email)`) para que o campo seja reposto após erro de autenticação.
   - `css/estilo.css`: adição das classes de autenticação — `body.pagina-auth` (flex coluna, altura mínima viewport), `.auth` (flex centrado, padding generoso), `.auth-marca` / `.marca-auth` / `.marca-auth-icone` / `.marca-auth-texto` / `.marca-agro` / `.marca-gest` / `.auth-subtitulo`, `.auth-cartao` (max-width 420 px) / `.auth-cartao-registo` (460 px), `.auth-titulo`, `.auth-erro` (inline no cartão com animação fade-in), `.form-auth` (campos e labels sem `.form` pai), `.auth-btn` (100 % de largura), `.auth-link-rodape`; regras responsivas a 640 px (padding reduzido, ícone e texto da marca menores).
 
+- **T4 · Toasts, feedback no campo, validação e confirmações:**
+  - `WEB-INF/jspf/topo.jspf`: alertas da zona autenticada envolvidos em `<div class="avisos" data-campo="${erroCampo}">` com `role` semântico (`status`/`alert`); adicionado contentor fixo `<div id="toasts-container" aria-live="polite">` para toasts; adicionado `<dialog id="dlg-confirm">` nativo reutilizável para confirmações; `role` e `aria-*` corretos.
+  - `assets/js/app.js`: expandido de ~90 para ~390 linhas com 6 novas responsabilidades:
+    - **Toasts**: `mostrarToast(msg, tipo)` cria toast `.toast-ok`/`.toast-erro` no contentor fixo topo-direita; ok desaparece em 5 s (pausa em hover/foco); erro fica até fechar; máx. 3 toasts; `converterAlertasEmToasts()` migra os `.alerta` do servidor para toasts ao carregar.
+    - **Feedback no elemento (servidor)**: `aplicarFeedbackServidor()` lê `data-campo` do `.avisos`, localiza o campo no formulário, aplica `aria-invalid`, `.invalido`, insere `<small class="campo-erro">` com ícone e mensagem, faz `focus()` e `scrollIntoView`; **não actua em `body.pagina-auth`** (erro fica inline no cartão).
+    - **Validação no cliente** (`form[data-validar] novalidate`): em `blur` e `submit`, chama `checkValidity()` e mostra a mensagem debaixo do campo pelo mesmo mecanismo; mensagens em português de Portugal; limpa o erro quando o campo volta a ser válido.
+    - **Duplo clique**: no `submit` o botão fica `disabled` com o texto "A guardar…"; repõe após 8 s caso haja erro de validação do servidor.
+    - **Confirmações via `<dialog>` nativo** (`data-confirm="mensagem"`): delegação de clique; `showModal()`; Cancelar/Confirmar; botão Confirmar com `.btn-perigo` quando o botão original também o tem; fallback para `window.confirm` se o dialog não existir.
+    - **Fotos com erro**: `img.produto-foto` e `img.produto-mini` com handler `error` que substitui por `produto-placeholder.svg`.
+  - `css/estilo.css`: substituída a secção `.avisos`/`.toast` por:
+    - `#toasts-container` com posição fixa (`top:80px; right:20px; z-index:9000; width:min(360px, …)`); mobile em largura total a `top:68px`.
+    - `.toast-ok` e `.toast-erro` com cores semânticas (`ok-tint`/`danger-tint`); `.toast-msg`, `.toast-fechar`; animação `toast-in` com `translateX(24px)`.
+    - `.dlg-msg` e `.dlg-acoes` para o dialog de confirmação.
+  - `admin/produtos/form.jsp`: refatorado para layout centrado (`.form-centrado`, `.form-grelha`); `type="text" inputmode="decimal"` em preço e quantidade (evita `type="number"`); unidade como **chips** (`<div class="chips"><label><input type="radio">…`); validade com `type="date"` e `min="${hoje}"`; `data-validar novalidate`; `erroCampo` em todos os campos.
+  - `admin/fornecedores/form.jsp`: `data-validar novalidate` e `minlength`/`maxlength` espelhando V1.
+  - `admin/campanhas/form.jsp`: `data-validar novalidate` e `minlength`/`maxlength`; ícone no botão Guardar.
+  - `admin/campanhas/lista.jsp`: `onsubmit="return confirm(…)"` substituído por `data-confirm="…"` no botão.
+  - `admin/cultivos/index.jsp`: `data-confirm` no botão Remover; `data-validar novalidate` no formulário de novo cultivo.
+  - `admin/colheitas/index.jsp`: `data-validar novalidate` no formulário de registo.
+  - `admin/fornecedores/lista.jsp`: `onsubmit` substituído por `data-confirm` no botão Remover.
+  - `admin/persistencia/index.jsp`: `onsubmit` substituído por `data-confirm` no botão Eliminar.
+  - `cliente/carrinho.jsp`: `onsubmit` substituído por `data-confirm` no botão Esvaziar.
+  - `cliente/compra.jsp`: `data-validar novalidate` no formulário de confirmação (garante desactivação do botão no submit).
+  - `auth/login.jsp` e `auth/registo.jsp`: `data-validar novalidate` (validação HTML5 no cliente sem round-trip).
+  - `servlet/AdminProdutoServlet.java`: envia `unidades` (`Validacao.UNIDADES`) ao request para preencher os chips no formulário.
+
 # Por fazer
 
-- **T4–T8:** Toasts, feedback no campo, catálogo, fotos, administração e auditoria de UI.
+- **T5–T8:** Catálogo e fotos, carrinho/compra/factura, admin (dashboard, listagens, relatórios, produtos, persistência) e auditoria de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
 # Decisões tomadas

@@ -62,12 +62,12 @@
                 </a>
               </td>
               <td class="acoes nao-imprimir">
-                <form method="post" action="<c:url value='/admin/cultivos/remover'/>" style="display:inline;"
-                      onsubmit="return confirm('Tem a certeza que deseja remover este cultivo?');">
+                <form method="post" action="<c:url value='/admin/cultivos/remover'/>" style="display:inline;">
                   <input type="hidden" name="_t" value="${tokenForm}">
                   <input type="hidden" name="id" value="${cult.id}">
                   <input type="hidden" name="campanhaId" value="${campanha.id}">
-                  <button type="submit" class="btn-perigo btn-icone" title="Remover cultivo" aria-label="Remover">
+                  <button type="submit" class="btn-perigo btn-icone" title="Remover cultivo" aria-label="Remover"
+                          data-confirm="Remover o cultivo «${cult.cultura}»? Esta acção não pode ser desfeita.">
                     <svg class="icone" aria-hidden="true"><use href="#i-lixo"/></svg>
                   </button>
                 </form>
@@ -84,7 +84,8 @@
   <c:when test="${campanha.aberta}">
     <div class="cartao form-centrado" style="margin-top: 32px;">
       <h2>Novo cultivo</h2>
-      <form class="form" method="post" action="<c:url value='/admin/cultivos'/>">
+      <form class="form" method="post" action="<c:url value='/admin/cultivos'/>"
+            data-validar novalidate>
         <input type="hidden" name="_t" value="${tokenForm}">
         <input type="hidden" name="campanhaId" value="${campanha.id}">
 

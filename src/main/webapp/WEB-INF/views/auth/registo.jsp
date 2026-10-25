@@ -8,7 +8,8 @@
     </div>
   </c:if>
 
-  <form class="form-auth" method="post" action="<c:url value='/registo'/>">
+  <form class="form-auth" method="post" action="<c:url value='/registo'/>"
+        data-validar novalidate>
     <input type="hidden" name="_t" value="${tokenForm}">
 
     <label for="nome">Nome</label>
