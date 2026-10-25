@@ -72,6 +72,7 @@
                width="400"
                height="300"
                loading="lazy"
+               decoding="async"
                data-placeholder="<c:url value='/assets/img/produto-placeholder.svg'/>">
 
           <div class="produto-corpo">

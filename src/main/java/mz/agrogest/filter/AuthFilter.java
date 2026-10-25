@@ -33,6 +33,9 @@ public class AuthFilter implements Filter {
         String path = caminho(req);
 
         if (ePublico(path)) {
+            if (path.startsWith("/assets/") || path.startsWith("/css/")) {
+                resp.setHeader("Cache-Control", "public, max-age=86400");
+            }
             chain.doFilter(req, resp);
             return;
         }

@@ -833,6 +833,8 @@ body.pagina-auth {
   display: flex;
   flex-direction: column;
   height: 100%;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 420px;
 }
 .cartao-produto:hover {
   transform: none;
