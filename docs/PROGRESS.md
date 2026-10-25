@@ -90,9 +90,15 @@
   - `WEB-INF/jspf/rodape.jspf`: inclusão da linha com os nomes dos autores ("Ayko Sambo · Naira Ornilo · Helder Vuca");
   - Disponibilização dos ficheiros de imagem e fonte em `assets/`: `Inter-Variable.woff2`, `logo-agrogest.png`, `favicon-32.png` e `apple-touch-icon.png`.
 
+- **T2 · Login e registo sem barra de navegação:**
+  - `WEB-INF/jspf/topo.jspf`: reestruturado com `<c:choose>` — quando `sessionScope.utilizador` está vazio (`empty u`), o `<body>` recebe a classe `pagina-auth`, não renderiza a `.barra`, abre um `<main class="auth">` com a marca (logo SVG colorido + texto "Agro"/"Gest" + subtítulo "Sistema de Gestão Agrícola") e os alertas flash; quando autenticado, mantém o comportamento anterior (`.barra` + `<main class="conteudo">`).
+  - `WEB-INF/views/auth/login.jsp`: refatorado em cartão `.auth-cartao`; formulário `.form-auth`; erro inline com ícone `#i-alerta` e `role="alert"` dentro do cartão; email mantido após erro via `${not empty email ? email : param.email}`; `autocomplete="email"` / `"current-password"`; `autofocus`; botão 100 % de largura.
+  - `WEB-INF/views/auth/registo.jsp`: mesmo padrão; cartão `.auth-cartao-registo` (460 px); todos os campos com `autocomplete`, `minlength/maxlength` espelhando o que o servidor valida; telefone `type="tel" inputmode="tel"`; highlight de campo em erro com `.invalido` e `aria-invalid="true"` por `erroCampo`; link \"Já tem conta? Entre\".
+  - `servlet/LoginServlet.java`: `erroForm` passa agora o `email` ao request (`req.setAttribute("email", email)`) para que o campo seja reposto após erro de autenticação.
+  - `css/estilo.css`: adição das classes de autenticação — `body.pagina-auth` (flex coluna, altura mínima viewport), `.auth` (flex centrado, padding generoso), `.auth-marca` / `.marca-auth` / `.marca-auth-icone` / `.marca-auth-texto` / `.marca-agro` / `.marca-gest` / `.auth-subtitulo`, `.auth-cartao` (max-width 420 px) / `.auth-cartao-registo` (460 px), `.auth-titulo`, `.auth-erro` (inline no cartão com animação fade-in), `.form-auth` (campos e labels sem `.form` pai), `.auth-btn` (100 % de largura), `.auth-link-rodape`; regras responsivas a 640 px (padding reduzido, ícone e texto da marca menores).
+
 # Por fazer
 
-- **T2:** Login e registo sem navbar.
 - **T3:** Navbar (cliente e admin), menu do utilizador e ícones.
 - **T4–T8:** Toasts, feedback no campo, catálogo, fotos, administração e auditoria de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.

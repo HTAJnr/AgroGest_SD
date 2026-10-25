@@ -15,48 +15,65 @@
   <link rel="apple-touch-icon" sizes="180x180" href="<c:url value='/assets/img/apple-touch-icon.png'/>">
   <link rel="stylesheet" href="<c:url value='/css/estilo.css'/>">
 </head>
-<body>
+<body class="${empty sessionScope.utilizador ? 'pagina-auth' : ''}">
 <%@ include file="/WEB-INF/jspf/icons.jspf" %>
 <c:set var="u" value="${sessionScope.utilizador}"/>
-<header class="barra nao-imprimir">
-  <a class="marca" href="<c:url value='/'/>"><img class="marca-icone" src="<c:url value='/assets/img/logo-marca-branca.svg'/>" alt="" width="28" height="28"><span>AgroGest</span></a>
-  <nav class="menu">
-    <c:choose>
-      <c:when test="${empty u}">
-        <a href="<c:url value='/login'/>">Entrar</a>
-        <a href="<c:url value='/registo'/>">Registar</a>
-      </c:when>
-      <c:when test="${u.admin}">
-        <a href="<c:url value='/admin/dashboard'/>">Dashboard</a>
-        <a href="<c:url value='/admin/fornecedores'/>">Fornecedores</a>
-        <a href="<c:url value='/admin/produtos'/>">Produtos</a>
-        <a href="<c:url value='/admin/campanhas'/>">Campanhas</a>
-        <a href="<c:url value='/admin/cultivos'/>">Cultivos</a>
-        <a href="<c:url value='/admin/colheitas'/>">Colheitas</a>
-        <a href="<c:url value='/admin/listagens'/>">Listagens</a>
-        <a href="<c:url value='/admin/relatorios'/>">Relatórios</a>
-        <a href="<c:url value='/admin/persistencia'/>">Persistência</a>
-      </c:when>
-      <c:otherwise>
-        <a href="<c:url value='/catalogo'/>">Catálogo</a>
-        <a href="<c:url value='/carrinho'/>">Carrinho (<c:out value="${empty sessionScope.carrinho ? 0 : sessionScope.carrinho.totalItens}"/>)</a>
-        <a href="<c:url value='/minhas-compras'/>">Minhas compras</a>
-      </c:otherwise>
-    </c:choose>
-    <c:if test="${not empty u}">
-      <span class="utilizador"><c:out value="${u.nome}"/></span>
-      <a href="<c:url value='/logout'/>">Sair</a>
-    </c:if>
-  </nav>
-</header>
-<main class="conteudo">
-<c:if test="${not empty sessionScope.flashOk}">
-  <div class="alerta ok"><c:out value="${sessionScope.flashOk}"/></div>
-  <c:remove var="flashOk" scope="session"/>
-</c:if>
-<c:if test="${not empty sessionScope.flashErro}">
-  <div class="alerta erro"><c:out value="${sessionScope.flashErro}"/></div>
-  <c:remove var="flashErro" scope="session"/>
-</c:if>
-<c:if test="${not empty mensagem}"><div class="alerta ok"><c:out value="${mensagem}"/></div></c:if>
-<c:if test="${not empty erro}"><div class="alerta erro"><c:out value="${erro}"/></div></c:if>
+<c:choose>
+  <c:when test="${empty u}">
+    <main class="auth">
+      <div class="auth-marca">
+        <a class="marca-auth" href="<c:url value='/'/>">
+          <img class="marca-auth-icone" src="<c:url value='/assets/img/logo-marca.svg'/>" alt="AgroGest" width="56" height="56">
+          <span class="marca-auth-texto"><span class="marca-agro">Agro</span><span class="marca-gest">Gest</span></span>
+        </a>
+        <p class="auth-subtitulo">Sistema de Gestão Agrícola</p>
+      </div>
+      <c:if test="${not empty sessionScope.flashOk}">
+        <div class="alerta ok"><c:out value="${sessionScope.flashOk}"/></div>
+        <c:remove var="flashOk" scope="session"/>
+      </c:if>
+      <c:if test="${not empty sessionScope.flashErro}">
+        <div class="alerta erro"><c:out value="${sessionScope.flashErro}"/></div>
+        <c:remove var="flashErro" scope="session"/>
+      </c:if>
+      <c:if test="${not empty mensagem}"><div class="alerta ok"><c:out value="${mensagem}"/></div></c:if>
+  </c:when>
+  <c:otherwise>
+    <header class="barra nao-imprimir">
+      <a class="marca" href="<c:url value='/'/>"><img class="marca-icone" src="<c:url value='/assets/img/logo-marca-branca.svg'/>" alt="" width="28" height="28"><span>AgroGest</span></a>
+      <nav class="menu">
+        <c:choose>
+          <c:when test="${u.admin}">
+            <a href="<c:url value='/admin/dashboard'/>">Dashboard</a>
+            <a href="<c:url value='/admin/fornecedores'/>">Fornecedores</a>
+            <a href="<c:url value='/admin/produtos'/>">Produtos</a>
+            <a href="<c:url value='/admin/campanhas'/>">Campanhas</a>
+            <a href="<c:url value='/admin/cultivos'/>">Cultivos</a>
+            <a href="<c:url value='/admin/colheitas'/>">Colheitas</a>
+            <a href="<c:url value='/admin/listagens'/>">Listagens</a>
+            <a href="<c:url value='/admin/relatorios'/>">Relatórios</a>
+            <a href="<c:url value='/admin/persistencia'/>">Persistência</a>
+          </c:when>
+          <c:otherwise>
+            <a href="<c:url value='/catalogo'/>">Catálogo</a>
+            <a href="<c:url value='/carrinho'/>">Carrinho (<c:out value="${empty sessionScope.carrinho ? 0 : sessionScope.carrinho.totalItens}"/>)</a>
+            <a href="<c:url value='/minhas-compras'/>">Minhas compras</a>
+          </c:otherwise>
+        </c:choose>
+        <span class="utilizador"><c:out value="${u.nome}"/></span>
+        <a href="<c:url value='/logout'/>">Sair</a>
+      </nav>
+    </header>
+    <main class="conteudo">
+      <c:if test="${not empty sessionScope.flashOk}">
+        <div class="alerta ok"><c:out value="${sessionScope.flashOk}"/></div>
+        <c:remove var="flashOk" scope="session"/>
+      </c:if>
+      <c:if test="${not empty sessionScope.flashErro}">
+        <div class="alerta erro"><c:out value="${sessionScope.flashErro}"/></div>
+        <c:remove var="flashErro" scope="session"/>
+      </c:if>
+      <c:if test="${not empty mensagem}"><div class="alerta ok"><c:out value="${mensagem}"/></div></c:if>
+      <c:if test="${not empty erro}"><div class="alerta erro"><c:out value="${erro}"/></div></c:if>
+  </c:otherwise>
+</c:choose>

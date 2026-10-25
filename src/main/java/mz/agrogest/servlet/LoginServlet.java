@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 			Utilizador u = UtilizadorService.getInstance().autenticar(email, password);
 
 			if (u == null) {
-				erroForm(req, resp, "Email ou palavra-passe incorretos.");
+				erroForm(req, resp, email, "Email ou palavra-passe incorretos.");
 				return;
 			}
 
@@ -45,12 +45,13 @@ public class LoginServlet extends HttpServlet {
 
 			resp.sendRedirect(req.getContextPath() + "/");
 		} catch (NegocioException e) {
-			erroForm(req, resp, e.getMessage());
+			erroForm(req, resp, email, e.getMessage());
 		}
 	}
 
-	private void erroForm(HttpServletRequest req, HttpServletResponse resp, String msg)
+	private void erroForm(HttpServletRequest req, HttpServletResponse resp, String email, String msg)
 			throws ServletException, IOException {
+		req.setAttribute("email", email);
 		req.setAttribute("erro", msg);
 		mostrarForm(req, resp);
 	}
