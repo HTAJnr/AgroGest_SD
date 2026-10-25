@@ -1030,6 +1030,59 @@ dialog::backdrop {
 .tabela-scroll .tabela {
   border: 0;
 }
+.factura-total-label {
+  text-align: right;
+  font-weight: 600;
+  color: var(--muted);
+}
+.linha-total td {
+  font-size: 1.125rem;
+}
+.linha-total td.total {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.btn-sm {
+  min-height: 36px;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+}
+.carrinho-qtd-grupo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.carrinho-qtd-grupo .campo-qtd {
+  width: 64px;
+  min-height: 36px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  background: var(--surface);
+  color: var(--ink);
+}
+.carrinho-qtd-grupo .unidade-texto {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-right: 2px;
+}
+.carrinho-rodape-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+.grelha-dados {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
 
 /* Alertas, Toasts e Badges */
 /* Contentor de toasts: posição fixa no canto superior direito */
@@ -1186,6 +1239,106 @@ dialog::backdrop {
   padding: 32px;
   max-width: 800px;
   margin-inline: auto;
+  box-shadow: var(--shadow-card);
+}
+.factura-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.factura-marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.factura-logo {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+.factura-marca-info {
+  display: flex;
+  flex-direction: column;
+}
+.factura-marca-nome {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.factura-marca-subtitulo {
+  font-size: 13px;
+  color: var(--muted);
+}
+.factura-marca-nampula {
+  font-size: 12px;
+}
+.factura-meta {
+  text-align: right;
+}
+.factura-doc-tipo {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+}
+.factura-numero {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 2px 0 6px;
+}
+.factura-data {
+  font-size: 14px;
+}
+.factura-divisor {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+.factura-seccao-cliente {
+  margin-bottom: 24px;
+}
+.factura-subtitulo {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.factura-cliente-caixa {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.factura-cliente-nome {
+  font-size: 16px;
+  color: var(--ink);
+}
+.factura-cliente-item {
+  color: var(--ink);
+}
+.factura-tabela {
+  margin-top: 8px;
+}
+.factura-rodape-impresso {
+  display: none; /* Só visível na impressão */
+  text-align: center;
+  margin-top: 36px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px dashed var(--border);
+  padding-top: 12px;
+}
+.factura-acoes {
+  max-width: 800px;
+  margin-inline: auto;
+  margin-top: 24px;
 }
 .rodape {
   text-align: center;
@@ -1547,6 +1700,108 @@ dialog::backdrop {
   .factura {
     padding: 16px;
   }
+  .factura-cabecalho {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .factura-meta {
+    text-align: left;
+  }
+  /* Tabelas empilhadas em ecrãs estreitos (T6) */
+  .tabela-empilhada {
+    border: none;
+    background: transparent;
+  }
+  .tabela-empilhada thead {
+    display: none;
+  }
+  .tabela-empilhada,
+  .tabela-empilhada tbody,
+  .tabela-empilhada tr,
+  .tabela-empilhada td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .tabela-empilhada tbody tr {
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-card);
+  }
+  .tabela-empilhada tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+  .tabela-empilhada tbody td:last-child {
+    border-bottom: none;
+  }
+  .tabela-empilhada td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--muted);
+    text-align: left;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+  .tabela-empilhada tfoot {
+    display: block;
+    margin-top: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-card);
+  }
+  .tabela-empilhada tfoot tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+  }
+  .tabela-empilhada tfoot tr:last-child {
+    border-bottom: none;
+  }
+  .tabela-empilhada tfoot td {
+    display: inline-block;
+    padding: 0;
+    border: none;
+    background: transparent;
+    width: auto;
+  }
+  .tabela-empilhada tfoot td.factura-total-label {
+    font-weight: 600;
+    color: var(--muted);
+    text-align: left;
+  }
+  .tabela-empilhada tfoot td.num {
+    text-align: right;
+    font-weight: 700;
+  }
+  .tabela-empilhada tfoot td[colspan] {
+    display: inline-block;
+  }
+  .tabela-empilhada tfoot td.nao-imprimir:empty {
+    display: none;
+  }
+  .carrinho-rodape-acoes {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .carrinho-rodape-acoes .acoes,
+  .carrinho-rodape-acoes .form-esvaziar,
+  .carrinho-rodape-acoes .form-esvaziar button {
+    width: 100%;
+  }
   .auth {
     padding: 24px 12px 16px;
   }
@@ -1580,15 +1835,26 @@ dialog::backdrop {
   }
 }
 
+/* Configuração de página de impressão (T6) */
+@page {
+  size: A4;
+  margin: 15mm;
+}
+
 /* Impressão */
 @media print {
-  .nao-imprimir, .barra, .avisos, footer.rodape {
+  .nao-imprimir,
+  .barra,
+  .avisos,
+  footer.rodape,
+  #toasts-container,
+  dialog {
     display: none !important;
   }
   body {
     background: #fff !important;
     color: #000 !important;
-    font-size: 12pt;
+    font-size: 11pt;
   }
   .conteudo {
     max-width: none !important;
@@ -1596,14 +1862,87 @@ dialog::backdrop {
     margin: 0 !important;
   }
   .factura {
-    border: 0 !important;
+    border: none !important;
     padding: 0 !important;
     box-shadow: none !important;
     max-width: 100% !important;
+    margin: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .factura-cabecalho,
+  .factura-seccao-cliente,
+  .factura-cliente-caixa {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .factura-cliente-caixa {
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+  }
+  .factura-doc-tipo {
+    color: #000 !important;
   }
   .cartao {
     box-shadow: none !important;
     border: 1px solid #ccc !important;
+  }
+  .tabela,
+  .factura-tabela {
+    border: 1px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .tabela th {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+    border-bottom: 2px solid #000 !important;
+  }
+  .tabela td {
+    border-bottom: 1px solid #ccc !important;
+    color: #000 !important;
+  }
+  .tabela tfoot td {
+    background: #f9f9f9 !important;
+    border-top: 2px solid #000 !important;
+    color: #000 !important;
+  }
+  /* Forçar layout de tabela na impressão mesmo com classe tabela-empilhada */
+  .tabela-empilhada thead {
+    display: table-header-group !important;
+  }
+  .tabela-empilhada,
+  .tabela-empilhada tbody,
+  .tabela-empilhada tfoot {
+    display: table-row-group !important;
+  }
+  .tabela-empilhada tr {
+    display: table-row !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .tabela-empilhada th,
+  .tabela-empilhada td {
+    display: table-cell !important;
+    text-align: inherit !important;
+    padding: 8px 10px !important;
+  }
+  .tabela-empilhada td.num,
+  .tabela-empilhada th.num {
+    text-align: right !important;
+  }
+  .tabela-empilhada td::before {
+    display: none !important;
+    content: none !important;
+  }
+  .tabela-scroll {
+    overflow: visible !important;
+    border: none !important;
+  }
+  .factura-rodape-impresso {
+    display: block !important;
+    color: #444 !important;
+    border-top: 1px dashed #666 !important;
   }
 }
 

@@ -171,9 +171,46 @@
   - `assets/js/app.js`:
     - Aprimoramento do listener de erro em imagens (`img.produto-foto, img.produto-mini`): suporte robusto a atributo `data-placeholder`, preservação do caminho do contexto da aplicação e verificação preventiva de falha prematura de carregamento (`img.complete && img.naturalWidth === 0`).
 
+- **T6 · Carrinho, compra, factura e minhas compras:**
+  - `views/cliente/carrinho.jsp`:
+    - Cabeçalho de página padronizado com `.pagina-topo` e link contextual "Continuar a comprar";
+    - Estado vazio estilizado (`.estado-vazio.cartao`) com ícone SVG `#i-carrinho`, mensagem contextual e botão de redirecionamento para o catálogo;
+    - Alertas de divergência de stock formatados com ícone de aviso;
+    - Tabela de itens com classe responsiva `.tabela-empilhada` e atributos `data-label` em cada célula para empilhamento em cartões em ecrãs estreitos (≤ 640 px e 360 px);
+    - Edição inline de quantidade por linha com grupo flex `.carrinho-qtd-grupo`, campo de texto numérico decimal padronizado `.campo-qtd`, unidade e botão compacto "Atualizar";
+    - Botão de remoção de item por ícone `.btn-perigo.btn-icone` com confirmação acessível via `data-confirm` e diálogo nativo;
+    - Linha de totais destacada (`.linha-total`, `.factura-total-label`, `.num.total`) com subtotal, IVA a 16% e total estimado;
+    - Barra inferior de ações (`.carrinho-rodape-acoes`) com "Finalizar compra", "Continuar a comprar" e botão de esvaziamento total do carrinho com confirmação via modal.
+  - `views/cliente/compra.jsp`:
+    - Cabeçalho padronizado `.pagina-topo`;
+    - Cartão de resumo dos dados de faturação e entrega do cliente logado (nome, email, telefone e endereço normalizado);
+    - Tabela de resumo da encomenda (`.tabela-empilhada`) com `data-label` em todas as colunas e totais calculados;
+    - Nota informativa com ícone sobre cálculo final de preços e stock no ato da confirmação;
+    - Formulário de confirmação com `data-validar novalidate`, token anti duplo envio `_t` e botão "Confirmar compra" com desativação assíncrona automática ao submeter (`data-submetendo="A confirmar compra…"`).
+  - `views/cliente/factura.jsp`:
+    - Cabeçalho formal de fatura (`.factura-cabecalho`): logótipo SVG da marca AgroGest, texto com subtítulo e localização (Nampula, Moçambique), número oficial da fatura (`venda.numeroFactura`) e data/hora de emissão formatada;
+    - Secção de dados do cliente em caixa destacada (`.factura-cliente-caixa`);
+    - Tabela de itens com preço unitário, quantidade formatada com unidade e subtotais, adaptada com `.tabela-empilhada` para telemóveis e layout tabular clássico para impressão;
+    - Linhas de subtotal, IVA (16%) e total alinhadas à direita;
+    - Nota de rodapé formal exclusiva para documento impresso;
+    - Botão de impressão com `window.print()` e navegação de retorno para "Minhas compras" / "Catálogo" (ou listagem de compras para perfil administrador), ocultos na impressão via `.nao-imprimir`.
+  - `views/cliente/minhas-compras.jsp`:
+    - Cabeçalho `.pagina-topo` com atalho para o catálogo;
+    - Estado vazio estilizado (`.estado-vazio.cartao`) com ícone `#i-recibo` e chamada de ação para novo cliente;
+    - Tabela responsiva (`.tabela-empilhada`) com `data-label` para leitura em ecrãs móveis de 360 px;
+    - Total de cada fatura formatado com classe `.total` e botão de visualização com ícone `#i-recibo`.
+  - `css/estilo.css`:
+    - Classes de layout e suporte: `.factura-total-label`, `.linha-total`, `.btn-sm`, `.carrinho-qtd-grupo`, `.campo-qtd`, `.unidade-texto`, `.carrinho-rodape-acoes` e `.grelha-dados`;
+    - Estilização completa do cartão `.factura`, cabeçalho `.factura-cabecalho`, metadados `.factura-meta`, dados de cliente `.factura-cliente-caixa` e rodapé impresso;
+    - Regras responsivas `@media (max-width: 640px)` para `.tabela-empilhada`: transformação de `thead` em `display: none`, linhas `tbody tr` em cartões individuais elevados, células `td` em linhas flex com rótulo semântico `td::before { content: attr(data-label) }`, e `tfoot` estruturado em cartão de totais;
+    - Regra `@page { size: A4; margin: 15mm; }` para padronização de margens de impressão em página A4;
+    - Regras de impressão `@media print`: ocultação estrita de `.nao-imprimir`, `.barra`, `.avisos`, `#toasts-container`, diálogos e rodapé web; fundo branco e texto preto (#000); quebra de linha evitada a meio de registos (`page-break-inside: avoid; break-inside: avoid;`); conversão forçada de `.tabela-empilhada` para estrutura tabular tradicional em papel com bordas e cabeçalhos nítidos.
+  - `assets/js/app.js`:
+    - Aperfeiçoamento da desativação em formulários POST com `data-validar`: suporte a texto dinâmico via `data-submetendo` (ex.: "A confirmar compra…"), temporização não-bloqueante no ciclo de eventos do navegador (`setTimeout(..., 0)`) e preservação do HTML/ícones originais do botão.
+
 # Por fazer
 
-- **T6–T8:** Carrinho/compra/factura, admin (dashboard, listagens, relatórios, produtos, persistência) e auditoria de UI.
+- **T7–T8:** Admin (dashboard, listagens, relatórios, produtos, persistência) e auditoria de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
 # Decisões tomadas

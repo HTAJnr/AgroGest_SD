@@ -405,13 +405,16 @@
     /* Duplo clique: desactivar o botão de submit */
     var btnSubmit = form.querySelector('[type="submit"]');
     if (btnSubmit && !btnSubmit.disabled) {
-      var textoOriginal = btnSubmit.textContent;
-      btnSubmit.disabled = true;
-      btnSubmit.textContent = 'A guardar…';
+      var textoOriginal = btnSubmit.innerHTML;
+      var textoSubmetendo = btnSubmit.getAttribute('data-submetendo') || 'A guardar…';
+      setTimeout(function () {
+        btnSubmit.disabled = true;
+        btnSubmit.textContent = textoSubmetendo;
+      }, 0);
       /* Repor após 8 s (caso o servidor devolva um erro de validação) */
       setTimeout(function () {
         btnSubmit.disabled = false;
-        btnSubmit.textContent = textoOriginal;
+        btnSubmit.innerHTML = textoOriginal;
       }, 8000);
     }
   });
