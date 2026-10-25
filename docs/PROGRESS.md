@@ -62,10 +62,24 @@
     - `views/admin/cultivos/escolher-campanha.jsp`: listagem de campanhas com badges de estado Aberta/Fechada e botão "Ver cultivos".
     - `views/admin/cultivos/index.jsp`: cabeçalho `.pagina-topo` com detalhes da campanha, tabela responsiva de cultivos com link para `/admin/colheitas?cultivoId=...` e botão de remoção por ícone SVG (`.btn-perigo.btn-icone`), e formulário em cartão centrado (`.form-centrado`, `.form-grelha`) desativado quando a campanha estiver fechada.
   - Suite de testes unitários `CultivoServiceTest` com 14 testes cobrindo criação válida, variedade opcional, validação de campos (cultura, variedade, hectares, plantio), bloqueio por campanha fechada (D5), bloqueio por campanha inexistente, cópia defensiva, filtragem por campanha e bloqueio de remoção com colheitas associadas.
+- **F3 · Colheitas no módulo de administração (`/admin/colheitas/*`):**
+  - Criação de `mz.agrogest.service.ColheitaService`:
+    - `registar(cultivoId, data, kg, precoKg)` com validações centralizadas via `Validacao` (data obrigatória, kg > 0, precoKg > 0).
+    - Verificação atómica dentro do monitor do `DataStore`: existência do cultivo, existência da campanha e estado aberta (regra D5: campanhas fechadas não aceitam novas colheitas).
+    - Sem método de remoção, em conformidade com o contrato.
+    - `listar()` e `listarPorCultivo(cultivoId)` devolvendo cópias protegidas (`new ArrayList<>(...)`).
+    - `porId(id)` para consulta segura dentro do monitor.
+  - Criação de `mz.agrogest.servlet.AdminColheitaServlet` mapeado em `@WebServlet(urlPatterns = {"/admin/colheitas", "/admin/colheitas/*"})`:
+    - `GET /admin/colheitas` sem `?cultivoId=`: lista os cultivos disponíveis e o estado das respetivas campanhas para seleção (`escolher-cultivo.jsp`).
+    - `GET /admin/colheitas?cultivoId=...`: exibe as colheitas do cultivo e o formulário de registo (`index.jsp`). Tratamento seguro de IDs inválidos ou inexistentes com redirecionamento e `flashErro` (sem erros 500). Se a campanha estiver fechada, o formulário é desativado com aviso explicativo.
+    - `POST /admin/colheitas` (ou `/criar`) com padrão POST-redirect-GET, mensagens flash (`flashOk`/`flashErro`), token anti duplo envio `_t` e preservação dos dados preenchidos no formulário (`erroCampo` e `${param.x}`).
+  - Criação das views JSP:
+    - `views/admin/colheitas/escolher-cultivo.jsp`: listagem de cultivos com dados de cultura, variedade, campanha associada com badge Aberta/Fechada, hectares, plantio e botão "Ver colheitas".
+    - `views/admin/colheitas/index.jsp`: cabeçalho `.pagina-topo` com detalhes do cultivo e da campanha, tabela responsiva com valor total calculado pelo modelo (`${c.valorTotal}` formatado em MT com `<fmt:formatNumber>` sem cálculo no JSP), e formulário em cartão centrado (`.form-centrado`, `.form-grelha`) desativado quando a campanha estiver fechada.
+  - Suite de testes unitários `ColheitaServiceTest` com 9 testes cobrindo registo válido (cálculo de 3200 kg × 22 MT/kg = 70 400,00 MT), validação de campos (data nula, kg inválido, precoKg inválido), bloqueio por cultivo inexistente, bloqueio por campanha fechada (D5), cópia defensiva em `listar`, filtragem por cultivo e consulta por ID.
 
 # Por fazer
 
-- **F3:** Colheitas (`/admin/colheitas/*`).
 - **T1:** Fundação visual (CSS, variáveis, hover, botões).
 - **T2–T8:** Interface, navegação, toasts, catálogo, fotos e páginas administrativas.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
