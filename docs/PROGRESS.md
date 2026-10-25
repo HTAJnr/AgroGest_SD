@@ -27,6 +27,7 @@
   - `css/estilo.css`: introdução das classes de suporte `.pagina-topo`, `.form-centrado`, `.form-grelha`, `.campo-cheio`, `.form-acoes`, `.btn-icone` e estilos base padronizados para `.btn`, `.btn-sec` e `.btn-perigo`.
 - **T0 · Ícones (sprite SVG inline e organização de assets):**
   - Migração de todos os recursos da pasta raiz `assets/` para a estrutura padronizada da webapp (`src/main/webapp/assets/icons/`, `src/main/webapp/assets/img/` e `src/main/webapp/assets/img/produtos/`).
+  - Organização do diretório `src/main/webapp/assets/fonts/` com a fonte `Inter-Regular.woff2` (recurso estático self-hosted pronto para vinculação via `@font-face` na tarefa T1).
   - Geração de `src/main/webapp/WEB-INF/jspf/icons.jspf` com sprite SVG (`<symbol id="i-{nome}" viewBox="0 0 24 24">`) cobrindo todos os ícones da secção 3.1 do plano (incluindo `i-sair`, `i-cofre` e ações de persistência).
   - Inclusão estática do sprite em `src/main/webapp/WEB-INF/jspf/topo.jspf` logo após o `<body>` via `<%@ include file="/WEB-INF/jspf/icons.jspf" %>`.
   - Estilização em `src/main/webapp/css/estilo.css` para a classe `.icone` (`1.25em`, `stroke: currentColor`, `fill: none`), `.btn-icone` com dimensões mínimas de 44x44px e padding de 8px, e botões base (`.btn`, `.btn-sec`, `.btn-perigo`) com `inline-flex` e `gap: 8px` entre ícone e texto.
@@ -80,7 +81,7 @@
 
 # Por fazer
 
-- **T1:** Fundação visual (CSS, variáveis, hover, botões).
+- **T1:** Fundação visual (CSS, variáveis, hover, botões, libertação de `/assets/*` no `AuthFilter` e `@font-face` para a fonte Inter em `assets/fonts/`).
 - **T2–T8:** Interface, navegação, toasts, catálogo, fotos e páginas administrativas.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
