@@ -31,10 +31,25 @@
   - Inclusão estática do sprite em `src/main/webapp/WEB-INF/jspf/topo.jspf` logo após o `<body>` via `<%@ include file="/WEB-INF/jspf/icons.jspf" %>`.
   - Estilização em `src/main/webapp/css/estilo.css` para a classe `.icone` (`1.25em`, `stroke: currentColor`, `fill: none`), `.btn-icone` com dimensões mínimas de 44x44px e padding de 8px, e botões base (`.btn`, `.btn-sec`, `.btn-perigo`) com `inline-flex` e `gap: 8px` entre ícone e texto.
   - Atualização de `views/admin/fornecedores/lista.jsp` aplicando o ícone `i-mais` no link "+ Novo fornecedor" e o ícone `i-lixo` no botão de remoção `.btn-icone`.
+- **F1 · Campanhas no módulo de administração (`/admin/campanhas/*`):**
+  - Criação de `mz.agrogest.service.CampanhaService`:
+    - `criar(nome, inicio, fim)` com validações centralizadas via `Validacao.nomeCoisa`, datas obrigatórias, verificação de `fim >= inicio`, regra D14 de unicidade de nome da campanha (case-insensitive) dentro do monitor do `DataStore`, e nascimento com estado aberta (`aberta = true`).
+    - `listar()` devolvendo cópia protegida (`new ArrayList<>(...)`).
+    - `porId(id)` para consulta segura dentro do monitor.
+    - `fechar(id)` e `reabrir(id)` para alternância de estado dentro do lock.
+    - `remover(id)` com verificação atómica dentro do monitor: recusa a remoção caso existam cultivos com `campanhaId == id`, exibindo mensagem clara.
+  - Criação de `mz.agrogest.servlet.AdminCampanhaServlet` mapeado em `@WebServlet("/admin/campanhas/*")`:
+    - `GET /admin/campanhas` lista as campanhas; `GET /admin/campanhas/novo` exibe o formulário de cadastro.
+    - `POST /admin/campanhas` (ou `/criar`), `POST /admin/campanhas/fechar`, `POST /admin/campanhas/reabrir` e `POST /admin/campanhas/remover` com padrão POST-redirect-GET e mensagens flash (`flashOk`).
+    - Tratamento de exceções sem erros 500: captura `NegocioException`, `DateTimeParseException`, `NumberFormatException` e `IllegalArgumentException`, repassando `erroCampo` e preservando os dados submetidos no formulário.
+    - Suporte a datas tanto no formato ISO `yyyy-MM-dd` (inputs `<input type="date">` nativos) quanto `dd/MM/yyyy`.
+  - Criação das views JSP:
+    - `views/admin/campanhas/lista.jsp`: tabela com rolagem responsiva (`.tabela-scroll`), badges de estado (`.badge.ok` para Aberta, `.badge.off` para Fechada), link para cultivos associados (`/admin/cultivos?campanhaId=...`), botões Fechar/Reabrir e botão de remoção `.btn-perigo.btn-icone` com confirmação e token anti duplo envio `_t`.
+    - `views/admin/campanhas/form.jsp`: formulário centrado em grelha responsiva (`.form-centrado`, `.form-grelha`), inputs de data nativos, preservação de valores via `${param.x}`, destaque de campo em erro (`.invalido`), token `_t` e botões Cancelar/Guardar.
+  - Suite de testes unitários `CampanhaServiceTest` cobrindo criação, unicidade D14, validação de datas (fim anterior a início, datas nulas), fechamento, reabertura, remoção autorizada e bloqueio por existência de cultivos.
 
 # Por fazer
 
-- **F1:** Campanhas (`/admin/campanhas/*`).
 - **F2:** Cultivos (`/admin/cultivos/*`).
 - **F3:** Colheitas (`/admin/colheitas/*`).
 - **T1:** Fundação visual (CSS, variáveis, hover, botões).
