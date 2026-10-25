@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebListener;
 
 import mz.agrogest.repo.Persistencia;
 import mz.agrogest.service.UtilizadorService;
+import mz.agrogest.util.DadosDemo;
 
 /** Arranque: restaura dados e garante o admin. Encerramento: grava. */
 @WebListener
@@ -18,11 +19,14 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        Persistencia.restaurar(); // nunca lança excepção
+        boolean restaurou = Persistencia.restaurar(); // nunca lança excepção
         try {
             UtilizadorService.getInstance().garantirAdmin();
         } catch (RuntimeException ex) {
             LOG.log(Level.SEVERE, "Falha ao garantir o administrador", ex);
+        }
+        if (!restaurou) {
+            DadosDemo.carregarSeVazio();
         }
     }
 

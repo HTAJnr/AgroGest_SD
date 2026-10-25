@@ -208,6 +208,25 @@
   - `assets/js/app.js`:
     - Aperfeiçoamento da desativação em formulários POST com `data-validar`: suporte a texto dinâmico via `data-submetendo` (ex.: "A confirmar compra…"), temporização não-bloqueante no ciclo de eventos do navegador (`setTimeout(..., 0)`) e preservação do HTML/ícones originais do botão.
 
+- **A10 · Dados de demonstração:**
+  - Criação de `mz.agrogest.util.DadosDemo` com método `carregarSeVazio()` executado de forma segura dentro do lock global `DataStore.getLock()`:
+    - Verificação de arranque limpo: só popula se não existirem fornecedores, produtos ou vendas já registados;
+    - Criação de 3 fornecedores compatíveis com D13 (Sementes do Sul, AgroNutri, MaqAgro);
+    - Criação de 15 produtos cobrindo todas as imagens locais existentes em `src/main/webapp/assets/img/produtos/` (milho, feijão, arroz, amendoim, adubo NPK, ureia, composto orgânico, trator, pulverizador, bomba de rega, enxada, regador, pá, catana e luvas), com categorias, preços, unidades fixas e validades futuras;
+    - Registo de 5 clientes de teste moçambicanos (`joao@teste.mz`/`1234`, `ana@teste.mz`, `carlos@teste.mz`, `maria@teste.mz` e `pedro@teste.mz` sem compras para teste de relatórios);
+    - Criação de campanha agrícola aberta ("Campanha Agrícola 2026/2027"), cultivo de milho e colheita calculada (3200 kg × 22 MT/kg = 70 400 MT);
+    - Registo de 4 compras de demonstração através de `VendaService.getInstance().finalizarCompra(...)` com clientes e itens reais;
+    - Proteção contra duplicação em arranques subsequentes.
+  - Atualização de `mz.agrogest.listener.ContextListener`:
+    - Chamada a `DadosDemo.carregarSeVazio()` quando `Persistencia.restaurar()` indica que não havia ficheiro `.ser` no arranque.
+  - Teste unitário JUnit `mz.agrogest.util.DadosDemoTest` validando arranque com dados completos, integridade de campos e imunidade a duplicações em múltiplas chamadas.
+
+- **O1 · Otimização de imagens e desempenho web:**
+  - Compressão e normalização das 15 imagens de produtos em `src/main/webapp/assets/img/produtos/` utilizando FFmpeg para 800×600 px (proporção 4:3 centrada) e qualidade JPEG (`-q:v 3`): redução de 45 MB para 1,5 MB (~97% de redução em disco e ~99,5% na memória de descodificação bitmap do navegador), eliminando o esgotamento de memória e bloqueio do sistema;
+  - `views/cliente/catalogo.jsp`: adição de atributo `decoding="async"` às tags `<img>` dos produtos para descodificação assíncrona fora da thread principal de renderização;
+  - `css/estilo.css`: introdução de `content-visibility: auto` e `contain-intrinsic-size: 0 420px` na classe `.cartao-produto` para optimização de renderização e salto de layout de elementos fora do viewport;
+  - `filter/AuthFilter.java`: adição de cabeçalho HTTP `Cache-Control: public, max-age=86400` para recursos estáticos públicos (`/assets/*` e `/css/*`), evitando reenvios contínuos e agilizando a navegação entre ecrãs.
+
 # Por fazer
 
 - **T7–T8:** Admin (dashboard, listagens, relatórios, produtos, persistência) e auditoria de UI.
