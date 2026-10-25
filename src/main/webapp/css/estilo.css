@@ -1948,6 +1948,164 @@ dialog::backdrop {
   }
 }
 
+/* ============================================================
+   T7 — Dashboard, Listagens, Relatórios, Produtos, Persistência
+   ============================================================ */
+
+/* Dashboard: grelha de cartões clicáveis */
+.dash-grelha {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.dash-cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 24px 16px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.dash-cartao:hover .dash-seta {
+  opacity: 1;
+  transform: translateX(4px);
+}
+.dash-icone-circulo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-tint);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dash-icone-circulo .icone {
+  width: 28px;
+  height: 28px;
+}
+.dash-numero {
+  font-size: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin: 4px 0 0;
+  color: var(--ink);
+}
+.dash-etiqueta {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+.dash-seta {
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--motion-ease),
+              transform var(--motion-fast) var(--motion-ease);
+  color: var(--primary);
+}
+
+/* Cabeçalhos de tabela ordenáveis */
+.th-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+}
+.th-link:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+.seta-ord {
+  font-size: 11px;
+  color: var(--primary);
+}
+
+/* Podium nos relatórios de assíduos */
+.podio-1 { background: rgba(233, 185, 73, 0.15); }
+.podio-2 { background: rgba(180, 188, 200, 0.15); }
+.podio-3 { background: rgba(184, 115, 51, 0.1); }
+.podio-badge { font-size: 18px; background: none; padding: 0; }
+
+/* Compras detalhadas — cartões */
+.compra-cartao {
+  margin-bottom: 20px;
+}
+.compra-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.compra-num {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.compra-data { margin: 4px 0 0; font-size: 14px; }
+.compra-total-bloco {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.compra-total-valor { font-size: 20px; }
+.compra-cliente-info { margin-bottom: 12px; }
+.compra-cliente-info p { margin: 2px 0; font-size: 14px; }
+.compras-ordenar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+/* Galeria de fotos no formulário de produto */
+.galeria-fotos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.galeria-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 6px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 12px;
+  color: var(--muted);
+  transition: border-color var(--motion-fast) var(--motion-ease);
+}
+.galeria-item input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.galeria-item img {
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+.galeria-item:hover,
+.galeria-item:focus-within {
+  border-color: var(--primary);
+}
+.galeria-item-activa,
+.galeria-item input[type="radio"]:checked + img,
+.galeria-item:has(input[type="radio"]:checked) {
+  border-color: var(--primary);
+  background: var(--primary-tint);
+}
+
 /* Acessibilidade de movimento reduzido */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -1,4 +1,8 @@
-<h1>Novo produto</h1>
+<div class="conteudo">
+  <div class="pagina-topo">
+    <h1>Novo produto</h1>
+    <a class="btn-sec" href="<c:url value='/admin/produtos'/>">← Voltar</a>
+  </div>
 
 <form class="form form-centrado" method="post" action="<c:url value='/admin/produtos/criar'/>"
       data-validar novalidate>
@@ -79,12 +83,34 @@
                 class="${erroCampo == 'descricao' ? 'invalido' : ''}"><c:out value="${param.descricao}"/></textarea>
     </div>
 
-    <div class="campo">
-      <label for="fotoUrl">URL da foto <span class="muted">(opcional)</span></label>
+    <div class="campo campo-cheio">
+      <label>Foto do produto <span class="muted">(opcional)</span></label>
+      <%-- Galeria de miniaturas: radio button por foto local --%>
+      <c:if test="${not empty fotosLocais}">
+        <div class="galeria-fotos ${erroCampo == 'fotoUrl' ? 'invalido' : ''}">
+          <label class="galeria-item ${(empty param.fotoUrl || param.fotoUrl == '') ? 'galeria-item-activa' : ''}">
+            <input type="radio" name="fotoUrl" value=""
+                   ${empty param.fotoUrl ? 'checked' : ''}>
+            <img src="<c:url value='/assets/img/produto-placeholder.svg'/>"
+                 alt="Sem foto" width="80" height="60" loading="lazy">
+            <span>Sem foto</span>
+          </label>
+          <c:forEach var="foto" items="${fotosLocais}">
+            <label class="galeria-item ${param.fotoUrl == foto ? 'galeria-item-activa' : ''}">
+              <input type="radio" name="fotoUrl" value="${foto}"
+                     ${param.fotoUrl == foto ? 'checked' : ''}>
+              <img src="<c:url value='${foto}'/>" alt="${foto}" width="80" height="60" loading="lazy">
+              <span>${fn:substringAfter(fn:substringBefore(foto, '.'), '/produtos/')}</span>
+            </label>
+          </c:forEach>
+        </div>
+        <p class="muted" style="margin-top:6px;font-size:14px">Ou introduza um URL directamente:</p>
+      </c:if>
       <input type="text" id="fotoUrl" name="fotoUrl"
              value="<c:out value='${param.fotoUrl}'/>"
              placeholder="https://… ou /assets/img/produtos/milho.jpg"
-             class="${erroCampo == 'fotoUrl' ? 'invalido' : ''}">
+             class="${erroCampo == 'fotoUrl' ? 'invalido' : ''}"
+             ${not empty fotosLocais ? 'style="display:none"' : ''}>
     </div>
 
     <div class="campo">
@@ -105,3 +131,4 @@
 
   </div>
 </form>
+</div>

@@ -6,13 +6,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import mz.agrogest.model.Categoria;
-import mz.agrogest.service.ProdutoService;
 import mz.agrogest.service.FornecedorService;
+import mz.agrogest.service.ListagemService;
+import mz.agrogest.service.ProdutoService;
 import mz.agrogest.util.NegocioException;
 import mz.agrogest.util.Validacao;
 
@@ -116,6 +121,7 @@ public class AdminProdutoServlet extends HttpServlet {
 	private void mostrarLista(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("titulo", "Produtos");
 		req.setAttribute("produtos", ProdutoService.getInstance().listar());
+		req.setAttribute("nomesFornecedores", ListagemService.getInstance().nomesFornecedores());
 		req.getRequestDispatcher(LISTA).forward(req, resp);
 	}
 
@@ -125,7 +131,25 @@ public class AdminProdutoServlet extends HttpServlet {
 		req.setAttribute("fornecedores", FornecedorService.getInstance().listar());
 		req.setAttribute("hoje", LocalDate.now().toString());
 		req.setAttribute("unidades", Validacao.UNIDADES);
+		req.setAttribute("fotosLocais", listarFotosLocais());
 		req.getRequestDispatcher(FORM).forward(req, resp);
+	}
+
+	/** Devolve caminhos web das fotos em /assets/img/produtos/, ordenados. */
+	private List<String> listarFotosLocais() {
+		Set<String> paths = getServletContext().getResourcePaths("/assets/img/produtos/");
+		if (paths == null) {
+			return Collections.emptyList();
+		}
+		List<String> lista = new ArrayList<>();
+		for (String p : paths) {
+			String lower = p.toLowerCase();
+			if (lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png") || lower.endsWith(".webp")) {
+				lista.add(p); // ex.: /assets/img/produtos/milho.jpg
+			}
+		}
+		Collections.sort(lista);
+		return lista;
 	}
 
 	private void erroLista(HttpServletRequest req, HttpServletResponse resp, String msg) throws IOException {

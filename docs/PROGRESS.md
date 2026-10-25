@@ -221,6 +221,15 @@
     - Chamada a `DadosDemo.carregarSeVazio()` quando `Persistencia.restaurar()` indica que não havia ficheiro `.ser` no arranque.
   - Teste unitário JUnit `mz.agrogest.util.DadosDemoTest` validando arranque com dados completos, integridade de campos e imunidade a duplicações em múltiplas chamadas.
 
+- **T7 · Admin (dashboard, listagens, relatórios, produtos, persistência):**
+  - **T7a · Dashboard:** substituição dos cartões simples por cartões clicáveis (`.cartao-link.dash-cartao`) com círculo de ícone (`.dash-icone-circulo`), número em 32 px (`.dash-numero`), etiqueta e seta animada que aparece no hover; cada cartão leva à página correspondente (fornecedores, produtos, clientes, vendas, campanhas).
+  - **T7a · Listagens:** abas de navegação (`.abas`) com `aria-current="page"` substituem os botões estilo `.btn`/`.btn-sec`; `.pagina-topo` com `<h1>` padronizado; cabeçalhos de tabela ordenáveis com `.th-link`, ícone `.seta-ord` e atributo `aria-sort`; listagem de produtos com miniatura (`.produto-mini`), badge de categoria, badge `Esgotado`/`Expirado`; estado vazio com ícone e mensagem descritiva; compras detalhadas em cartões (`.compra-cartao`) com bloco de total, info do cliente, tabela com `<tfoot>` correcto (Subtotal, IVA, Total).
+  - **T7a · Relatórios:** abas de navegação (`.abas`) com `aria-current`; estado vazio com mensagem positiva em "Sem compras"; pódio 🥇🥈🥉 nas primeiras 3 linhas dos relatórios de assíduos/compraram com classes `.podio-1/2/3`.
+  - **T7b · Produtos (lista):** `.pagina-topo` com botão \"+ Novo produto\" à direita; tabela com foto em miniatura, badge de categoria, fornecedor, stock formatado (badge `Esgotado` a 0), badge `Expirado`; botão repor (`.btn-sec.btn-icone`) abre `<dialog id="dlg-repor">` nativo com campo de quantidade, eliminando o campo inline da tabela; botão remover (`.btn-perigo.btn-icone`) com `data-confirm`; `AdminProdutoServlet.mostrarLista` passa `nomesFornecedores` via `ListagemService`.
+  - **T7b · Produtos (formulário):** galeria de miniaturas (`.galeria-fotos`) com radio por foto local carregada via `getServletContext().getResourcePaths`; `.pagina-topo` com botão «← Voltar»; conteúdo envolvido em `.conteudo`.
+  - **T7c · Persistência:** `.pagina-topo`; formulário centrado; badges `ok`/`aviso` de estado; secções com `<hr>` para Gravar e Eliminar com ícones; botão Eliminar desactivado quando o ficheiro não existe; explicação clara do D10.
+  - **`css/estilo.css`:** novas regras para dashboard (`.dash-*`), cabeçalhos ordenáveis (`.th-link`, `.seta-ord`), pódio (`.podio-*`), compras detalhadas (`.compra-*`, `.compras-ordenar`), galeria de fotos (`.galeria-fotos`, `.galeria-item`).
+
 - **O1 · Otimização de imagens e desempenho web:**
   - Compressão e normalização das 15 imagens de produtos em `src/main/webapp/assets/img/produtos/` utilizando FFmpeg para 800×600 px (proporção 4:3 centrada) e qualidade JPEG (`-q:v 3`): redução de 45 MB para 1,5 MB (~97% de redução em disco e ~99,5% na memória de descodificação bitmap do navegador), eliminando o esgotamento de memória e bloqueio do sistema;
   - `views/cliente/catalogo.jsp`: adição de atributo `decoding="async"` às tags `<img>` dos produtos para descodificação assíncrona fora da thread principal de renderização;
@@ -230,7 +239,7 @@
 
 # Por fazer
 
-- **T7–T8:** Admin (dashboard, listagens, relatórios, produtos, persistência) e auditoria de UI.
+- **T8:** Auditoria final de UI.
 - **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
 
 # Decisões tomadas
