@@ -225,6 +225,7 @@
   - Compressão e normalização das 15 imagens de produtos em `src/main/webapp/assets/img/produtos/` utilizando FFmpeg para 800×600 px (proporção 4:3 centrada) e qualidade JPEG (`-q:v 3`): redução de 45 MB para 1,5 MB (~97% de redução em disco e ~99,5% na memória de descodificação bitmap do navegador), eliminando o esgotamento de memória e bloqueio do sistema;
   - `views/cliente/catalogo.jsp`: adição de atributo `decoding="async"` às tags `<img>` dos produtos para descodificação assíncrona fora da thread principal de renderização;
   - `css/estilo.css`: introdução de `content-visibility: auto` e `contain-intrinsic-size: 0 420px` na classe `.cartao-produto` para optimização de renderização e salto de layout de elementos fora do viewport;
+  - `WEB-INF/jspf/topo.jspf`: adição de `<link rel="preload">` para `Inter-Variable.woff2` no `<head>`, acelerando o primeiro desenho do texto sem bloqueio ou flash de fontes;
   - `filter/AuthFilter.java`: adição de cabeçalho HTTP `Cache-Control: public, max-age=86400` para recursos estáticos públicos (`/assets/*` e `/css/*`), evitando reenvios contínuos e agilizando a navegação entre ecrãs.
 
 # Por fazer
