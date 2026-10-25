@@ -250,11 +250,23 @@
     - Mesmo formato de datas com `<input type="date">` nativo nos formulários;
     - Foco visível acessível em todos os elementos interactivos via `:focus-visible`;
     - Ecrãs responsivos adaptados para 360 px sem overflow horizontal;
-  - **Auditoria de segurança e padrões por `grep`:** Validação limpa sem referências a `javax`, sem scriptlets Java (`<%`), sem caminhos absolutos `/agrogest/`, sem taglibs obsoletas `java.sun.com` e sem `style=` inline.
+  - **Auditoria de segurança e padrões por `grep`:** Validação limpa sem referências a `javax`, sem scriptlets Java, sem caminhos absolutos `/agrogest/`, sem taglibs obsoletas `java.sun.com` e sem `style=` inline.
+- **D1 · README.md (Documentação e Arquitetura do Projeto):**
+  - Reescrita integral de `README.md` na raiz do repositório em conformidade estrita com o enquadramento académico e técnico;
+  - Inserção do logótipo oficial (`src/main/webapp/assets/img/logo-agrogest.png`) centralizado no topo com badges de tecnologias;
+  - Descrição da aplicação e detalhe do stack tecnológico (Java 17 LTS, Tomcat 10.1 na porta 8081, Servlets 6.0, JSP 3.1 + JSTL 3.0, BCrypt, Maven, JUnit 5, Systemd);
+  - Diagrama de arquitetura em camadas Mermaid (`flowchart TD`) ilustrando cliente, filtros (`AuthFilter`, `TokenFormFilter`), servlets MVC, camada de serviço, concorrência no `DataStore` (lock único global e IDs atómicos), persistência atómica em disco (`.tmp` → `.ser`, com salvaguarda `.ser.bak`) e JSP;
+  - Documentação detalhada dos fluxos de concorrência: monitor exclusivo (`DataStore.getLock()`), cópias defensivas em listagens e transação de `VendaService.finalizarCompra` (verificação atómica de stock RN01/RN02, cálculo com `BigDecimal` e IVA a 16%, emissão de fatura sequencial `FT-{ano}-{id}` e histórico imutável);
+  - Credenciais de teste: Administrador padrão (`admin@agro.mz` / `admin234`) e clientes de demonstração (`joao@teste.mz` / `1234`, `ana@teste.mz`, `carlos@teste.mz`, `maria@teste.mz`, `pedro@teste.mz` sem compras);
+  - Regras de negócio RN01 a RN06 e decisões D1 a D19 explicadas em tabelas claras;
+  - Tabela com mapeamento completo de rotas públicas, de cliente e administrativas com os respetivos métodos HTTP, servlets e finalidades;
+  - Instruções de compilação e teste (`mvn clean test` com 112 testes passando, `mvn clean package`);
+  - Guia completo passo-a-passo de instalação, deploy e configuração do serviço systemd (`/etc/systemd/system/tomcat.service`, utilizador de sistema `tomcat:tomcat`, porta 8081, pasta de dados `/opt/tomcat/data/agrogest.ser`, `TimeoutStopSec=60` para salvaguarda de persistência na paragem);
+  - Ligações diretas ao manual em [`docs/manual/`](manual/) e perfis dos autores no GitHub ([Ayko Sambo](https://github.com/CS15A), [Naira Ornilo](https://github.com/nairaornilo), [Hélder Vuca Júnior](https://github.com/HTAJnr/)).
 
 # Por fazer
 
-- **D1–D5:** README, manual PDF, deploy systemd, release e limpeza.
+- **D2–D5:** Manual PDF (D2), deploy systemd (D3), release (D4) e limpeza (D5).
 
 # Decisões tomadas
 
