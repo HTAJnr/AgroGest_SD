@@ -270,9 +270,14 @@
   - **Fluxo do Cliente documentado passo a passo:** Auto-registo de conta com validação de contacto moçambicano (`+258 84 123 4567`) → Catálogo de produtos com saudação personalizada e filtro em chips por categoria → Adição de insumos ao carrinho (3 kg de semente de milho e 1 saco de adubo) → Gestão do carrinho com atualização de quantidades e apuramento financeiro com IVA a 16% → Checkout com proteção atómica e anti duplo clique (`TokenFormFilter`) → Emissão de fatura comercial oficial (`FT-2026-X`) com folha de estilo de impressão A4 (`window.print()`) e garantia de privacidade de dados RN03 → Histórico de faturas em "Minhas compras";
   - Inclusão de capa formal com logótipo, metadados académicos (ISCTEM, Outubro de 2026), tabela resumo de regras de negócio (RN01–RN06 e D01–D19), secção de perguntas frequentes (FAQ) e guia de resolução de problemas operacionais.
 
+- **D3 · Deploy com systemd (porta 8081):**
+  - Criação de `deploy/tomcat.service`: unidade systemd com `Type=forking`, utilizador `tomcat`, `JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64` (JDK instalado no sistema), `ExecStart`/`ExecStop` apontando para os scripts do Tomcat, `TimeoutStopSec=60` (garante que a paragem gracosa grava o `agrogest.ser` antes do processo ser terminado à força) e `SuccessExitStatus=143` (SIGTERM é saída normal para Java).
+  - Criação de `deploy/DEPLOY.md`: guia passo-a-passo testado com os comandos exactos (`useradd`, `chown`, edição do `server.xml` para porta 8081, `systemctl daemon-reload enable --now`, deploy do WAR, teste de persistência, gestão do serviço) e explicação linha a linha de cada directiva da unidade systemd (para a defesa oral).
+  - **Atenção (execução manual obrigatória):** os passos com `sudo` (criação do utilizador `tomcat`, transferência de permissões, cópia para `/etc/systemd/system/`, `systemctl`) têm de ser executados à mão no terminal. Após a transferência de propriedade para o utilizador `tomcat`, **não usar em paralelo a função `tomcat` do `~/.bashrc`** (usa o utilizador `htajnr` e pode criar ficheiros com permissões erradas).
+
 # Por fazer
 
-- **D3–D5:** Deploy systemd (D3), release (D4) e limpeza (D5).
+- **D4–D5:** Release no GitHub (D4) e limpeza do repositório (D5).
 
 # Decisões tomadas
 
