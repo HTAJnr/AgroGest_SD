@@ -277,7 +277,34 @@
 
 # Por fazer
 
-- **D4–D5:** Release no GitHub (D4) e limpeza do repositório (D5).
+- **D4 · Release:** após `mvn clean package` verde na branch `helder`, executar **à mão**:
+  ```bash
+  git switch main && git pull
+  git merge helder
+  mvn clean package
+  mkdir -p entrega && cp target/agrogest.war entrega/
+  git add -f entrega/agrogest.war
+  git commit -m "entrega: WAR v1.0.0"
+  git tag -a v1.0.0 -m "AgroGest v1.0.0 - entrega"
+  git push origin main && git push origin v1.0.0
+  ```
+  Depois: GitHub → Releases → Draft new release → tag `v1.0.0` → Generate notes → anexar `agrogest.war` + `docs/manual/Manual_AgroGest.pdf` → Publish.
+  Notas a incluir: Java 17, Tomcat 10.1, copiar WAR para `webapps/`, porta 8081, credenciais (`admin@agro.mz`/`admin234`, `joao@teste.mz`/`1234`). **Nunca** anexar `agrogest.ser`.
+
+- **D5 · Limpeza:** executar **à mão**, **antes da tag**, **no último dia**:
+  ```bash
+  mkdir -p ~/HTA/ISCTEM/SD/docs-internos
+  cp -r docs/00_CONTRATO.md docs/GIT.md docs/PESSOA_A.md docs/PESSOA_B.md docs/PESSOA_C.md docs/enunciado ~/HTA/ISCTEM/SD/docs-internos/ 2>/dev/null
+  cp docs/PLANO_SESSOES.md docs/PROGRESS.md DESIGN.md ~/HTA/ISCTEM/SD/docs-internos/ 2>/dev/null
+  git rm -r --ignore-unmatch docs/00_CONTRATO.md docs/GIT.md docs/PESSOA_A.md docs/PESSOA_B.md docs/PESSOA_C.md docs/enunciado
+  git rm --ignore-unmatch docs/PLANO_SESSOES.md docs/PROGRESS.md DESIGN.md
+  # Confirmar que não existem:
+  find . -path ./target -prune -o -name 'teste.jsp' -print
+  find src -path '*stub*' -name '*.java'
+  ```
+  Ficam no repo: `README.md`, `docs/manual/`, `deploy/`, `entrega/agrogest.war`, `src/`, `pom.xml`.
+
+- **P1 · Guião da defesa:** criado em `~/HTA/ISCTEM/SD/docs-internos/P1_GUIAO_DEFESA.md` (fora do repositório). Inclui ordem da demonstração ao vivo (admin → cliente → restart systemd), 15 perguntas prováveis com resposta de 2 linhas, divisão de responsabilidades por membro e checklist de último minuto.
 
 # Decisões tomadas
 
