@@ -263,10 +263,16 @@
   - Instruções de compilação e teste (`mvn clean test` com 112 testes passando, `mvn clean package`);
   - Guia completo passo-a-passo de instalação, deploy e configuração do serviço systemd (`/etc/systemd/system/tomcat.service`, utilizador de sistema `tomcat:tomcat`, porta 8081, pasta de dados `/opt/tomcat/data/agrogest.ser`, `TimeoutStopSec=60` para salvaguarda de persistência na paragem);
   - Ligações diretas ao manual em [`docs/manual/`](manual/) e perfis dos autores no GitHub ([Ayko Sambo](https://github.com/CS15A), [Naira Ornilo](https://github.com/nairaornilo), [Hélder Vuca Júnior](https://github.com/HTAJnr/)).
+- **D2 · Manual de Utilização da Aplicação:**
+  - Redação integral do manual de utilização em formato Markdown (`docs/manual.md` e `docs/manual/manual.md`), estruturado para leitura e exportação direta para PDF via Obsidian com suporte a quebras de página (`page-break-after`), índice analítico e callouts de destaque;
+  - Captura direta de 20 capturas de ecrã a 1280 px a partir da aplicação em execução no Tomcat com dados de demonstração reais (A10), organizadas em `docs/manual/img/NN-descricao.png` com legendas explicativas;
+  - **Fluxo do Administrador documentado passo a passo:** Login (`admin@agro.mz` / `admin234`) → Dashboard com métricas em tempo real → Cadastro de fornecedores com tipos e províncias moçambicanas (D13 e D14) → Cadastro de produtos com categorias compatíveis, unidades em chips e galeria de imagens → Gestão de campanhas agrícolas (estados Aberta/Fechada e regra D05) → Parcelas de cultivo por campanha → Registo de colheitas com cálculo automático de valor total (ex.: 3200 kg × 22,00 MT/kg = 70 400,00 MT) → Listagens ordenáveis e balanço de armazém → Compras detalhadas em cartões individuais → Relatórios analíticos com pódio 🥇🥈🥉 de assiduidade e volume financeiro → Painel de persistência atómica em disco (`/opt/tomcat/data/agrogest.ser`, regra D10);
+  - **Fluxo do Cliente documentado passo a passo:** Auto-registo de conta com validação de contacto moçambicano (`+258 84 123 4567`) → Catálogo de produtos com saudação personalizada e filtro em chips por categoria → Adição de insumos ao carrinho (3 kg de semente de milho e 1 saco de adubo) → Gestão do carrinho com atualização de quantidades e apuramento financeiro com IVA a 16% → Checkout com proteção atómica e anti duplo clique (`TokenFormFilter`) → Emissão de fatura comercial oficial (`FT-2026-X`) com folha de estilo de impressão A4 (`window.print()`) e garantia de privacidade de dados RN03 → Histórico de faturas em "Minhas compras";
+  - Inclusão de capa formal com logótipo, metadados académicos (ISCTEM, Outubro de 2026), tabela resumo de regras de negócio (RN01–RN06 e D01–D19), secção de perguntas frequentes (FAQ) e guia de resolução de problemas operacionais.
 
 # Por fazer
 
-- **D2–D5:** Manual PDF (D2), deploy systemd (D3), release (D4) e limpeza (D5).
+- **D3–D5:** Deploy systemd (D3), release (D4) e limpeza (D5).
 
 # Decisões tomadas
 
