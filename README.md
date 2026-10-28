@@ -408,7 +408,6 @@ sudo ufw allow 8081/tcp
 ## 📚 Documentação e Manual
 
 - **Manual de Utilização em PDF:** Consulte a pasta [`docs/manual/`](docs/manual/) para aceder ao guia ilustrado para clientes e administradores com o passo a passo completo da plataforma.
-- **Histórico e Planeamento:** O planeamento das sessões de trabalho e o progresso técnico encontram-se documentados em [`docs/PLANO_SESSOES.md`](docs/PLANO_SESSOES.md) e [`docs/PROGRESS.md`](docs/PROGRESS.md).
 
 ---
 
