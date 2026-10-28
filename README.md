@@ -119,7 +119,7 @@ flowchart TD
     TF --> S_Auth & S_Loja & S_Admin & S_Rel
     S_Auth & S_Loja & S_Admin & S_Rel --> US & VS & PS & FS & CS
     US & VS & PS & FS & CS --> Val
-    US & VS & PS & FS & CS -->|synchronized (lock)| DS
+    US & VS & PS & FS & CS -->|"synchronized (lock)"| DS
     DS <--> PERS
     PERS <-->|I/O Atómico| SER_FILE
     S_Auth & S_Loja & S_Admin & S_Rel -->|Forward| JSP
